@@ -1,0 +1,499 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Sniper</title><meta name="author" content="Sniper"><meta name="copyright" content="Sniper"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta property="og:type" content="website">
+<meta property="og:title" content="Sniper">
+<meta property="og:url" content="http://zhoujunxiong.gitee.com/page/19/index.html">
+<meta property="og:site_name" content="Sniper">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://zhoujunxiong.gitee.com/img/avatar.jpg">
+<meta property="article:author" content="Sniper">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://zhoujunxiong.gitee.com/img/avatar.jpg"><link rel="shortcut icon" href="https://gitee.com/zhoujunxiong/zhoujunxiong.back/raw/master/favicon.ico"><link rel="canonical" href="http://zhoujunxiong.gitee.com/page/19/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}
+
+// https://stackoverflow.com/questions/16839698/jquery-getscript-alternative-in-native-javascript
+const getScript = url => new Promise((resolve, reject) => {
+  const script = document.createElement('script')
+  script.src = url
+  script.async = true
+  script.onerror = reject
+  script.onload = script.onreadystatechange = function() {
+    const loadState = this.readyState
+    if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+    script.onload = script.onreadystatechange = null
+    resolve()
+  }
+  document.head.appendChild(script)
+})</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: false,
+  isHome: true,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2021-06-17 14:22:18'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><link rel="stylesheet" href="/css/custom.css"<meta name="generator" content="Hexo 5.3.0"><link rel="alternate" href="/atom.xml" title="Sniper" type="application/atom+xml">
+<link rel="alternate" href="/rss2.xml" title="Sniper" type="application/rss+xml">
+</head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div id="loader-wrapper"><div id="loader"></div></div><div class="loader"><div class="inner one"></div><div class="inner two"></div><div class="inner three"></div></div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" data-lazy-src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">265</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">59</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">45</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标籤</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="full_page" id="page-header" style="background-image: url(https://tva4.sinaimg.cn/large/9bd9b167gy1g4lhdqrho2j21hc0xcq9a.jpg)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Sniper</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标籤</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="site-info"><h1 id="site-title">Sniper</h1><div id="site-subtitle"><span id="subtitle"></span></div><div id="site_social_icons"><a class="social-icon" href="/atom.xml" target="_blank" title="rss-atom"><i class="fas fa-rss"></i></a><a class="social-icon" href="/rss2.xml" target="_blank" title="rss-rss2"><i class="fas fa-rss-square"></i></a></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div class="recent-posts" id="recent-posts"><div class="recent-post-item"><div class="post_cover left_radius"><a href="/2019/06/02/nodejs/excel%E6%93%8D%E4%BD%9C/" title="excel操作">     <img class="post_bg" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.03230684961501784" src="/img/loading.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="excel操作"></a></div><div class="recent-post-info"><a class="article-title" href="/2019/06/02/nodejs/excel%E6%93%8D%E4%BD%9C/" title="excel操作">excel操作</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2019-06-02T07:03:26.000Z" title="发表于 2019-06-02 15:03:26">2019-06-02</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/nodejs/">nodejs</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fas fa-tag article-meta__icon"></i><a class="article-meta__tags" href="/tags/nodejs/">nodejs</a><span class="article-meta__link">•</span><a class="article-meta__tags" href="/tags/JavaScript/">JavaScript</a></span></div><div class="content">xlsx模块const XLSX = require(&#x27;xlsx&#x27;);# 读取文件const workbook = XLSX.readFile(&#x27;新表(1).xlsx&#x27;);# 读取表一let sheet = workbook.Sheets[workbook.SheetNames[0]];# 新表对象，最后会通过xlsx模块导出let newSheet = &#123;  SheetNames: [&#x27;mySheet&#x27;],  Sheets: &#123;    mySheet: &#123;      ...sheet,      &#x27;!ref&#x27;: &#x27;A1:E60824&#x27;, // 必须要有这个范围才能输出，否则导出的 excel 会是一个空表    &#125;,  &#125;,&#125;;# 取得c1表格里的值sheet[&#x27;C1&#x27;].w# 导出新表对象XLSX.writeFile(newSheet, &#x27;newSheet.xlsx&#x27;);
+几个特殊变量 ...</div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/2019/05/29/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%BA%95%E5%B1%82%E5%AD%A6%E4%B9%A0/Http%E5%8D%8F%E8%AE%AE/" title="Http协议">     <img class="post_bg" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.7824754069327526" src="/img/loading.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Http协议"></a></div><div class="recent-post-info"><a class="article-title" href="/2019/05/29/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%BA%95%E5%B1%82%E5%AD%A6%E4%B9%A0/Http%E5%8D%8F%E8%AE%AE/" title="Http协议">Http协议</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2019-05-29T09:57:58.000Z" title="发表于 2019-05-29 17:57:58">2019-05-29</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%BA%95%E5%B1%82%E5%AD%A6%E4%B9%A0/">计算机底层学习</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fas fa-tag article-meta__icon"></i><a class="article-meta__tags" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%BA%95%E5%B1%82%E5%AD%A6%E4%B9%A0/">计算机底层学习</a></span></div><div class="content">强制缓存Expires 过期时间（绝对时间）比如expires: Wed, 07 Apr 2021 06:09:09 GMT
+使用绝对时间进行对比，可能出现客户端与服务器时间不一致导致的错误
+Cache-Control 控制缓存工作方式（相对时间）可以单独使用，也可以和Expires配合使用，当max-age不指定时，就会去对比Expires
+它常见的取值 private、public、no-cache、max-age，no-store，默认值为 private，各个取值的含义如下：
+
+private: 客户端可以缓存
+public: 客户端和代理服务器都可缓存
+max-age=xxx: 缓存的内容将在 xxx 秒后失效
+no-cache: 需要使用协商缓存来验证缓存数据（与 max-age=0 作用相同）
+no-store: 所有内容都不会缓存，强制缓存与协商缓存都不会触发
+must-revalidate：告诉浏览器、缓存服务器，本地副本过期前，可以使用本地副本；本地副本一旦过期，必须去源服务器进行有效性校验（revalidate 是缓存过期后自然而然的表现，怎么还需要专门的指令呢？ ...</div></div></div><div class="recent-post-item"><div class="post_cover left_radius"><a href="/2019/05/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%BA%95%E5%B1%82%E5%AD%A6%E4%B9%A0/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%BF%E7%94%A8%E8%A1%A5%E7%A0%81%E6%9D%A5%E8%A1%A8%E7%A4%BA%E8%B4%9F%E6%95%B0/" title="计算机为什么使用补码来表示负数">     <img class="post_bg" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.49251681069822073" src="/img/loading.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="计算机为什么使用补码来表示负数"></a></div><div class="recent-post-info"><a class="article-title" href="/2019/05/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%BA%95%E5%B1%82%E5%AD%A6%E4%B9%A0/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%BF%E7%94%A8%E8%A1%A5%E7%A0%81%E6%9D%A5%E8%A1%A8%E7%A4%BA%E8%B4%9F%E6%95%B0/" title="计算机为什么使用补码来表示负数">计算机为什么使用补码来表示负数</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2019-05-16T11:31:51.000Z" title="发表于 2019-05-16 19:31:51">2019-05-16</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%BA%95%E5%B1%82%E5%AD%A6%E4%B9%A0/">计算机底层学习</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fas fa-tag article-meta__icon"></i><a class="article-meta__tags" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%BA%95%E5%B1%82%E5%AD%A6%E4%B9%A0/">计算机底层学习</a></span></div><div class="content">负数的表示在计算机中，第一位表示符号位0为正数，1为负数，负数使用对应整数进行取反加一，也就是补码表示
+例如：-8对应的正数是8，0000 1000,取反后 1111 0111,加上1后1111 1000就是-8
+为什么假定有两种表示方法。一种是直觉表示法，即10001000；另一种是2的补码表示法，即11111000。请问哪一种表示法在加法运算中更方便？
+随便写一个计算式，16 + (-8) = ?
+16的二进制表示是 00010000，所以用直觉表示法，加法就要写成：
+
+　０００１００００
+＋１０００１０００
+－－－－－－－－－
+　１００１１０００
+
+可以看到，如果按照正常的加法规则，就会得到10011000的结果，转成十进制就是-24。显然，这是错误的答案。也就是说，在这种情况下，正常的加法规则不适用于正数与负数的加法，因此必须制定两套运算规则，一套用于正数加正数，还有一套用于正数加负数。从电路上说，就是必须为加法运算做两种电路。
+现在，再来看2的补码表示法。
+
+＋０００１００００
+＋１１１１１０００
+－－－－－－－－－
+１００００１０００
+
+可以看到，按照正常的加法规则，得到的 ...</div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/2019/04/24/JAVA/Spring/spring%E4%B8%8EJUnit%E7%BB%93%E5%90%88/" title="spring与JUnit结合">     <img class="post_bg" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.06569807305902864" src="/img/loading.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="spring与JUnit结合"></a></div><div class="recent-post-info"><a class="article-title" href="/2019/04/24/JAVA/Spring/spring%E4%B8%8EJUnit%E7%BB%93%E5%90%88/" title="spring与JUnit结合">spring与JUnit结合</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2019-04-23T19:44:03.000Z" title="发表于 2019-04-24 03:44:03">2019-04-24</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/Spring/">Spring</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fas fa-tag article-meta__icon"></i><a class="article-meta__tags" href="/tags/JAVA/">JAVA</a><span class="article-meta__link">•</span><a class="article-meta__tags" href="/tags/Spring/">Spring</a></span></div><div class="content">spring与JUnit结合使用Junit单元测试：测试我们的配置Spring整合junit的配置
+
+导入spring整合junit的jar(坐标)
+使用Junit提供的一个注解把原有的main方法替换了，spring提供的@Runwith
+
+告知spring的运行器，spring和ioc创建是基于xml还是注的，并且说明位置@ContextConfiguration
+locations：指定xml文件的位置，加上classpat关键字，表示在类路径下
+classes：指定注解类所在地位置
+
+
+
+
+当我们使用spring 5.x版本的时候，要求junit的jar必须是4.12及以上
+
+坐标配置
+12345&lt;dependency&gt;   &lt;groupId&gt;org.springframework&lt;/groupId&gt;   &lt;artifactId&gt;spring-test&lt;/artifactId&gt;   &lt;version&gt;5.0.2.RELEASE&lt;/version&gt;&lt;/dependency&gt;
+运行
+@R ...</div></div></div><div class="recent-post-item"><div class="post_cover left_radius"><a href="/2019/04/18/JAVA/Servlet/" title="Servlet">     <img class="post_bg" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.6800405454000478" src="/img/loading.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Servlet"></a></div><div class="recent-post-info"><a class="article-title" href="/2019/04/18/JAVA/Servlet/" title="Servlet">Servlet</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2019-04-17T19:20:45.000Z" title="发表于 2019-04-18 03:20:45">2019-04-18</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/JAVA/">JAVA</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fas fa-tag article-meta__icon"></i><a class="article-meta__tags" href="/tags/JAVA/">JAVA</a></span></div><div class="content">HTTP请求类型
+请求格式的结构：请求头：请求方式、请求的地址和 HTTP 协议版本请求行：消息报头，一般用来说明客户端要使用的一些附加信息空行： 位于请求行和请求数据之间，空行是必须的。请求数据：非必须。
+HTTP 协议之请求方式根据 HTTP 标准，HTTP 请求可以使用多种请求方法。HTTP1.0 定义了三种请求方法： GET, POST 和 HEAD 方法。HTTP1.1 新增了五种请求方法：OPTIONS, PUT, DELETE, TRACE 和CONNECT 方法。HEAD 类似 get，只不过返回响应没有具体的内容，用于获取报头PUT 从客户端向服务器传送的数据取代指定的文档的内容DELETE 请求服务器删除指定的页面CONNECT 允许客户端查看服务器的性能OPTIONS 允许客户端查看服务器的性能TRACE 回显示服务器收到的请求，主要用于测试或判断
+HTTP 常见响应状态码200 OK //客户端请求成功400 Bad Request //客户端请求有语法错误，不能被服务器所理解401 Unauthorized //请求未经授权，这个状态代码必须和 WWW-Aut ...</div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/2019/04/06/JAVA/Spring%20Boot/ymal/" title="ymal">     <img class="post_bg" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.47888971957880666" src="/img/loading.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="ymal"></a></div><div class="recent-post-info"><a class="article-title" href="/2019/04/06/JAVA/Spring%20Boot/ymal/" title="ymal">ymal</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2019-04-05T22:13:52.000Z" title="发表于 2019-04-06 06:13:52">2019-04-06</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/Spring-Boot/">Spring Boot</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fas fa-tag article-meta__icon"></i><a class="article-meta__tags" href="/tags/JAVA/">JAVA</a><span class="article-meta__link">•</span><a class="article-meta__tags" href="/tags/Spring-Boot/">Spring Boot</a></span></div><div class="content">YAML语法：以空格的缩进来控制层级关系；只要是左对齐的一列数据，都是同一个层级的
+次等级的前面是空格，不能使用制表符(tab)
+冒号之后如果有值，那么冒号和值之间至少有一个空格，不能紧贴着
+字面量：普通的值（数字，字符串，布尔）1k: v
+
+字符串默认不用加上单引号或者双引号；
+&quot;&quot;：双引号；不会转义字符串里面的特殊字符；特殊字符会作为本身想表示的意思
+
+eg： name: “zhangsan \n lisi”：输出；zhangsan 换行 lisi
+
+&#39;&#39;：单引号；会转义特殊字符，特殊字符最终只是一个普通的字符串数据
+
+eg： name: ‘zhangsan \n lisi’：输出；zhangsan \n lisi
+
+对象、Map（属性和值）：1k: v
+在下一行来写对象的属性和值的关系；注意缩进
+1234person:  name: 张三  gender: 男  age: 22
+
+行内写法
+1person: &#123;name: 张三,gender: 男,age: 22&#125;
+
+数组（List、Set）1234fruits:   - 苹 ...</div></div></div><div class="recent-post-item"><div class="post_cover left_radius"><a href="/2019/04/01/JAVA/Spring/spring%E5%88%9B%E5%BB%BAbean%E7%BB%86%E8%8A%82/" title="spring创建bean细节">     <img class="post_bg" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.6044153305983357" src="/img/loading.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="spring创建bean细节"></a></div><div class="recent-post-info"><a class="article-title" href="/2019/04/01/JAVA/Spring/spring%E5%88%9B%E5%BB%BAbean%E7%BB%86%E8%8A%82/" title="spring创建bean细节">spring创建bean细节</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2019-03-31T16:06:41.000Z" title="发表于 2019-04-01 00:06:41">2019-04-01</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/Spring/">Spring</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fas fa-tag article-meta__icon"></i><a class="article-meta__tags" href="/tags/JAVA/">JAVA</a><span class="article-meta__link">•</span><a class="article-meta__tags" href="/tags/Spring/">Spring</a></span></div><div class="content">概述spring对bean的管理细节
+
+创建bean的三种方式
+bean对象的作用范围
+bean对象的生命周期
+
+创建bean创建Bean有三种方式
+第一种方式：使用默认构造函数创建。在spring的配置文件中使用bean标签，配以id和class属性之后，且没有其他属性和标签时。采用的就是默认构造函数创建bean对象，此时如果类中没有默认构造函数，则对象无法创建。
+1&lt;bean id=&quot;accountService&quot; class=&quot;com.itheima.service.impl.AccountServiceImpl&quot;&gt;&lt;/bean&gt;
+
+第二种方式： 使用普通工厂中的方法创建对象（使用某个类中的方法创建对象，并存入spring容器）12&lt;bean id=&quot;instanceFactory&quot; class=&quot;com.itheima.factory.InstanceFactory&quot;&gt;&lt;/bean&gt;&lt;bean id=&quot;accountService&qu ...</div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/2019/03/31/PHP/PHP%E4%B9%8BPDO/" title="PHP之PDO">     <img class="post_bg" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.5280980662117785" src="/img/loading.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="PHP之PDO"></a></div><div class="recent-post-info"><a class="article-title" href="/2019/03/31/PHP/PHP%E4%B9%8BPDO/" title="PHP之PDO">PHP之PDO</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2019-03-31T03:42:12.000Z" title="发表于 2019-03-31 11:42:12">2019-03-31</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/PHP/">PHP</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fas fa-tag article-meta__icon"></i><a class="article-meta__tags" href="/tags/PHP/">PHP</a></span></div><div class="content">
+title: PHP之PDOdate: 2018-06-30 9:21:00categories:    - PHPtags:    - PHP    - 网站thumbnail:  “/images/img/14.jpg” 
+
+PDO(PHP Data Object)数据库访问抽象层，统一各种数据库的访问
+编码一致性
+灵活性
+高性能
+面向对象
+
+PDO安装与配置
+配置PHP配置文件，开启相应扩展：extension = php_pdo.dll
+开启相对应数据库扩展：extension = php_pdo_mysql.dll
+可以通过phpinfo()查看信息
+
+PDO连接数据库
+通过参数连接数据库
+
+12345678910&lt;?php    //dsn全称database source name    try&#123;        $dsn = &#x27;mysql:host=localhost;dbname=imooc&#x27;;        $username = &#x27;root&#x27;;        $passwd = &#x27;root&#x27 ...</div></div></div><div class="recent-post-item"><div class="post_cover left_radius"><a href="/2019/03/28/%E6%95%B0%E6%8D%AE%E5%BA%93/MongoDB%E4%B9%8B%E7%B4%A2%E5%BC%95/" title="MongoDB之索引">     <img class="post_bg" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.6616088807681164" src="/img/loading.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="MongoDB之索引"></a></div><div class="recent-post-info"><a class="article-title" href="/2019/03/28/%E6%95%B0%E6%8D%AE%E5%BA%93/MongoDB%E4%B9%8B%E7%B4%A2%E5%BC%95/" title="MongoDB之索引">MongoDB之索引</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2019-03-28T08:37:37.000Z" title="发表于 2019-03-28 16:37:37">2019-03-28</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fas fa-tag article-meta__icon"></i><a class="article-meta__tags" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></span></div><div class="content">复合索引比如：MongoDB支持复合索引，其中复合索引结构包含多个字段
+复合索引可以支持在多个字段上进行的匹配查询，语法结构如下：
+比如：db.collection.createIndex (&#123; &lt;key1&gt;:&lt;type&gt;, &lt;key2&gt;:&lt;type2&gt;, ...&#125;)
+需要注意的是，在建立复合索引的时候一定要注意顺序的问题，顺序不同将导致查询的结果也不相同。
+db.records.createIndex (&#123; &quot;score&quot;:1, &quot;location.state&quot;:1 &#125;)
+
+ 需要注意的是，如果集合中包含多个待索引字段是数组，则无法创建复合多键索引
+
+单键索引创建单键索引的语法结构如下
+例如：db.collection.createlndex ( &#123; key:1 &#125; )  //1 为升序，-1 为降序
+还可以使用explain进行分析参数 | 含义|-|:-:|-|plannerVersion | 查询计划版本namespace | 要查 ...</div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/2019/03/23/JAVA/Spring%20Boot/%E6%97%A5%E5%BF%97%E7%9A%84%E4%BD%BF%E7%94%A8/" title="日志的使用">     <img class="post_bg" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.19545561173659354" src="/img/loading.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="日志的使用"></a></div><div class="recent-post-info"><a class="article-title" href="/2019/03/23/JAVA/Spring%20Boot/%E6%97%A5%E5%BF%97%E7%9A%84%E4%BD%BF%E7%94%A8/" title="日志的使用">日志的使用</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2019-03-23T09:30:02.000Z" title="发表于 2019-03-23 17:30:02">2019-03-23</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/Spring-Boot/">Spring Boot</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fas fa-tag article-meta__icon"></i><a class="article-meta__tags" href="/tags/JAVA/">JAVA</a><span class="article-meta__link">•</span><a class="article-meta__tags" href="/tags/Spring-Boot/">Spring Boot</a></span></div><div class="content">开启日志在spring boot 2.1以后默认不开启log
+application.properties中添加下面代码logging.level.org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping=trace
+使用log4j导入使用
+123456789import org.slf4j.Logger;import org.slf4j.LoggerFactory;public class HelloWorld &#123;  public static void main(String[] args) &#123;    Logger logger &#x3D; LoggerFactory.getLogger(HelloWorld.class);    logger.info(&quot;Hello World&quot;);  &#125;&#125;
+在spring boot中使用
+导入依赖
+123456789&lt;dependency&gt;        &lt;g ...</div></div></div><nav id="pagination"><div class="pagination"><a class="extend prev" rel="prev" href="/page/18/"><i class="fas fa-chevron-left fa-fw"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><span class="page-number current">19</span><a class="page-number" href="/page/20/">20</a><span class="space">&hellip;</span><a class="page-number" href="/page/27/">27</a><a class="extend next" rel="next" href="/page/20/"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-info-avatar is-center"><img class="avatar-img" data-lazy-src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">Sniper</div><div class="author-info__description"></div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">265</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">59</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">45</div></a></div></div><div class="card-info-social-icons is-center"><a class="social-icon" href="/atom.xml" target="_blank" title="rss-atom"><i class="fas fa-rss"></i></a><a class="social-icon" href="/rss2.xml" target="_blank" title="rss-rss2"><i class="fas fa-rss-square"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">这个博客还有点儿意思吧</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2021/06/16/%E5%89%8D%E7%AB%AF/Typescript/%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%A8%A1%E6%9D%BF%E7%B1%BB%E5%9E%8B/" title="字符串模板类型"><img data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.7494386839703275" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="字符串模板类型"/></a><div class="content"><a class="title" href="/2021/06/16/%E5%89%8D%E7%AB%AF/Typescript/%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%A8%A1%E6%9D%BF%E7%B1%BB%E5%9E%8B/" title="字符串模板类型">字符串模板类型</a><time datetime="2021-06-16T13:53:49.000Z" title="发表于 2021-06-16 21:53:49">2021-06-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/02/%E5%89%8D%E7%AB%AF/%E6%A1%86%E6%9E%B6/SVELTE/SVELTE%E5%85%A5%E9%97%A8/" title="SVELTE入门"><img data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.8501132658168076" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="SVELTE入门"/></a><div class="content"><a class="title" href="/2021/05/02/%E5%89%8D%E7%AB%AF/%E6%A1%86%E6%9E%B6/SVELTE/SVELTE%E5%85%A5%E9%97%A8/" title="SVELTE入门">SVELTE入门</a><time datetime="2021-05-02T02:00:30.000Z" title="发表于 2021-05-02 10:00:30">2021-05-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/04/20/%E5%8C%BA%E5%9D%97%E9%93%BE/Solidity/" title="Solidity"><img data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.9938980403799964" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Solidity"/></a><div class="content"><a class="title" href="/2021/04/20/%E5%8C%BA%E5%9D%97%E9%93%BE/Solidity/" title="Solidity">Solidity</a><time datetime="2021-04-20T15:10:13.000Z" title="发表于 2021-04-20 23:10:13">2021-04-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/04/20/%E5%8C%BA%E5%9D%97%E9%93%BE/web3js/" title="web3js"><img data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.6210309641467948" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="web3js"/></a><div class="content"><a class="title" href="/2021/04/20/%E5%8C%BA%E5%9D%97%E9%93%BE/web3js/" title="web3js">web3js</a><time datetime="2021-04-20T15:10:13.000Z" title="发表于 2021-04-20 23:10:13">2021-04-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/04/20/%E5%8C%BA%E5%9D%97%E9%93%BE/%E5%8C%BA%E5%9D%97%E9%93%BE%E6%A6%82%E5%BF%B5/" title="区块链概念"><img data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.46145452124286335" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="区块链概念"/></a><div class="content"><a class="title" href="/2021/04/20/%E5%8C%BA%E5%9D%97%E9%93%BE/%E5%8C%BA%E5%9D%97%E9%93%BE%E6%A6%82%E5%BF%B5/" title="区块链概念">区块链概念</a><time datetime="2021-04-20T15:10:13.000Z" title="发表于 2021-04-20 23:10:13">2021-04-20</time></div></div></div></div><div class="card-widget" id="card-newest-comments"><div class="item-headline"><i class="fas fa-bolt"></i><span>最新评论</span></div><div class="aside-list"><span>正在加载中...</span></div></div><div class="card-widget card-categories"><div class="item-headline"><i class="fas fa-folder-open"></i><span>分类</span></div><ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/CSS/"><span class="card-category-list-name">CSS</span><span class="card-category-list-count">10</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Chrome%E6%8F%92%E4%BB%B6/"><span class="card-category-list-name">Chrome插件</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/ES6/"><span class="card-category-list-name">ES6</span><span class="card-category-list-count">6</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Eectron/"><span class="card-category-list-name">Eectron</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/GO/"><span class="card-category-list-name">GO</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Go/"><span class="card-category-list-name">Go</span><span class="card-category-list-count">10</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/HEXO/"><span class="card-category-list-name">HEXO</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/JAVA/"><span class="card-category-list-name">JAVA</span><span class="card-category-list-count">10</span></a></li>
+            <li class="card-category-list-item more is-center"><a class="card-category-list-link-more" href="/categories/">
+                <span>查看更多</span><i class="fas fa-angle-right"></i></a></li>
+            </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/Go/" style="font-size: 1.29em; color: rgb(115, 146, 110)">Go</a><a href="/tags/JAVA/" style="font-size: 1.45em; color: rgb(33, 106, 63)">JAVA</a><a href="/tags/Linux/" style="font-size: 1.18em; color: rgb(78, 18, 7)">Linux</a><a href="/tags/PHP/" style="font-size: 1.21em; color: rgb(42, 107, 2)">PHP</a><a href="/tags/nodejs/" style="font-size: 1.39em; color: rgb(34, 167, 190)">nodejs</a><a href="/tags/JavaScript/" style="font-size: 1.47em; color: rgb(168, 155, 12)">JavaScript</a><a href="/tags/Python/" style="font-size: 1.34em; color: rgb(148, 154, 2)">Python</a><a href="/tags/%E5%BE%AE%E4%BF%A1/" style="font-size: 1.1em; color: rgb(69, 38, 100)">微信</a><a href="/tags/flutter/" style="font-size: 1.31em; color: rgb(176, 110, 39)">flutter</a><a href="/tags/dart/" style="font-size: 1.31em; color: rgb(86, 96, 61)">dart</a><a href="/tags/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/" style="font-size: 1.42em; color: rgb(89, 176, 189)">工具使用</a><a href="/tags/MongoDB/" style="font-size: 1.1em; color: rgb(44, 164, 66)">MongoDB</a><a href="/tags/NoSql/" style="font-size: 1.1em; color: rgb(103, 97, 185)">NoSql</a><a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" style="font-size: 1.23em; color: rgb(47, 85, 92)">数据库</a><a href="/tags/Mysql/" style="font-size: 1.1em; color: rgb(5, 79, 131)">Mysql</a><a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%BA%95%E5%B1%82%E5%AD%A6%E4%B9%A0/" style="font-size: 1.15em; color: rgb(172, 186, 113)">计算机底层学习</a><a href="/tags/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" style="font-size: 1.1em; color: rgb(28, 181, 178)">基础知识</a><a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" style="font-size: 1.1em; color: rgb(100, 147, 134)">操作系统</a><a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 1.1em; color: rgb(165, 129, 15)">数据结构</a><a href="/tags/Mybatis/" style="font-size: 1.1em; color: rgb(183, 175, 16)">Mybatis</a><a href="/tags/Spring/" style="font-size: 1.21em; color: rgb(9, 111, 38)">Spring</a><a href="/tags/Spring-Boot/" style="font-size: 1.21em; color: rgb(61, 195, 35)">Spring Boot</a><a href="/tags/Spring-mvc/" style="font-size: 1.21em; color: rgb(112, 125, 142)">Spring mvc</a><a href="/tags/%E5%B8%B8%E7%94%A8API/" style="font-size: 1.18em; color: rgb(22, 114, 31)">常用API</a><a href="/tags/CSS/" style="font-size: 1.29em; color: rgb(148, 174, 178)">CSS</a><a href="/tags/%E5%89%8D%E7%AB%AF/" style="font-size: 1.5em; color: rgb(83, 171, 177)">前端</a><a href="/tags/JS%E5%8E%9F%E7%90%86/" style="font-size: 1.37em; color: rgb(25, 191, 4)">JS原理</a><a href="/tags/webpack/" style="font-size: 1.29em; color: rgb(160, 155, 94)">webpack</a><a href="/tags/JS%E8%AF%AD%E6%B3%95%E5%AD%A6%E4%B9%A0/" style="font-size: 1.26em; color: rgb(95, 21, 145)">JS语法学习</a><a href="/tags/ES6/" style="font-size: 1.21em; color: rgb(181, 49, 146)">ES6</a><a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 1.1em; color: rgb(56, 29, 29)">设计模式</a><a href="/tags/jest/" style="font-size: 1.1em; color: rgb(178, 139, 155)">jest</a><a href="/tags/Typescript/" style="font-size: 1.37em; color: rgb(191, 13, 61)">Typescript</a><a href="/tags/%E6%A1%86%E6%9E%B6/" style="font-size: 1.15em; color: rgb(53, 118, 185)">框架</a><a href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8%E7%AB%AF/" style="font-size: 1.26em; color: rgb(155, 146, 17)">浏览器端</a><a href="/tags/%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98/" style="font-size: 1.18em; color: rgb(151, 132, 150)">遇到的问题</a><a href="/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" style="font-size: 1.1em; color: rgb(50, 118, 149)">博客搭建</a><a href="/tags/HEXO/" style="font-size: 1.1em; color: rgb(193, 85, 85)">HEXO</a><a href="/tags/%E8%AE%BE%E8%AE%A1/" style="font-size: 1.13em; color: rgb(8, 196, 119)">设计</a><a href="/tags/docker/" style="font-size: 1.18em; color: rgb(126, 85, 48)">docker</a></div></div><div class="card-widget card-archives"><div class="item-headline"><i class="fas fa-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2021/06/"><span class="card-archive-list-date">六月 2021</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2021/05/"><span class="card-archive-list-date">五月 2021</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2021/04/"><span class="card-archive-list-date">四月 2021</span><span class="card-archive-list-count">3</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2021/03/"><span class="card-archive-list-date">三月 2021</span><span class="card-archive-list-count">2</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2021/02/"><span class="card-archive-list-date">二月 2021</span><span class="card-archive-list-count">3</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2021/01/"><span class="card-archive-list-date">一月 2021</span><span class="card-archive-list-count">2</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2020/12/"><span class="card-archive-list-date">十二月 2020</span><span class="card-archive-list-count">3</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2020/11/"><span class="card-archive-list-date">十一月 2020</span><span class="card-archive-list-count">15</span></a></li><li class="card-archive-list-item more is-center"><a class="card-archive-list-link-more" href="/archives/">
+              <span>查看更多</span><i class="fas fa-angle-right"  ></i></a></li></ul></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站资讯</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">265</div></div><div class="webinfo-item"><div class="item-name">已运行时间 :</div><div class="item-count" id="runtimeshow" data-publishDate="2018-06-06T16:00:00.000Z"></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2021-06-17T06:22:16.706Z"></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2018 - 2021 By Sniper</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="/js/search/local-search.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> {preloader.endLoading()})</script><div class="js-pjax"><script>function subtitleType () {
+  fetch('https://api.btstu.cn/yan/api.php?charset=utf-8&encode=json')
+    .then(response => response.json())
+    .then(data => {
+      if (true) {
+        var sub = "你好，世界,穷且益坚，不坠青云之志".length == 0 ? new Array() : "你好，世界,穷且益坚，不坠青云之志".split(',')
+        var both = sub.unshift(data.text)
+        typed = new Typed('#subtitle', {
+          strings: sub,
+          startDelay: 300,
+          typeSpeed: 150,
+          loop: true,
+          backSpeed: 50,
+        })
+      } else {
+        document.getElementById('subtitle').innerHTML = data.text
+      }
+    })
+}
+
+if (true) {
+  if (typeof Typed === 'function') {
+    subtitleType()
+  } else {
+    getScript('https://cdn.jsdelivr.net/npm/typed.js/lib/typed.min.js').then(subtitleType)
+  }
+} else {
+  subtitleType()
+}
+</script></div><script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.17.0/js/md5.min.js"></script><script>window.addEventListener('load', () => {
+  const changeContent = (content) => {
+    if (content === '') return content
+
+    content = content.replace(/<[^>]+>/g,"") // remove html tag
+    content = content.replace(/(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|jpeg|gif|png|webp)/g, '') // remove image link
+    content = content.replace(/(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi, '') // remove url
+
+    if (content.length > 150) {
+      content = content.substring(0,150) + '...'
+    }
+    return content
+  }
+
+  const getIcon = (icon, mail) => {
+    if (icon) return icon
+    
+    let defaultIcon = '?d=monsterid'
+    let iconUrl = `https://gravatar.loli.net/avatar/${md5(mail.toLowerCase()) + defaultIcon}`
+    return iconUrl
+  }
+
+  const generateHtml = array => {
+    let result = ''
+
+    if (array.length) {
+      for (let i = 0; i < array.length; i++) {
+        result += '<div class=\'aside-list-item\'>'
+
+        if (true) {
+          let name = 'src'
+          if(true) {
+            name = 'data-lazy-src'
+          }
+          result += `<a href='${array[i].url}' class="thumbnail"><img ${name}='${getIcon(array[i].avatar, array[i].mail)}' alt='${array[i].nick}'></a>`
+        }
+
+        result += `<div class='content'>
+        <a class='comment' href='${array[i].url}'>${array[i].content}</a>
+        <div class='name'><span>${array[i].nick}</span><time> / ${btf.diffDate(array[i].date, true)}</time></div>
+        </div></div>`
+      }
+    } else {
+      result += '没有评论'
+    }
+
+    let $dom = document.querySelector('#card-newest-comments .aside-list')
+    $dom.innerHTML= result
+    window.lazyLoadInstance && window.lazyLoadInstance.update()
+    window.pjax && window.pjax.refresh($dom)
+  }
+
+  const getComment = () => {
+      let serverURL = ''
+      if (true) {
+        serverURL = 'https://cwrcuoma.lc-cn-n1-shared.com'
+      } else {
+        serverURL = 'https://cwRCUoMa.api.lncldglobal.com'
+      }
+
+    var settings = {
+      "method": "GET",
+      "headers": {
+        "X-LC-Id": 'cwRCUoMavhC2YwPVr7FS2gq0-gzGzoHsz',
+        "X-LC-Key": 'sqKV8HVVmhAbpKiqokLJUDLU',
+        "Content-Type": "application/json"
+      },
+    }
+
+    fetch(`${serverURL}/1.1/classes/Comment?limit=6&order=-createdAt`,settings)
+      .then(response => response.json())
+      .then(data => {
+        const valineArray = data.results.map(function (e) {
+          return {
+            'avatar': e.QQAvatar,
+            'content': changeContent(e.comment),
+            'mail': e.mail,
+            'nick': e.nick,
+            'url': e.url + '#' + e.objectId,
+            'date': e.createdAt,
+          }
+        })
+        saveToLocal.set('leancloud-newest-comments', JSON.stringify(valineArray), 10/(60*24))
+        generateHtml(valineArray)
+      }).catch(e => {
+        const $dom = document.querySelector('#card-newest-comments .aside-list')
+        $dom.innerHTML= "无法获取评论，请确认相关配置是否正确"
+      }) 
+  }
+
+  const newestCommentInit = () => {
+    if (document.querySelector('#card-newest-comments .aside-list')) {
+      const data = saveToLocal.get('leancloud-newest-comments')
+      if (data) {
+        generateHtml(JSON.parse(data))
+      } else {
+        getComment()
+      }
+    }
+  }
+
+  newestCommentInit()
+  document.addEventListener('pjax:complete', newestCommentInit)
+})</script><div class="aplayer no-destroy" data-id="6587475516" data-server="netease" data-type="playlist" data-fixed="true" data-mini="true" data-listFolded="false" data-order="random" data-preload="none" data-autoplay="false" data-lrctype="1" muted></div><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/gh/metowolf/MetingJS@1.2/dist/Meting.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = [
+  'title',
+  '#config_change',
+  '#body-wrap',
+  '#rightside-config-hide',
+  '#rightside-config-show',
+  '.js-pjax'
+]
+
+if (false) {
+  pjaxSelectors.unshift('meta[property="og:image"]', 'meta[property="og:title"]', 'meta[property="og:url"]')
+}
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  if (typeof gtag === 'function') {
+    gtag('config', '', {'page_path': window.location.pathname});
+  }
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // Analytics
+  if (false) {
+    MtaH5.pgv()
+  }
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+
+document.addEventListener('pjax:send', function () {
+  typeof preloader === 'object' && preloader.initLoading()
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+})</script></div></body></html>

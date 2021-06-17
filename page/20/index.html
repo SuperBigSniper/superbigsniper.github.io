@@ -1,0 +1,459 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Sniper</title><meta name="author" content="Sniper"><meta name="copyright" content="Sniper"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta property="og:type" content="website">
+<meta property="og:title" content="Sniper">
+<meta property="og:url" content="http://zhoujunxiong.gitee.com/page/20/index.html">
+<meta property="og:site_name" content="Sniper">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://zhoujunxiong.gitee.com/img/avatar.jpg">
+<meta property="article:author" content="Sniper">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://zhoujunxiong.gitee.com/img/avatar.jpg"><link rel="shortcut icon" href="https://gitee.com/zhoujunxiong/zhoujunxiong.back/raw/master/favicon.ico"><link rel="canonical" href="http://zhoujunxiong.gitee.com/page/20/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}
+
+// https://stackoverflow.com/questions/16839698/jquery-getscript-alternative-in-native-javascript
+const getScript = url => new Promise((resolve, reject) => {
+  const script = document.createElement('script')
+  script.src = url
+  script.async = true
+  script.onerror = reject
+  script.onload = script.onreadystatechange = function() {
+    const loadState = this.readyState
+    if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+    script.onload = script.onreadystatechange = null
+    resolve()
+  }
+  document.head.appendChild(script)
+})</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: false,
+  isHome: true,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2021-06-17 14:22:18'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><link rel="stylesheet" href="/css/custom.css"<meta name="generator" content="Hexo 5.3.0"><link rel="alternate" href="/atom.xml" title="Sniper" type="application/atom+xml">
+<link rel="alternate" href="/rss2.xml" title="Sniper" type="application/rss+xml">
+</head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div id="loader-wrapper"><div id="loader"></div></div><div class="loader"><div class="inner one"></div><div class="inner two"></div><div class="inner three"></div></div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" data-lazy-src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">265</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">59</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">45</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标籤</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="full_page" id="page-header" style="background-image: url(https://tva4.sinaimg.cn/large/9bd9b167gy1g4lhdqrho2j21hc0xcq9a.jpg)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Sniper</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标籤</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="site-info"><h1 id="site-title">Sniper</h1><div id="site-subtitle"><span id="subtitle"></span></div><div id="site_social_icons"><a class="social-icon" href="/atom.xml" target="_blank" title="rss-atom"><i class="fas fa-rss"></i></a><a class="social-icon" href="/rss2.xml" target="_blank" title="rss-rss2"><i class="fas fa-rss-square"></i></a></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div class="recent-posts" id="recent-posts"><div class="recent-post-item"><div class="post_cover left_radius"><a href="/2019/03/20/JAVA/%E5%A4%9A%E6%80%81/" title="多态">     <img class="post_bg" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.4468439908083044" src="/img/loading.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="多态"></a></div><div class="recent-post-info"><a class="article-title" href="/2019/03/20/JAVA/%E5%A4%9A%E6%80%81/" title="多态">多态</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2019-03-19T20:22:13.000Z" title="发表于 2019-03-20 04:22:13">2019-03-20</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/JAVA/">JAVA</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fas fa-tag article-meta__icon"></i><a class="article-meta__tags" href="/tags/JAVA/">JAVA</a></span></div><div class="content">JAVA中的多态
+‘简单来说就是转化为父类的子实例不能访问自己的属性(只能访问父类的属性)’
+‘访问方法时，如果方法没有被子类重写,那么就访问父类的方法，如果被子类重写就访问子类的方法’
+‘如果父类没有这个方法，则不能访问’
+‘如果是静态函数，不管有没有重写，只访问父类的方法’public class MyExtends &#123;	public static void main(String[] args) &#123;		Parents1 a;		Sub1 b = new Sub1();		a = b;		a.doit1();				// 子类的do1		System.out.println(a.i);  // 输出为0		System.out.println(b.i);  // 输出为1	&#125;	&#125;class Parents1&#123;	public int i = 0;	public void doit1()&#123;		System.out.println(&quot;父类的do1&quot;);	&#125;&#125;class Sub1 exten ...</div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/2019/03/11/JAVA/Spring%20Boot/pom%E4%BE%9D%E8%B5%96%E4%B8%8E%E5%8C%85%E6%89%AB%E6%8F%8F/" title="pom依赖与包扫描">     <img class="post_bg" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.8555374627173362" src="/img/loading.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="pom依赖与包扫描"></a></div><div class="recent-post-info"><a class="article-title" href="/2019/03/11/JAVA/Spring%20Boot/pom%E4%BE%9D%E8%B5%96%E4%B8%8E%E5%8C%85%E6%89%AB%E6%8F%8F/" title="pom依赖与包扫描">pom依赖与包扫描</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2019-03-11T03:20:08.000Z" title="发表于 2019-03-11 11:20:08">2019-03-11</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/Spring-Boot/">Spring Boot</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fas fa-tag article-meta__icon"></i><a class="article-meta__tags" href="/tags/JAVA/">JAVA</a><span class="article-meta__link">•</span><a class="article-meta__tags" href="/tags/Spring-Boot/">Spring Boot</a></span></div><div class="content">基础配置
+parent：继承spring-boot-starter-parent的依赖管理，控制版本与打包等内容
+dependencies：项目具体依赖，这里包含了spring-boot-starter-web用于实现HTTP接口（该依赖中包含了Spring MVC）；spring-boot-starter-test用于编写单元测试的依赖包。更多功能模块的使用我们将在后面的教程中逐步展开。
+build：构建配置部分。默认使用了spring-boot-maven-plugin，配合spring-boot-starter-parent就可以把Spring Boot应用打包成JAR来直接运行。
+
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;         xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 https: ...</div></div></div><div class="recent-post-item"><div class="post_cover left_radius"><a href="/2019/03/11/JAVA/%E5%B8%B8%E7%94%A8API/Scanner%E7%B1%BB/" title="Scanner类">     <img class="post_bg" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.11525821990366181" src="/img/loading.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Scanner类"></a></div><div class="recent-post-info"><a class="article-title" href="/2019/03/11/JAVA/%E5%B8%B8%E7%94%A8API/Scanner%E7%B1%BB/" title="Scanner类">Scanner类</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2019-03-10T23:37:42.000Z" title="发表于 2019-03-11 07:37:42">2019-03-11</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/%E5%B8%B8%E7%94%A8API/">常用API</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fas fa-tag article-meta__icon"></i><a class="article-meta__tags" href="/tags/JAVA/">JAVA</a><span class="article-meta__link">•</span><a class="article-meta__tags" href="/tags/%E5%B8%B8%E7%94%A8API/">常用API</a></span></div><div class="content">Scanner类了解了API的使用方式，我们通过Scanner类，熟悉一下查询API，并使用类的步骤。
+2.1  什么是Scanner类一个可以解析基本类型和字符串的简单文本扫描器。 例如，以下代码使用户能够从 System.in 中读取一个数：
+12Scanner sc = new Scanner(System.in);int i = sc.nextInt();
+
+备注：System.in 系统输入指的是通过键盘录入数据。
+
+2.2  引用类型使用步骤导包使用import关键字导包，在类的所有代码之前导包，引入要使用的类型，java.lang包下的所有类无需导入。 格式：
+1import 包名.类名;
+举例：
+1java.util.Scanner;
+2.3  练习求和键盘录入两个数据并求和，代码如下：
+int i = sc.nextInt(); // 接收一个键盘录入的整数//1. 导包import java.util.Scanner;public class Demo01_Scanner &#123;   public static void main(String[] args) ...</div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/2019/03/07/JAVA/%E5%B8%B8%E7%94%A8API/ArrayList%E7%B1%BB/" title="ArrayList类">     <img class="post_bg" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.7339245608473235" src="/img/loading.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="ArrayList类"></a></div><div class="recent-post-info"><a class="article-title" href="/2019/03/07/JAVA/%E5%B8%B8%E7%94%A8API/ArrayList%E7%B1%BB/" title="ArrayList类">ArrayList类</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2019-03-07T03:35:17.000Z" title="发表于 2019-03-07 11:35:17">2019-03-07</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/%E5%B8%B8%E7%94%A8API/">常用API</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fas fa-tag article-meta__icon"></i><a class="article-meta__tags" href="/tags/JAVA/">JAVA</a><span class="article-meta__link">•</span><a class="article-meta__tags" href="/tags/%E5%B8%B8%E7%94%A8API/">常用API</a></span></div><div class="content">ArrayList类常用方法和遍历对于元素的操作,基本体现在——增、删、查。常用的方法有：
+
+public boolean add(E e) ：将指定的元素添加到此集合的尾部。
+public E remove(int index) ：移除此集合中指定位置上的元素。返回被删除的元素。
+public E get(int index) ：返回此集合中指定位置上的元素。返回获取的元素。
+public int size() ：返回此集合中的元素数。遍历集合时，可以控制索引范围，防止越界。
+
+这些都是最基本的方法，操作非常简单，代码如下:
+public class Demo01ArrayListMethod &#123;  public static void main(String[] args) &#123;    //创建集合对象    ArrayList&lt;String&gt; list = new ArrayList&lt;String&gt;();    //添加元素    list.add(&quot;hello&quot;);    list.add(&quot;world&q ...</div></div></div><div class="recent-post-item"><div class="post_cover left_radius"><a href="/2019/03/06/JAVA/Spring%20Boot/%E8%AF%BB%E5%8F%96%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/" title="读取配置文件">     <img class="post_bg" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.13659255830657124" src="/img/loading.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="读取配置文件"></a></div><div class="recent-post-info"><a class="article-title" href="/2019/03/06/JAVA/Spring%20Boot/%E8%AF%BB%E5%8F%96%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/" title="读取配置文件">读取配置文件</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2019-03-06T11:41:43.000Z" title="发表于 2019-03-06 19:41:43">2019-03-06</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/Spring-Boot/">Spring Boot</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fas fa-tag article-meta__icon"></i><a class="article-meta__tags" href="/tags/JAVA/">JAVA</a><span class="article-meta__link">•</span><a class="article-meta__tags" href="/tags/Spring-Boot/">Spring Boot</a></span></div><div class="content">读取配置文件然后，在应用中我们可以通过@Value注解来加载这些自定义的参数，比如：
+12345678910@Componentpublic class Book &#123;    @Value(&quot;$&#123;book.name&#125;&quot;)    private String name;    @Value(&quot;$&#123;book.author&#125;&quot;)    private String author;    // 省略getter和setter&#125;
+还可以使用随机数
+12345678910# 随机字符串com.didispace.blog.value&#x3D;$&#123;random.value&#125;# 随机intcom.didispace.blog.number&#x3D;$&#123;random.int&#125;# 随机longcom.didispace.blog.bignumber&#x3D;$&#123;random.long&#125;# 10以内的随机数com.didispace.blog.t ...</div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/2019/02/28/JAVA/maven/" title="maven">     <img class="post_bg" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.2599363699134283" src="/img/loading.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="maven"></a></div><div class="recent-post-info"><a class="article-title" href="/2019/02/28/JAVA/maven/" title="maven">maven</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2019-02-27T22:06:42.000Z" title="发表于 2019-02-28 06:06:42">2019-02-28</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/JAVA/">JAVA</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fas fa-tag article-meta__icon"></i><a class="article-meta__tags" href="/tags/JAVA/">JAVA</a></span></div><div class="content">本地仓库指定在maven安装目录下的conf下的setting文件中进行修改。
+默认放在用户目录下的.m2/repository文件夹下,可以使用&lt;localRepository&gt;/path/to/local/repo&lt;/localRepository&gt;对仓库路径进行修改
+123456&lt;!-- localRepository | The path to the local repository maven will use to store artifacts. | | Default: $&#123;user.home&#125;&#x2F;.m2&#x2F;repository&lt;localRepository&gt;&#x2F;path&#x2F;to&#x2F;local&#x2F;repo&lt;&#x2F;localRepository&gt;--&gt;
+远程仓库指定同样的通过修改maven安装目录下的setting文件进行修改
+&lt;mirrors&gt;  &lt;mirror&gt;    &lt;id&gt;nexus-aliy ...</div></div></div><div class="recent-post-item"><div class="post_cover left_radius"><a href="/2019/02/27/JAVA/Spring/Spring%20Aop%E9%85%8D%E7%BD%AE/" title="Spring Aop配置">     <img class="post_bg" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.922168255893383" src="/img/loading.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Spring Aop配置"></a></div><div class="recent-post-info"><a class="article-title" href="/2019/02/27/JAVA/Spring/Spring%20Aop%E9%85%8D%E7%BD%AE/" title="Spring Aop配置">Spring Aop配置</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2019-02-27T09:05:46.000Z" title="发表于 2019-02-27 17:05:46">2019-02-27</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/Spring/">Spring</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fas fa-tag article-meta__icon"></i><a class="article-meta__tags" href="/tags/JAVA/">JAVA</a><span class="article-meta__link">•</span><a class="article-meta__tags" href="/tags/Spring/">Spring</a></span></div><div class="content">Spring Aop配置spring中基于XML的AOP配置步骤
+
+把通知Bean也交给spring来管理
+使用aop:config标签表明开始AOP的配置
+使用aop:aspect标签表明配置切面
+id属性：是给切面提供一个唯一标识
+ref属性：是指定通知类bean的Id。
+
+
+在aop:aspect标签的内部使用对应标签来配置通知的类型
+aop:before：表示配置前置通知
+method属性：用于指定Logger类中哪个方法是前置通知
+pointcut属性：用于指定切入点表达式，该表达式的含义指的是对业务层中哪些方法增强
+
+
+
+
+
+切入点表达式的写法：
+
+关键字：execution(表达式)
+表达式：
+访问修饰符  返回值  包名.包名.包名…类名.方法名(参数列表)
+
+
+标准的表达式写法：
+public void com.itheima.service.impl.AccountServiceImpl.saveAccount()
+
+
+访问修饰符可以省略
+void com.itheima.service.impl.AccountServiceImpl.saveAccount()
+
+ ...</div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/2019/02/27/JAVA/%E5%B8%B8%E7%94%A8API/Arrays%E7%B1%BB/" title="Arrays类">     <img class="post_bg" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.1448484483318" src="/img/loading.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Arrays类"></a></div><div class="recent-post-info"><a class="article-title" href="/2019/02/27/JAVA/%E5%B8%B8%E7%94%A8API/Arrays%E7%B1%BB/" title="Arrays类">Arrays类</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2019-02-26T22:34:01.000Z" title="发表于 2019-02-27 06:34:01">2019-02-27</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/%E5%B8%B8%E7%94%A8API/">常用API</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fas fa-tag article-meta__icon"></i><a class="article-meta__tags" href="/tags/JAVA/">JAVA</a><span class="article-meta__link">•</span><a class="article-meta__tags" href="/tags/%E5%B8%B8%E7%94%A8API/">常用API</a></span></div><div class="content">Arrays类3.1  概述java.util.Arrays此类包含用来操作数组的各种方法，比如排序和搜索等。其所有方法均为静态方法，调用起来非常简单。
+3.2  操作数组的方法public static String toString(int[] a) ：返回指定数组内容的字符串表示形式。
+public class ClassName&#123;  static &#123;    // 执行语句  &#125;&#125;public class Game &#123;  public static int number;  public static ArrayList&lt;String&gt; list;  static &#123;    // 给类变量赋值    number = 2;    list = new ArrayList&lt;String&gt;();    // 添加元素到集合中    list.add(&quot;张三&quot;);    list.add(&quot;李四&quot;);  &#125;&#125;public static void ...</div></div></div><div class="recent-post-item"><div class="post_cover left_radius"><a href="/2019/02/27/PHP/laravel%E4%B9%8B%E8%AF%B7%E6%B1%82%E5%A4%84%E7%90%86/" title="laravel之请求处理">     <img class="post_bg" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.8159145560667385" src="/img/loading.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="laravel之请求处理"></a></div><div class="recent-post-info"><a class="article-title" href="/2019/02/27/PHP/laravel%E4%B9%8B%E8%AF%B7%E6%B1%82%E5%A4%84%E7%90%86/" title="laravel之请求处理">laravel之请求处理</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2019-02-26T17:27:09.000Z" title="发表于 2019-02-27 01:27:09">2019-02-27</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/PHP/">PHP</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fas fa-tag article-meta__icon"></i><a class="article-meta__tags" href="/tags/PHP/">PHP</a></span></div><div class="content">
+title: laravel之请求处理date: 2018-8-4 9:21:00categories:    - PHPtags:    - PHP    - 网站thumbnail:  “/images/img/12.jpg” 
+
+Controller之Requestuse Illuminate\Http\Request;  public function request1(Request $request)&#123;    //取值    if($request-&gt;has(&#x27;name&#x27;))&#123;        echo $request-&gt;input(&#x27;name&#x27;);    &#125;    else&#123;        echo &#x27;没有name属性&#x27;;    &#125;    //或者简写为下面的代码      echo $request-&gt;input(&#x27;name&#x27;,&#x27;我是一个默认值&#x27;);      //得到所有值      array:3  ...</div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/2019/02/26/JAVA/Spring%20mvc/%E5%90%AF%E5%8A%A8/" title="启动">     <img class="post_bg" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.13242437990526335" src="/img/loading.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="启动"></a></div><div class="recent-post-info"><a class="article-title" href="/2019/02/26/JAVA/Spring%20mvc/%E5%90%AF%E5%8A%A8/" title="启动">启动</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2019-02-25T18:43:22.000Z" title="发表于 2019-02-26 02:43:22">2019-02-26</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/Spring-mvc/">Spring mvc</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fas fa-tag article-meta__icon"></i><a class="article-meta__tags" href="/tags/JAVA/">JAVA</a><span class="article-meta__link">•</span><a class="article-meta__tags" href="/tags/Spring-mvc/">Spring mvc</a></span></div><div class="content">配置tomacat首先spring mvc依赖于tomacat，所以仍然需要配置web.xml
+让tomacat启动时加载org.springframework.web.servlet.DispatcherServlet
+&lt;servlet&gt;  &lt;servlet-name&gt;dispatcherServlet&lt;/servlet-name&gt;  &lt;servlet-class&gt;org.springframework.web.servlet.DispatcherServlet&lt;/servlet-class&gt;  &lt;init-param&gt;    &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;    &lt;param-value&gt;classpath:springmvc.xml&lt;/param-value&gt;  &lt;/init-param&gt;  &lt;!-- 启动时加载 --&gt;  &lt;load-on-startup&gt;1&lt ...</div></div></div><nav id="pagination"><div class="pagination"><a class="extend prev" rel="prev" href="/page/19/"><i class="fas fa-chevron-left fa-fw"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/19/">19</a><span class="page-number current">20</span><a class="page-number" href="/page/21/">21</a><span class="space">&hellip;</span><a class="page-number" href="/page/27/">27</a><a class="extend next" rel="next" href="/page/21/"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-info-avatar is-center"><img class="avatar-img" data-lazy-src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">Sniper</div><div class="author-info__description"></div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">265</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">59</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">45</div></a></div></div><div class="card-info-social-icons is-center"><a class="social-icon" href="/atom.xml" target="_blank" title="rss-atom"><i class="fas fa-rss"></i></a><a class="social-icon" href="/rss2.xml" target="_blank" title="rss-rss2"><i class="fas fa-rss-square"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">这个博客还有点儿意思吧</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2021/06/16/%E5%89%8D%E7%AB%AF/Typescript/%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%A8%A1%E6%9D%BF%E7%B1%BB%E5%9E%8B/" title="字符串模板类型"><img data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.7494386839703275" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="字符串模板类型"/></a><div class="content"><a class="title" href="/2021/06/16/%E5%89%8D%E7%AB%AF/Typescript/%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%A8%A1%E6%9D%BF%E7%B1%BB%E5%9E%8B/" title="字符串模板类型">字符串模板类型</a><time datetime="2021-06-16T13:53:49.000Z" title="发表于 2021-06-16 21:53:49">2021-06-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/02/%E5%89%8D%E7%AB%AF/%E6%A1%86%E6%9E%B6/SVELTE/SVELTE%E5%85%A5%E9%97%A8/" title="SVELTE入门"><img data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.8501132658168076" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="SVELTE入门"/></a><div class="content"><a class="title" href="/2021/05/02/%E5%89%8D%E7%AB%AF/%E6%A1%86%E6%9E%B6/SVELTE/SVELTE%E5%85%A5%E9%97%A8/" title="SVELTE入门">SVELTE入门</a><time datetime="2021-05-02T02:00:30.000Z" title="发表于 2021-05-02 10:00:30">2021-05-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/04/20/%E5%8C%BA%E5%9D%97%E9%93%BE/Solidity/" title="Solidity"><img data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.9938980403799964" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Solidity"/></a><div class="content"><a class="title" href="/2021/04/20/%E5%8C%BA%E5%9D%97%E9%93%BE/Solidity/" title="Solidity">Solidity</a><time datetime="2021-04-20T15:10:13.000Z" title="发表于 2021-04-20 23:10:13">2021-04-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/04/20/%E5%8C%BA%E5%9D%97%E9%93%BE/web3js/" title="web3js"><img data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.6210309641467948" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="web3js"/></a><div class="content"><a class="title" href="/2021/04/20/%E5%8C%BA%E5%9D%97%E9%93%BE/web3js/" title="web3js">web3js</a><time datetime="2021-04-20T15:10:13.000Z" title="发表于 2021-04-20 23:10:13">2021-04-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/04/20/%E5%8C%BA%E5%9D%97%E9%93%BE/%E5%8C%BA%E5%9D%97%E9%93%BE%E6%A6%82%E5%BF%B5/" title="区块链概念"><img data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.46145452124286335" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="区块链概念"/></a><div class="content"><a class="title" href="/2021/04/20/%E5%8C%BA%E5%9D%97%E9%93%BE/%E5%8C%BA%E5%9D%97%E9%93%BE%E6%A6%82%E5%BF%B5/" title="区块链概念">区块链概念</a><time datetime="2021-04-20T15:10:13.000Z" title="发表于 2021-04-20 23:10:13">2021-04-20</time></div></div></div></div><div class="card-widget" id="card-newest-comments"><div class="item-headline"><i class="fas fa-bolt"></i><span>最新评论</span></div><div class="aside-list"><span>正在加载中...</span></div></div><div class="card-widget card-categories"><div class="item-headline"><i class="fas fa-folder-open"></i><span>分类</span></div><ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/CSS/"><span class="card-category-list-name">CSS</span><span class="card-category-list-count">10</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Chrome%E6%8F%92%E4%BB%B6/"><span class="card-category-list-name">Chrome插件</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/ES6/"><span class="card-category-list-name">ES6</span><span class="card-category-list-count">6</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Eectron/"><span class="card-category-list-name">Eectron</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/GO/"><span class="card-category-list-name">GO</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Go/"><span class="card-category-list-name">Go</span><span class="card-category-list-count">10</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/HEXO/"><span class="card-category-list-name">HEXO</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/JAVA/"><span class="card-category-list-name">JAVA</span><span class="card-category-list-count">10</span></a></li>
+            <li class="card-category-list-item more is-center"><a class="card-category-list-link-more" href="/categories/">
+                <span>查看更多</span><i class="fas fa-angle-right"></i></a></li>
+            </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/Go/" style="font-size: 1.29em; color: rgb(115, 146, 110)">Go</a><a href="/tags/JAVA/" style="font-size: 1.45em; color: rgb(33, 106, 63)">JAVA</a><a href="/tags/Linux/" style="font-size: 1.18em; color: rgb(78, 18, 7)">Linux</a><a href="/tags/PHP/" style="font-size: 1.21em; color: rgb(42, 107, 2)">PHP</a><a href="/tags/nodejs/" style="font-size: 1.39em; color: rgb(34, 167, 190)">nodejs</a><a href="/tags/JavaScript/" style="font-size: 1.47em; color: rgb(168, 155, 12)">JavaScript</a><a href="/tags/Python/" style="font-size: 1.34em; color: rgb(148, 154, 2)">Python</a><a href="/tags/%E5%BE%AE%E4%BF%A1/" style="font-size: 1.1em; color: rgb(69, 38, 100)">微信</a><a href="/tags/flutter/" style="font-size: 1.31em; color: rgb(176, 110, 39)">flutter</a><a href="/tags/dart/" style="font-size: 1.31em; color: rgb(86, 96, 61)">dart</a><a href="/tags/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/" style="font-size: 1.42em; color: rgb(89, 176, 189)">工具使用</a><a href="/tags/MongoDB/" style="font-size: 1.1em; color: rgb(44, 164, 66)">MongoDB</a><a href="/tags/NoSql/" style="font-size: 1.1em; color: rgb(103, 97, 185)">NoSql</a><a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" style="font-size: 1.23em; color: rgb(47, 85, 92)">数据库</a><a href="/tags/Mysql/" style="font-size: 1.1em; color: rgb(5, 79, 131)">Mysql</a><a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%BA%95%E5%B1%82%E5%AD%A6%E4%B9%A0/" style="font-size: 1.15em; color: rgb(172, 186, 113)">计算机底层学习</a><a href="/tags/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" style="font-size: 1.1em; color: rgb(28, 181, 178)">基础知识</a><a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" style="font-size: 1.1em; color: rgb(100, 147, 134)">操作系统</a><a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 1.1em; color: rgb(165, 129, 15)">数据结构</a><a href="/tags/Mybatis/" style="font-size: 1.1em; color: rgb(183, 175, 16)">Mybatis</a><a href="/tags/Spring/" style="font-size: 1.21em; color: rgb(9, 111, 38)">Spring</a><a href="/tags/Spring-Boot/" style="font-size: 1.21em; color: rgb(61, 195, 35)">Spring Boot</a><a href="/tags/Spring-mvc/" style="font-size: 1.21em; color: rgb(112, 125, 142)">Spring mvc</a><a href="/tags/%E5%B8%B8%E7%94%A8API/" style="font-size: 1.18em; color: rgb(22, 114, 31)">常用API</a><a href="/tags/CSS/" style="font-size: 1.29em; color: rgb(148, 174, 178)">CSS</a><a href="/tags/%E5%89%8D%E7%AB%AF/" style="font-size: 1.5em; color: rgb(83, 171, 177)">前端</a><a href="/tags/JS%E5%8E%9F%E7%90%86/" style="font-size: 1.37em; color: rgb(25, 191, 4)">JS原理</a><a href="/tags/webpack/" style="font-size: 1.29em; color: rgb(160, 155, 94)">webpack</a><a href="/tags/JS%E8%AF%AD%E6%B3%95%E5%AD%A6%E4%B9%A0/" style="font-size: 1.26em; color: rgb(95, 21, 145)">JS语法学习</a><a href="/tags/ES6/" style="font-size: 1.21em; color: rgb(181, 49, 146)">ES6</a><a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 1.1em; color: rgb(56, 29, 29)">设计模式</a><a href="/tags/jest/" style="font-size: 1.1em; color: rgb(178, 139, 155)">jest</a><a href="/tags/Typescript/" style="font-size: 1.37em; color: rgb(191, 13, 61)">Typescript</a><a href="/tags/%E6%A1%86%E6%9E%B6/" style="font-size: 1.15em; color: rgb(53, 118, 185)">框架</a><a href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8%E7%AB%AF/" style="font-size: 1.26em; color: rgb(155, 146, 17)">浏览器端</a><a href="/tags/%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98/" style="font-size: 1.18em; color: rgb(151, 132, 150)">遇到的问题</a><a href="/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" style="font-size: 1.1em; color: rgb(50, 118, 149)">博客搭建</a><a href="/tags/HEXO/" style="font-size: 1.1em; color: rgb(193, 85, 85)">HEXO</a><a href="/tags/%E8%AE%BE%E8%AE%A1/" style="font-size: 1.13em; color: rgb(8, 196, 119)">设计</a><a href="/tags/docker/" style="font-size: 1.18em; color: rgb(126, 85, 48)">docker</a></div></div><div class="card-widget card-archives"><div class="item-headline"><i class="fas fa-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2021/06/"><span class="card-archive-list-date">六月 2021</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2021/05/"><span class="card-archive-list-date">五月 2021</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2021/04/"><span class="card-archive-list-date">四月 2021</span><span class="card-archive-list-count">3</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2021/03/"><span class="card-archive-list-date">三月 2021</span><span class="card-archive-list-count">2</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2021/02/"><span class="card-archive-list-date">二月 2021</span><span class="card-archive-list-count">3</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2021/01/"><span class="card-archive-list-date">一月 2021</span><span class="card-archive-list-count">2</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2020/12/"><span class="card-archive-list-date">十二月 2020</span><span class="card-archive-list-count">3</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2020/11/"><span class="card-archive-list-date">十一月 2020</span><span class="card-archive-list-count">15</span></a></li><li class="card-archive-list-item more is-center"><a class="card-archive-list-link-more" href="/archives/">
+              <span>查看更多</span><i class="fas fa-angle-right"  ></i></a></li></ul></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站资讯</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">265</div></div><div class="webinfo-item"><div class="item-name">已运行时间 :</div><div class="item-count" id="runtimeshow" data-publishDate="2018-06-06T16:00:00.000Z"></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2021-06-17T06:22:16.706Z"></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2018 - 2021 By Sniper</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="/js/search/local-search.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> {preloader.endLoading()})</script><div class="js-pjax"><script>function subtitleType () {
+  fetch('https://api.btstu.cn/yan/api.php?charset=utf-8&encode=json')
+    .then(response => response.json())
+    .then(data => {
+      if (true) {
+        var sub = "你好，世界,穷且益坚，不坠青云之志".length == 0 ? new Array() : "你好，世界,穷且益坚，不坠青云之志".split(',')
+        var both = sub.unshift(data.text)
+        typed = new Typed('#subtitle', {
+          strings: sub,
+          startDelay: 300,
+          typeSpeed: 150,
+          loop: true,
+          backSpeed: 50,
+        })
+      } else {
+        document.getElementById('subtitle').innerHTML = data.text
+      }
+    })
+}
+
+if (true) {
+  if (typeof Typed === 'function') {
+    subtitleType()
+  } else {
+    getScript('https://cdn.jsdelivr.net/npm/typed.js/lib/typed.min.js').then(subtitleType)
+  }
+} else {
+  subtitleType()
+}
+</script></div><script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.17.0/js/md5.min.js"></script><script>window.addEventListener('load', () => {
+  const changeContent = (content) => {
+    if (content === '') return content
+
+    content = content.replace(/<[^>]+>/g,"") // remove html tag
+    content = content.replace(/(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|jpeg|gif|png|webp)/g, '') // remove image link
+    content = content.replace(/(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi, '') // remove url
+
+    if (content.length > 150) {
+      content = content.substring(0,150) + '...'
+    }
+    return content
+  }
+
+  const getIcon = (icon, mail) => {
+    if (icon) return icon
+    
+    let defaultIcon = '?d=monsterid'
+    let iconUrl = `https://gravatar.loli.net/avatar/${md5(mail.toLowerCase()) + defaultIcon}`
+    return iconUrl
+  }
+
+  const generateHtml = array => {
+    let result = ''
+
+    if (array.length) {
+      for (let i = 0; i < array.length; i++) {
+        result += '<div class=\'aside-list-item\'>'
+
+        if (true) {
+          let name = 'src'
+          if(true) {
+            name = 'data-lazy-src'
+          }
+          result += `<a href='${array[i].url}' class="thumbnail"><img ${name}='${getIcon(array[i].avatar, array[i].mail)}' alt='${array[i].nick}'></a>`
+        }
+
+        result += `<div class='content'>
+        <a class='comment' href='${array[i].url}'>${array[i].content}</a>
+        <div class='name'><span>${array[i].nick}</span><time> / ${btf.diffDate(array[i].date, true)}</time></div>
+        </div></div>`
+      }
+    } else {
+      result += '没有评论'
+    }
+
+    let $dom = document.querySelector('#card-newest-comments .aside-list')
+    $dom.innerHTML= result
+    window.lazyLoadInstance && window.lazyLoadInstance.update()
+    window.pjax && window.pjax.refresh($dom)
+  }
+
+  const getComment = () => {
+      let serverURL = ''
+      if (true) {
+        serverURL = 'https://cwrcuoma.lc-cn-n1-shared.com'
+      } else {
+        serverURL = 'https://cwRCUoMa.api.lncldglobal.com'
+      }
+
+    var settings = {
+      "method": "GET",
+      "headers": {
+        "X-LC-Id": 'cwRCUoMavhC2YwPVr7FS2gq0-gzGzoHsz',
+        "X-LC-Key": 'sqKV8HVVmhAbpKiqokLJUDLU',
+        "Content-Type": "application/json"
+      },
+    }
+
+    fetch(`${serverURL}/1.1/classes/Comment?limit=6&order=-createdAt`,settings)
+      .then(response => response.json())
+      .then(data => {
+        const valineArray = data.results.map(function (e) {
+          return {
+            'avatar': e.QQAvatar,
+            'content': changeContent(e.comment),
+            'mail': e.mail,
+            'nick': e.nick,
+            'url': e.url + '#' + e.objectId,
+            'date': e.createdAt,
+          }
+        })
+        saveToLocal.set('leancloud-newest-comments', JSON.stringify(valineArray), 10/(60*24))
+        generateHtml(valineArray)
+      }).catch(e => {
+        const $dom = document.querySelector('#card-newest-comments .aside-list')
+        $dom.innerHTML= "无法获取评论，请确认相关配置是否正确"
+      }) 
+  }
+
+  const newestCommentInit = () => {
+    if (document.querySelector('#card-newest-comments .aside-list')) {
+      const data = saveToLocal.get('leancloud-newest-comments')
+      if (data) {
+        generateHtml(JSON.parse(data))
+      } else {
+        getComment()
+      }
+    }
+  }
+
+  newestCommentInit()
+  document.addEventListener('pjax:complete', newestCommentInit)
+})</script><div class="aplayer no-destroy" data-id="6587475516" data-server="netease" data-type="playlist" data-fixed="true" data-mini="true" data-listFolded="false" data-order="random" data-preload="none" data-autoplay="false" data-lrctype="1" muted></div><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/gh/metowolf/MetingJS@1.2/dist/Meting.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = [
+  'title',
+  '#config_change',
+  '#body-wrap',
+  '#rightside-config-hide',
+  '#rightside-config-show',
+  '.js-pjax'
+]
+
+if (false) {
+  pjaxSelectors.unshift('meta[property="og:image"]', 'meta[property="og:title"]', 'meta[property="og:url"]')
+}
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  if (typeof gtag === 'function') {
+    gtag('config', '', {'page_path': window.location.pathname});
+  }
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // Analytics
+  if (false) {
+    MtaH5.pgv()
+  }
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+
+document.addEventListener('pjax:send', function () {
+  typeof preloader === 'object' && preloader.initLoading()
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+})</script></div></body></html>
