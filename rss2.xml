@@ -9,14 +9,45 @@
     <atom:link href="http://zhoujunxiong.gitee.com/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description></description>
-    <pubDate>Wed, 23 Jun 2021 03:26:29 GMT</pubDate>
+    <pubDate>Wed, 23 Jun 2021 06:09:46 GMT</pubDate>
     <generator>http://hexo.io/</generator>
     
     <item>
+      <title>条件类型</title>
+      <link>http://zhoujunxiong.gitee.com/2021/06/22/%E5%89%8D%E7%AB%AF/Typescript/%E6%9D%A1%E4%BB%B6%E7%B1%BB%E5%9E%8B/</link>
+      <guid>http://zhoujunxiong.gitee.com/2021/06/22/%E5%89%8D%E7%AB%AF/Typescript/%E6%9D%A1%E4%BB%B6%E7%B1%BB%E5%9E%8B/</guid>
+      <pubDate>Tue, 22 Jun 2021 14:30:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;h4 id=&quot;思考题&quot;&gt;&lt;a href=&quot;#思考题&quot; class=&quot;headerlink&quot; title=&quot;思考题&quot;&gt;&lt;/a&gt;思考题&lt;/h4&gt;&lt;ol&gt;
+&lt;li&gt;第一题&lt;/li&gt;
+&lt;/ol&gt;
+&lt;figure class=&quot;highlight ts&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td c</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<h4 id="思考题"><a href="#思考题" class="headerlink" title="思考题"></a>思考题</h4><ol><li>第一题</li></ol><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Extract&lt;T,U&gt; = T <span class="keyword">extends</span> U ? T : <span class="built_in">never</span> ;</span><br><span class="line">Extract&lt;<span class="string">&quot;a&quot;</span> | <span class="string">&quot;b&quot;</span> | <span class="string">&quot;c&quot;</span>, <span class="string">&quot;a&quot;</span>&gt; <span class="comment">// &quot;a&quot;  </span></span><br><span class="line"><span class="comment">// Why ? !!! 怎么取到两个类型的交集的</span></span><br></pre></td></tr></table></figure><ol start="2"><li>第二题</li></ol><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Length1&lt;T&gt; = T[<span class="string">&#x27;length&#x27;</span>] </span><br><span class="line"><span class="comment">// error Type &#x27;&quot;length&quot;&#x27; cannot be used to index type &#x27;T&#x27;.(2536)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Length2&lt;T&gt; = T <span class="keyword">extends</span> <span class="built_in">any</span>[] ? T[<span class="string">&#x27;length&#x27;</span>] : <span class="built_in">never</span>; </span><br><span class="line"><span class="comment">// success </span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 类型为什么收窄了</span></span><br></pre></td></tr></table></figure><ol start="3"><li>第三题</li></ol><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Case&lt;T&gt; = [T] <span class="keyword">extends</span> [<span class="function">(<span class="params">args: infer R</span>) =&gt;</span> <span class="built_in">any</span>] ? R : <span class="built_in">never</span>;</span><br><span class="line"><span class="keyword">type</span> Demo = Case&lt;(<span class="function">(<span class="params">args: &#123; name: <span class="built_in">string</span>; &#125;</span>) =&gt;</span> <span class="built_in">any</span>) | (<span class="function">(<span class="params">args: &#123; age: <span class="built_in">number</span>; &#125;</span>) =&gt;</span> <span class="built_in">any</span>)&gt;  </span><br><span class="line"><span class="comment">// &#123; name: string &#125; &amp; &#123; age: number &#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 为什么是一个联合类型</span></span><br></pre></td></tr></table></figure><h4 id="条件类型（condition-type）"><a href="#条件类型（condition-type）" class="headerlink" title="条件类型（condition type）"></a>条件类型（condition type）</h4><ol><li>之所以出现上面第一个问题的原因，是因为<code>分发条件类型</code></li></ol><p>当<code>条件类型</code>和<code>联合类型</code>遇到一起就会出现</p><p>例如<code>&quot;a&quot; | &quot;b&quot; | &quot;c&quot;, &quot;a&quot;</code>, 就会出现 <code>aa, ba, ca</code>这样的组合，所以第一个问题就解决了</p><ol start="2"><li>第二个问题是因为条件类型会缩窄类型</li></ol><p><code>T extends any[]</code>当满足这个条件的时候，它就是一个数组，自然也有<code>length</code></p><ol start="3"><li>第三个问题是因为在条件类型中使用了<code>infer</code>关键字出现在<code>逆变</code>位置，那么就是<code>交叉类型</code></li></ol><blockquote><p>逆变是因为加了<code>[]</code>转化为数组，数组和函数才有逆变</p></blockquote>]]></content:encoded>
+      
+      
+      <category domain="http://zhoujunxiong.gitee.com/categories/Typescript/">Typescript</category>
+      
+      
+      <category domain="http://zhoujunxiong.gitee.com/tags/%E5%89%8D%E7%AB%AF/">前端</category>
+      
+      <category domain="http://zhoujunxiong.gitee.com/tags/Typescript/">Typescript</category>
+      
+      
+      <comments>http://zhoujunxiong.gitee.com/2021/06/22/%E5%89%8D%E7%AB%AF/Typescript/%E6%9D%A1%E4%BB%B6%E7%B1%BB%E5%9E%8B/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
       <title>协变与逆变</title>
-      <link>http://zhoujunxiong.gitee.com/2021/06/23/%E5%89%8D%E7%AB%AF/Typescript/%E5%8D%8F%E5%8F%98%E4%B8%8E%E9%80%86%E5%8F%98/</link>
-      <guid>http://zhoujunxiong.gitee.com/2021/06/23/%E5%89%8D%E7%AB%AF/Typescript/%E5%8D%8F%E5%8F%98%E4%B8%8E%E9%80%86%E5%8F%98/</guid>
-      <pubDate>Wed, 23 Jun 2021 11:53:49 GMT</pubDate>
+      <link>http://zhoujunxiong.gitee.com/2021/06/22/%E5%89%8D%E7%AB%AF/Typescript/%E5%8D%8F%E5%8F%98%E4%B8%8E%E9%80%86%E5%8F%98/</link>
+      <guid>http://zhoujunxiong.gitee.com/2021/06/22/%E5%89%8D%E7%AB%AF/Typescript/%E5%8D%8F%E5%8F%98%E4%B8%8E%E9%80%86%E5%8F%98/</guid>
+      <pubDate>Tue, 22 Jun 2021 11:53:49 GMT</pubDate>
       
         
         
@@ -39,7 +70,7 @@
       <category domain="http://zhoujunxiong.gitee.com/tags/Typescript/">Typescript</category>
       
       
-      <comments>http://zhoujunxiong.gitee.com/2021/06/23/%E5%89%8D%E7%AB%AF/Typescript/%E5%8D%8F%E5%8F%98%E4%B8%8E%E9%80%86%E5%8F%98/#disqus_thread</comments>
+      <comments>http://zhoujunxiong.gitee.com/2021/06/22/%E5%89%8D%E7%AB%AF/Typescript/%E5%8D%8F%E5%8F%98%E4%B8%8E%E9%80%86%E5%8F%98/#disqus_thread</comments>
       
     </item>
     
@@ -476,13 +507,13 @@
         
         
       <description>&lt;h4 id=&quot;测试的条件&quot;&gt;&lt;a href=&quot;#测试的条件&quot; class=&quot;headerlink&quot; title=&quot;测试的条件&quot;&gt;&lt;/a&gt;测试的条件&lt;/h4&gt;&lt;ol&gt;
-&lt;li&gt;源码文件以&lt;code&gt;_test&lt;/code&gt;进行结尾，例如xxx_test.go&lt;/li&gt;
-&lt;li&gt;测</description>
+&lt;li&gt;源码文件以&lt;code&gt;_test&lt;/code&gt;进行结尾，例如 xxx_test.go&lt;/li&gt;
+&lt;li&gt;</description>
         
       
       
       
-      <content:encoded><![CDATA[<h4 id="测试的条件"><a href="#测试的条件" class="headerlink" title="测试的条件"></a>测试的条件</h4><ol><li>源码文件以<code>_test</code>进行结尾，例如xxx_test.go</li><li>测试方法名以<code>Test</code>开头，<code>func TestXXX(t *testing.T)</code></li></ol><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> thread</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line"><span class="string">&quot;fmt&quot;</span></span><br><span class="line"><span class="string">&quot;sync&quot;</span></span><br><span class="line"><span class="string">&quot;testing&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> thread sync.WaitGroup</span><br><span class="line"></span><br><span class="line"><span class="comment">// 多线程计算demo，当多个线程操作同一个数会发生什么？</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">TestDemo1</span><span class="params">(t *testing.T)</span></span> &#123;</span><br><span class="line">num := <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">10</span>; i++ &#123;</span><br><span class="line">thread.Add(<span class="number">1</span>)</span><br><span class="line"><span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line"><span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">10000</span>; i++ &#123;</span><br><span class="line">num++</span><br><span class="line">&#125;</span><br><span class="line">thread.Done()</span><br><span class="line">&#125;()</span><br><span class="line">&#125;</span><br><span class="line">thread.Wait()</span><br><span class="line">fmt.Print(num)</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>]]></content:encoded>
+      <content:encoded><![CDATA[<h4 id="测试的条件"><a href="#测试的条件" class="headerlink" title="测试的条件"></a>测试的条件</h4><ol><li>源码文件以<code>_test</code>进行结尾，例如 xxx_test.go</li><li>测试方法名以<code>Test</code>开头，<code>func TestXXX(t *testing.T)</code></li></ol><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> thread</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line"><span class="string">&quot;fmt&quot;</span></span><br><span class="line"><span class="string">&quot;sync&quot;</span></span><br><span class="line"><span class="string">&quot;testing&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> thread sync.WaitGroup</span><br><span class="line"></span><br><span class="line"><span class="comment">// 多线程计算demo，当多个线程操作同一个数会发生什么？</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">TestDemo1</span><span class="params">(t *testing.T)</span></span> &#123;</span><br><span class="line">num := <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">10</span>; i++ &#123;</span><br><span class="line">thread.Add(<span class="number">1</span>)</span><br><span class="line"><span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line"><span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">10000</span>; i++ &#123;</span><br><span class="line">num++</span><br><span class="line">&#125;</span><br><span class="line">thread.Done()</span><br><span class="line">&#125;()</span><br><span class="line">&#125;</span><br><span class="line">thread.Wait()</span><br><span class="line">fmt.Print(num)</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>]]></content:encoded>
       
       
       <category domain="http://zhoujunxiong.gitee.com/categories/Go/">Go</category>
@@ -552,34 +583,6 @@
       
       
       <comments>http://zhoujunxiong.gitee.com/2020/11/25/GO/go%E7%9A%84goroutine%E4%B8%8E%E5%B9%B6%E5%8F%91/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>css浮动终极解决方案</title>
-      <link>http://zhoujunxiong.gitee.com/2020/11/22/%E5%89%8D%E7%AB%AF/CSS/css%E6%B5%AE%E5%8A%A8%E7%BB%88%E6%9E%81%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</link>
-      <guid>http://zhoujunxiong.gitee.com/2020/11/22/%E5%89%8D%E7%AB%AF/CSS/css%E6%B5%AE%E5%8A%A8%E7%BB%88%E6%9E%81%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</guid>
-      <pubDate>Sun, 22 Nov 2020 03:29:17 GMT</pubDate>
-      
-        
-        
-      <description>&lt;figure class=&quot;highlight html&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=</description>
-        
-      
-      
-      
-      <content:encoded><![CDATA[<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line">// 现代浏览器clearfix方案，不支持IE6/7</span><br><span class="line"></span><br><span class="line">.clearfix:after &#123;</span><br><span class="line"></span><br><span class="line">display: table;</span><br><span class="line"></span><br><span class="line">content: &quot; &quot;;</span><br><span class="line"></span><br><span class="line">clear: both;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 全浏览器通用的clearfix方案</span><br><span class="line"></span><br><span class="line">// 引入了zoom以支持IE6/7</span><br><span class="line"></span><br><span class="line">.clearfix:after &#123;</span><br><span class="line"></span><br><span class="line">display: table;</span><br><span class="line"></span><br><span class="line">content: &quot; &quot;;</span><br><span class="line"></span><br><span class="line">clear: both;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.clearfix&#123;</span><br><span class="line"></span><br><span class="line">*zoom: 1;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 全浏览器通用的clearfix方案【推荐】</span><br><span class="line"></span><br><span class="line">// 引入了zoom以支持IE6/7</span><br><span class="line"></span><br><span class="line">// 同时加入:before以解决现代浏览器上边距折叠的问题</span><br><span class="line"></span><br><span class="line">.clearfix:before,</span><br><span class="line"></span><br><span class="line">.clearfix:after &#123;</span><br><span class="line"></span><br><span class="line">display: table;</span><br><span class="line"></span><br><span class="line">content: &quot; &quot;;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.clearfix:after &#123;</span><br><span class="line"></span><br><span class="line">clear: both;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.clearfix&#123;</span><br><span class="line"></span><br><span class="line">*zoom: 1;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>]]></content:encoded>
-      
-      
-      <category domain="http://zhoujunxiong.gitee.com/categories/CSS/">CSS</category>
-      
-      
-      <category domain="http://zhoujunxiong.gitee.com/tags/CSS/">CSS</category>
-      
-      <category domain="http://zhoujunxiong.gitee.com/tags/%E5%89%8D%E7%AB%AF/">前端</category>
-      
-      
-      <comments>http://zhoujunxiong.gitee.com/2020/11/22/%E5%89%8D%E7%AB%AF/CSS/css%E6%B5%AE%E5%8A%A8%E7%BB%88%E6%9E%81%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/#disqus_thread</comments>
       
     </item>
     
