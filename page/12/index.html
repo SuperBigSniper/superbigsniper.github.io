@@ -1,0 +1,495 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Sniper</title><meta name="author" content="Sniper"><meta name="copyright" content="Sniper"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta property="og:type" content="website">
+<meta property="og:title" content="Sniper">
+<meta property="og:url" content="http://zhoujunxiong.gitee.com/page/12/index.html">
+<meta property="og:site_name" content="Sniper">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://zhoujunxiong.gitee.com/img/avatar.jpg">
+<meta property="article:author" content="Sniper">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://zhoujunxiong.gitee.com/img/avatar.jpg"><link rel="shortcut icon" href="https://gitee.com/zhoujunxiong/zhoujunxiong.back/raw/master/favicon.ico"><link rel="canonical" href="http://zhoujunxiong.gitee.com/page/12/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}
+
+// https://stackoverflow.com/questions/16839698/jquery-getscript-alternative-in-native-javascript
+const getScript = url => new Promise((resolve, reject) => {
+  const script = document.createElement('script')
+  script.src = url
+  script.async = true
+  script.onerror = reject
+  script.onload = script.onreadystatechange = function() {
+    const loadState = this.readyState
+    if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+    script.onload = script.onreadystatechange = null
+    resolve()
+  }
+  document.head.appendChild(script)
+})</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: false,
+  isHome: true,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2022-04-08 09:50:06'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><link rel="stylesheet" href="/css/custom.css"<meta name="generator" content="Hexo 5.4.1"><link rel="alternate" href="/atom.xml" title="Sniper" type="application/atom+xml">
+<link rel="alternate" href="/rss2.xml" title="Sniper" type="application/rss+xml">
+</head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div id="loader-wrapper"><div id="loader"></div></div><div class="loader"><div class="inner one"></div><div class="inner two"></div><div class="inner three"></div></div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" data-lazy-src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">296</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">61</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">47</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标籤</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="full_page" id="page-header" style="background-image: url(https://tva4.sinaimg.cn/large/9bd9b167gy1g4lhdqrho2j21hc0xcq9a.jpg)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Sniper</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标籤</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="site-info"><h1 id="site-title">Sniper</h1><div id="site-subtitle"><span id="subtitle"></span></div><div id="site_social_icons"><a class="social-icon" href="/atom.xml" target="_blank" title="rss-atom"><i class="fas fa-rss"></i></a><a class="social-icon" href="/rss2.xml" target="_blank" title="rss-rss2"><i class="fas fa-rss-square"></i></a></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div class="recent-posts" id="recent-posts"><div class="recent-post-item"><div class="post_cover left_radius"><a href="/2020/08/19/%E5%89%8D%E7%AB%AF/JS%E8%AF%AD%E6%B3%95%E5%AD%A6%E4%B9%A0/Iterator%E5%92%8CGenerator/" title="Iterator和Generator">     <img class="post_bg" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.9278326861603066" src="/img/loading.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Iterator和Generator"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/08/19/%E5%89%8D%E7%AB%AF/JS%E8%AF%AD%E6%B3%95%E5%AD%A6%E4%B9%A0/Iterator%E5%92%8CGenerator/" title="Iterator和Generator">Iterator和Generator</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2020-08-19T06:34:46.000Z" title="发表于 2020-08-19 14:34:46">2020-08-19</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/JS%E8%AF%AD%E6%B3%95%E5%AD%A6%E4%B9%A0/">JS语法学习</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fas fa-tag article-meta__icon"></i><a class="article-meta__tags" href="/tags/%E5%89%8D%E7%AB%AF/">前端</a><span class="article-meta__link">•</span><a class="article-meta__tags" href="/tags/JS%E8%AF%AD%E6%B3%95%E5%AD%A6%E4%B9%A0/">JS语法学习</a></span></div><div class="content">Iterator
+本质上就是一个 “返回一个对象的函数（在js中，这个函数名叫Symbol.iterator），且这个对象带有next函数，next函数又返回一个对象，这个对象包含value和done属性”
+
+12345678910function makeIterator(array) &#123;  var nextIndex = 0;  return &#123;    next: function() &#123;      return nextIndex &lt; array.length ?        &#123;value: array[nextIndex++], done: false&#125; :        &#123;value: undefined, done: true&#125;;    &#125;  &#125;;&#125;
+
+Generator
+本质上就是一个特殊的函数，运行后返回一个Iterator
+
+function* helloWorldGenerator() &#123;  yield &#x27;hello&#x27;;  yie ...</div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/2020/08/14/%E5%89%8D%E7%AB%AF/JS%E5%8E%9F%E7%90%86/async%E4%B8%8Eawait%E6%9A%B4%E5%8A%9B%E8%A7%A3%E8%AF%BB/" title="async与await暴力解读">     <img class="post_bg" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.9528549254127101" src="/img/loading.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="async与await暴力解读"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/08/14/%E5%89%8D%E7%AB%AF/JS%E5%8E%9F%E7%90%86/async%E4%B8%8Eawait%E6%9A%B4%E5%8A%9B%E8%A7%A3%E8%AF%BB/" title="async与await暴力解读">async与await暴力解读</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2020-08-13T16:35:29.000Z" title="发表于 2020-08-14 00:35:29">2020-08-14</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/JS%E5%8E%9F%E7%90%86/">JS原理</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fas fa-tag article-meta__icon"></i><a class="article-meta__tags" href="/tags/%E5%89%8D%E7%AB%AF/">前端</a><span class="article-meta__link">•</span><a class="article-meta__tags" href="/tags/JS%E5%8E%9F%E7%90%86/">JS原理</a></span></div><div class="content">async代码function getConstant() &#123;    return 1&#125;async function getAsyncConstant() &#123;    return 1&#125;async function getPromise() &#123;    return new Promise((resolved, rejected)=&gt; &#123;        resolved(1)    &#125;);&#125;async function test() &#123;    a = 2    c = 1    await getConstant();    d = 3    await getPromise();    d = 4    await getAsyncConstant();    return 2&#125;
+
+经过编译的async代码function getConstant() &#123;    return 1;&#125;function getAsyncConstant() &#123;    retu ...</div></div></div><div class="recent-post-item"><div class="post_cover left_radius"><a href="/2020/08/13/%E5%89%8D%E7%AB%AF/%E6%A1%86%E6%9E%B6/REACT/react%E4%B9%8BReact%E9%9D%99%E6%80%81%E6%96%B9%E6%B3%95/" title="react之React静态方法">     <img class="post_bg" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.02276231970648812" src="/img/loading.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="react之React静态方法"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/08/13/%E5%89%8D%E7%AB%AF/%E6%A1%86%E6%9E%B6/REACT/react%E4%B9%8BReact%E9%9D%99%E6%80%81%E6%96%B9%E6%B3%95/" title="react之React静态方法">react之React静态方法</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2020-08-13T12:14:27.000Z" title="发表于 2020-08-13 20:14:27">2020-08-13</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/REACT/">REACT</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fas fa-tag article-meta__icon"></i><a class="article-meta__tags" href="/tags/%E5%89%8D%E7%AB%AF/">前端</a><span class="article-meta__link">•</span><a class="article-meta__tags" href="/tags/REACT/">REACT</a></span></div><div class="content">cloneElement以 element 元素为样板克隆并返回新的 React 元素
+等同于&lt;element.type &#123;...element.props&#125; &#123;...props&#125;&gt;&#123;children&#125;&lt;/element.type&gt;
+
+第一个参数：用于克隆的母体 React 元素。
+第二个参数：为克隆后生成的 React 元素添加新的 props 或覆盖从母体中克隆而来的部分或全部 props。
+第三个参数：为新生成的 React 元素添加新的 children，取代从母体中克隆而来的 children。
+
+1React.cloneElement(element, [props], [...children])
+
+isValidElementReact.isValidElement(object)
+验证对象是否为 React 元素，返回值为 true 或 false。
+Children主要是解决当 children 是 单一对象 时, React.Children.xxx 可以正常计算 count, 但 ...</div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/2020/08/13/%E5%89%8D%E7%AB%AF/%E6%A1%86%E6%9E%B6/VUE/vue%E6%8C%87%E4%BB%A4%E5%91%A8%E6%9C%9F%E4%B8%8E%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/" title="vue指令周期与生命周期">     <img class="post_bg" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.2884758180226663" src="/img/loading.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="vue指令周期与生命周期"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/08/13/%E5%89%8D%E7%AB%AF/%E6%A1%86%E6%9E%B6/VUE/vue%E6%8C%87%E4%BB%A4%E5%91%A8%E6%9C%9F%E4%B8%8E%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/" title="vue指令周期与生命周期">vue指令周期与生命周期</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2020-08-13T02:57:19.000Z" title="发表于 2020-08-13 10:57:19">2020-08-13</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/VUE/">VUE</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fas fa-tag article-meta__icon"></i><a class="article-meta__tags" href="/tags/%E5%89%8D%E7%AB%AF/">前端</a><span class="article-meta__link">•</span><a class="article-meta__tags" href="/tags/VUE/">VUE</a></span></div><div class="content">销毁时
+beforeDestroy
+destroyed
+unbind
+
+创建时
+beforeCreate
+created
+beforeMount
+render
+bind 指令绑定
+mounted
+inserted 指令插入
+
+更新时
+update 指令更新
+componentUpdated 指令更新完成
+beforeUpdate
+render
+updated
+
+选哟注意的是当指令绑定到组件上时，只有在传给组件有数据时才会触发指令的update,componentUpdated事件
+12&lt;HelloWorld :number=&quot;number&quot; v-test /&gt; //传入数据才会触发指令的更新周期&lt;HelloWorld v-test /&gt; 
+
+vue初始化过程
+初始化
+
+12345initMixin(Vue) //初始化内部函数stateMixin(Vue) // 初始化状态eventsMixin(Vue) // 初始化事件lifecycleMixin(Vue) // 初始化生命周期函数renderMixin(Vue) // 渲染组件
+
+
+be ...</div></div></div><div class="recent-post-item"><div class="post_cover left_radius"><a href="/2020/08/09/%E5%89%8D%E7%AB%AF/Typescript/Typescript%E4%B9%8Bunknown%E7%B1%BB%E5%9E%8B/" title="Typescript之unknown类型">     <img class="post_bg" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.7687398345310175" src="/img/loading.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Typescript之unknown类型"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/08/09/%E5%89%8D%E7%AB%AF/Typescript/Typescript%E4%B9%8Bunknown%E7%B1%BB%E5%9E%8B/" title="Typescript之unknown类型">Typescript之unknown类型</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2020-08-08T21:18:16.000Z" title="发表于 2020-08-09 05:18:16">2020-08-09</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/Typescript/">Typescript</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fas fa-tag article-meta__icon"></i><a class="article-meta__tags" href="/tags/%E5%89%8D%E7%AB%AF/">前端</a><span class="article-meta__link">•</span><a class="article-meta__tags" href="/tags/Typescript/">Typescript</a></span></div><div class="content">unknown 类型(1) 任何类型的值都可以赋值给 unknown 类型：
+123let value1: unknownvalue1 = &#x27;a&#x27;value1 = 123
+
+(2) 如果没有类型断言或基于控制流的类型细化时 unknown 不可以赋值给其它类型，此时它只能赋值给 unknown 和 any 类型：
+123let value2: unknownlet value3: string = value2 // error 不能将类型“unknown”分配给类型“string”value1 = value2
+
+(3) 如果没有类型断言或基于控制流的类型细化，则不能在它上面进行任何操作：
+12let value4: unknownvalue4 += 1 // error 对象的类型为 &quot;unknown&quot;
+
+(4) unknown 与任何其它类型组成的交叉类型，最后都等于其它类型：
+1234type type1 = unknown &amp; string // type1 =&gt; stringtype type2 = number &am ...</div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/2020/08/04/%E5%89%8D%E7%AB%AF/%E6%A1%86%E6%9E%B6/REACT/react%E4%B9%8Beslint/" title="react之eslint">     <img class="post_bg" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.9079239577842575" src="/img/loading.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="react之eslint"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/08/04/%E5%89%8D%E7%AB%AF/%E6%A1%86%E6%9E%B6/REACT/react%E4%B9%8Beslint/" title="react之eslint">react之eslint</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2020-08-03T21:22:04.000Z" title="发表于 2020-08-04 05:22:04">2020-08-04</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/REACT/">REACT</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fas fa-tag article-meta__icon"></i><a class="article-meta__tags" href="/tags/%E5%89%8D%E7%AB%AF/">前端</a><span class="article-meta__link">•</span><a class="article-meta__tags" href="/tags/REACT/">REACT</a></span></div><div class="content">eslint-plugin-react对react应用进行eslint验证只需要安装babel-eslint,eslint,eslint-plugin-react
+
+yarn add eslint-plugin-react babel-eslint eslint
+
+配置可以直接使用插件提供的预设配置，有react/recommended,react/all
+1234&quot;extends&quot;: [  &quot;eslint:recommended&quot;,  &quot;plugin:react/recommended&quot;]
+
+默认是没有 jsx 验证的
+
+传参有布尔值（never 不能有，always 总是有）第二个字段配置哪些属性可以有或者没有
+
+链接
+1234&quot;react/jsx-boolean-value&quot;:[&#x27;error&#x27;, &#x27;never&#x27;, &#123; always: [] &#125;],&lt;Hello personal=&#123;true&#125; /&gt; // 错误&l ...</div></div></div><div class="recent-post-item"><div class="post_cover left_radius"><a href="/2020/08/03/%E5%89%8D%E7%AB%AF/CSS/%E6%B0%B4%E5%B9%B3%E5%9E%82%E7%9B%B4%E5%B1%85%E4%B8%AD/" title="水平垂直居中">     <img class="post_bg" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.35669035108648295" src="/img/loading.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="水平垂直居中"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/08/03/%E5%89%8D%E7%AB%AF/CSS/%E6%B0%B4%E5%B9%B3%E5%9E%82%E7%9B%B4%E5%B1%85%E4%B8%AD/" title="水平垂直居中">水平垂直居中</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2020-08-03T07:38:00.000Z" title="发表于 2020-08-03 15:38:00">2020-08-03</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/CSS/">CSS</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fas fa-tag article-meta__icon"></i><a class="article-meta__tags" href="/tags/CSS/">CSS</a><span class="article-meta__link">•</span><a class="article-meta__tags" href="/tags/%E5%89%8D%E7%AB%AF/">前端</a></span></div><div class="content">准备首先是设置html与body的样式
+html,body &#123;  position: relative;  height: 100%;  overflow: hidden;      &#125;.box &#123;  box-sizing: border-box;  width: 100px;  height: 50px;  line-height: 48px;  text-align: center;  font-size: 16px;  border: 1px solid lightblue;  background: lightcyan;&#125;
+
+方法一：利用绝对定位缺点：需要知道盒子宽和高
+12345678910body &#123;  position: relative;&#125;.box &#123;  position: absolute;  top: 50%;  left: 50%;  margin-top: -25px;  margin-left: -50px;&#125;
+
+还有一种优化方案，使用margin：auto,绝对定位下，上下左右都 ...</div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/2020/08/02/%E5%89%8D%E7%AB%AF/Typescript/Typescript%E4%B9%8B%E6%9E%9A%E4%B8%BE%E7%B1%BB%E5%9E%8B/" title="Typescript之枚举类型">     <img class="post_bg" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.7915406404777585" src="/img/loading.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Typescript之枚举类型"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/08/02/%E5%89%8D%E7%AB%AF/Typescript/Typescript%E4%B9%8B%E6%9E%9A%E4%B8%BE%E7%B1%BB%E5%9E%8B/" title="Typescript之枚举类型">Typescript之枚举类型</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2020-08-02T10:30:15.000Z" title="发表于 2020-08-02 18:30:15">2020-08-02</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/Typescript/">Typescript</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fas fa-tag article-meta__icon"></i><a class="article-meta__tags" href="/tags/%E5%89%8D%E7%AB%AF/">前端</a><span class="article-meta__link">•</span><a class="article-meta__tags" href="/tags/Typescript/">Typescript</a></span></div><div class="content">枚举类型数字枚举(只包含数字的枚举)，会按照数字自动递增123456789enum Role &#123;    Reporter = 1, // 默认为0，指定数字后，按照当前数字递增    Developer, //2    Maintainer, //3    Owner, //4    Guest //5&#125;// console.log(Role.Reporter)// console.log(Role)
+
+字符串枚举字符串枚举值要求每个字段的值都必须是字符串字面量，或者是该枚举值中另一个字符串枚举成员
+enum Message &#123;    Success = &#x27;恭喜你，成功了&#x27;,    Fail = &#x27;抱歉，失败了&#x27;&#125;// ts编码后var Message;(function (Message) &#123;    Message[&quot;Success&quot;] = &quot;\u606D\u559C\u4F60\uFF0C\u6210\u529F\u4E86&quot;;    Message[& ...</div></div></div><div class="recent-post-item"><div class="post_cover left_radius"><a href="/2020/08/01/%E5%89%8D%E7%AB%AF/JS%E5%8E%9F%E7%90%86/Symbol%E7%9A%84%E4%BD%9C%E7%94%A8/" title="Symbol的作用">     <img class="post_bg" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.3543114123019655" src="/img/loading.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Symbol的作用"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/08/01/%E5%89%8D%E7%AB%AF/JS%E5%8E%9F%E7%90%86/Symbol%E7%9A%84%E4%BD%9C%E7%94%A8/" title="Symbol的作用">Symbol的作用</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2020-08-01T03:06:32.000Z" title="发表于 2020-08-01 11:06:32">2020-08-01</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/JS%E5%8E%9F%E7%90%86/">JS原理</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fas fa-tag article-meta__icon"></i><a class="article-meta__tags" href="/tags/%E5%89%8D%E7%AB%AF/">前端</a><span class="article-meta__link">•</span><a class="article-meta__tags" href="/tags/JS%E5%8E%9F%E7%90%86/">JS原理</a></span></div><div class="content">私有变量使用symbol()可以得到一个唯一的值，可以用来做四哟变量
+// ES6版本const [setName, setAge] = [Symbol(&#x27;setName&#x27;), Symbol(&#x27;setAge&#x27;)],  privateData = new WeakMap()class Person &#123;  constructor (name, age) &#123;    privateData.set(this, &#123; name, age &#125;)  &#125;  [setName] (name) &#123;    privateData.get(this).name = name  &#125;  [setAge] (age) &#123;    privateData.get(this).age = age  &#125;  getAge () &#123;    return privateData.get(this).age  &#125;  getName () &#123;    return private ...</div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/2020/07/31/%E5%89%8D%E7%AB%AF/%E6%A1%86%E6%9E%B6/VUE/VUE%E4%B9%8BSSR/" title="VUE之SSR">     <img class="post_bg" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.19868436240715415" src="/img/loading.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="VUE之SSR"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/07/31/%E5%89%8D%E7%AB%AF/%E6%A1%86%E6%9E%B6/VUE/VUE%E4%B9%8BSSR/" title="VUE之SSR">VUE之SSR</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2020-07-31T09:41:08.000Z" title="发表于 2020-07-31 17:41:08">2020-07-31</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/VUE/">VUE</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fas fa-tag article-meta__icon"></i><a class="article-meta__tags" href="/tags/%E5%89%8D%E7%AB%AF/">前端</a><span class="article-meta__link">•</span><a class="article-meta__tags" href="/tags/VUE/">VUE</a></span></div><div class="content">环境配置
+直接安装官方脚手架就好了
+
+yarn create nuxt-app &lt;项目名&gt;
+
+
+脚手架生成的代码，有一些问题
+
+无法使用es6语法，首先在package.json中设置,@babel/node
+
+“start”: “cross-env NODE_ENV=production node server/index.js –exec babel-node”,
+
+
+“dev”: “cross-env NODE_ENV=development nodemon server/index.js –watch server –exec babel-node”
+
+
+安装@Babel/preset-env，并设置babelrc为{“presets”:[[“@babel/preset-env”]]}
+
+无法编译scss， 安装node-sass和sass-loader
+
+无法解析字体图标，安装file-loader
+
+
+
+目录结构
+
+pages：nuxt会自动遍历该目录下的vue文件并生成路由
+layouts：页面的布局，默认是default.vue，其中nuxt标签自动引入pa ...</div></div></div><nav id="pagination"><div class="pagination"><a class="extend prev" rel="prev" href="/page/11/"><i class="fas fa-chevron-left fa-fw"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><span class="page-number current">12</span><a class="page-number" href="/page/13/">13</a><span class="space">&hellip;</span><a class="page-number" href="/page/30/">30</a><a class="extend next" rel="next" href="/page/13/"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-info-avatar is-center"><img class="avatar-img" data-lazy-src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">Sniper</div><div class="author-info__description"></div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">296</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">61</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">47</div></a></div></div><div class="card-info-social-icons is-center"><a class="social-icon" href="/atom.xml" target="_blank" title="rss-atom"><i class="fas fa-rss"></i></a><a class="social-icon" href="/rss2.xml" target="_blank" title="rss-rss2"><i class="fas fa-rss-square"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">这个博客还有点儿意思吧</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/03/26/nodejs/koa%E6%BA%90%E7%A0%81%E5%86%8D%E8%AF%BB/" title="koa源码再读"><img data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.4963417575252631" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="koa源码再读"/></a><div class="content"><a class="title" href="/2022/03/26/nodejs/koa%E6%BA%90%E7%A0%81%E5%86%8D%E8%AF%BB/" title="koa源码再读">koa源码再读</a><time datetime="2022-03-26T01:39:44.000Z" title="发表于 2022-03-26 09:39:44">2022-03-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/03/18/%E5%89%8D%E7%AB%AF/Typescript/Typescript%E4%B9%8B%E5%B8%B8%E8%A7%81%E5%A5%97%E8%B7%AF/" title="Typescript之常见套路"><img data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.9584090414206019" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Typescript之常见套路"/></a><div class="content"><a class="title" href="/2022/03/18/%E5%89%8D%E7%AB%AF/Typescript/Typescript%E4%B9%8B%E5%B8%B8%E8%A7%81%E5%A5%97%E8%B7%AF/" title="Typescript之常见套路">Typescript之常见套路</a><time datetime="2022-03-18T10:53:49.000Z" title="发表于 2022-03-18 18:53:49">2022-03-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/02/13/%E5%89%8D%E7%AB%AF/JS%E5%8E%9F%E7%90%86/V8%E4%B8%AD%E7%9A%84JS%E6%95%B0%E7%BB%84/" title="V8中的JS数组"><img data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.26310617936839553" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="V8中的JS数组"/></a><div class="content"><a class="title" href="/2022/02/13/%E5%89%8D%E7%AB%AF/JS%E5%8E%9F%E7%90%86/V8%E4%B8%AD%E7%9A%84JS%E6%95%B0%E7%BB%84/" title="V8中的JS数组">V8中的JS数组</a><time datetime="2022-02-13T08:12:44.000Z" title="发表于 2022-02-13 16:12:44">2022-02-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/02/06/%E5%89%8D%E7%AB%AF/%E6%A1%86%E6%9E%B6/Nuxt3/" title="Nuxt3"><img data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.3676739232204689" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Nuxt3"/></a><div class="content"><a class="title" href="/2022/02/06/%E5%89%8D%E7%AB%AF/%E6%A1%86%E6%9E%B6/Nuxt3/" title="Nuxt3">Nuxt3</a><time datetime="2022-02-06T14:00:30.000Z" title="发表于 2022-02-06 22:00:30">2022-02-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/02/04/flutter/flutter%E4%B9%8Bkey/" title="flutter之animation"><img data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.9126924101130238" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="flutter之animation"/></a><div class="content"><a class="title" href="/2022/02/04/flutter/flutter%E4%B9%8Bkey/" title="flutter之animation">flutter之animation</a><time datetime="2022-02-04T00:06:27.000Z" title="发表于 2022-02-04 08:06:27">2022-02-04</time></div></div></div></div><div class="card-widget" id="card-newest-comments"><div class="item-headline"><i class="fas fa-bolt"></i><span>最新评论</span></div><div class="aside-list"><span>正在加载中...</span></div></div><div class="card-widget card-categories"><div class="item-headline"><i class="fas fa-folder-open"></i><span>分类</span></div><ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/CSS/"><span class="card-category-list-name">CSS</span><span class="card-category-list-count">10</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Chrome%E6%8F%92%E4%BB%B6/"><span class="card-category-list-name">Chrome插件</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/ES6/"><span class="card-category-list-name">ES6</span><span class="card-category-list-count">6</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Eectron/"><span class="card-category-list-name">Eectron</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Go/"><span class="card-category-list-name">Go</span><span class="card-category-list-count">18</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/HEXO/"><span class="card-category-list-name">HEXO</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/JAVA/"><span class="card-category-list-name">JAVA</span><span class="card-category-list-count">10</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/JS%E5%8E%9F%E7%90%86/"><span class="card-category-list-name">JS原理</span><span class="card-category-list-count">15</span></a></li>
+            <li class="card-category-list-item more is-center"><a class="card-category-list-link-more" href="/categories/">
+                <span>查看更多</span><i class="fas fa-angle-right"></i></a></li>
+            </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/Go/" style="font-size: 1.34em; color: rgb(112, 147, 149)">Go</a><a href="/tags/Linux/" style="font-size: 1.15em; color: rgb(5, 28, 21)">Linux</a><a href="/tags/JAVA/" style="font-size: 1.45em; color: rgb(86, 6, 24)">JAVA</a><a href="/tags/PHP/" style="font-size: 1.18em; color: rgb(100, 199, 193)">PHP</a><a href="/tags/Python/" style="font-size: 1.29em; color: rgb(132, 192, 144)">Python</a><a href="/tags/%E5%BE%AE%E4%BF%A1/" style="font-size: 1.1em; color: rgb(10, 105, 75)">微信</a><a href="/tags/flutter/" style="font-size: 1.37em; color: rgb(24, 85, 69)">flutter</a><a href="/tags/dart/" style="font-size: 1.37em; color: rgb(182, 46, 112)">dart</a><a href="/tags/GetX/" style="font-size: 1.1em; color: rgb(145, 174, 51)">GetX</a><a href="/tags/nodejs/" style="font-size: 1.39em; color: rgb(57, 29, 144)">nodejs</a><a href="/tags/JavaScript/" style="font-size: 1.47em; color: rgb(89, 75, 93)">JavaScript</a><a href="/tags/koa/" style="font-size: 1.1em; color: rgb(140, 94, 3)">koa</a><a href="/tags/Chrome/" style="font-size: 1.1em; color: rgb(131, 195, 65)">Chrome</a><a href="/tags/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/" style="font-size: 1.42em; color: rgb(147, 193, 72)">工具使用</a><a href="/tags/%E7%88%AC%E8%99%AB/" style="font-size: 1.1em; color: rgb(2, 135, 59)">爬虫</a><a href="/tags/Solidity/" style="font-size: 1.1em; color: rgb(88, 98, 46)">Solidity</a><a href="/tags/%E5%8C%BA%E5%9D%97%E9%93%BE/" style="font-size: 1.13em; color: rgb(13, 51, 160)">区块链</a><a href="/tags/%E5%8C%BA%E5%9D%97%E9%93%BE%E6%A6%82%E5%BF%B5/" style="font-size: 1.1em; color: rgb(30, 129, 55)">区块链概念</a><a href="/tags/MongoDB/" style="font-size: 1.1em; color: rgb(62, 82, 160)">MongoDB</a><a href="/tags/NoSql/" style="font-size: 1.1em; color: rgb(167, 4, 70)">NoSql</a><a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" style="font-size: 1.21em; color: rgb(18, 67, 99)">数据库</a><a href="/tags/web3js/" style="font-size: 1.1em; color: rgb(92, 122, 63)">web3js</a><a href="/tags/Mysql/" style="font-size: 1.1em; color: rgb(47, 78, 154)">Mysql</a><a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%BA%95%E5%B1%82%E5%AD%A6%E4%B9%A0/" style="font-size: 1.13em; color: rgb(120, 145, 59)">计算机底层学习</a><a href="/tags/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" style="font-size: 1.1em; color: rgb(160, 184, 94)">基础知识</a><a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" style="font-size: 1.1em; color: rgb(13, 89, 28)">操作系统</a><a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 1.1em; color: rgb(55, 146, 35)">数据结构</a><a href="/tags/Mybatis/" style="font-size: 1.1em; color: rgb(177, 4, 157)">Mybatis</a><a href="/tags/Spring/" style="font-size: 1.18em; color: rgb(142, 14, 51)">Spring</a><a href="/tags/Python-Go-JavaScript/" style="font-size: 1.1em; color: rgb(42, 190, 78)">Python - Go - JavaScript</a><a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 1.1em; color: rgb(118, 172, 118)">算法</a><a href="/tags/Spring-Boot/" style="font-size: 1.18em; color: rgb(182, 3, 26)">Spring Boot</a><a href="/tags/Spring-mvc/" style="font-size: 1.18em; color: rgb(34, 66, 78)">Spring mvc</a><a href="/tags/%E5%B8%B8%E7%94%A8API/" style="font-size: 1.15em; color: rgb(106, 68, 89)">常用API</a><a href="/tags/CSS/" style="font-size: 1.26em; color: rgb(55, 125, 134)">CSS</a><a href="/tags/%E5%89%8D%E7%AB%AF/" style="font-size: 1.5em; color: rgb(115, 2, 16)">前端</a><a href="/tags/JS%E5%8E%9F%E7%90%86/" style="font-size: 1.31em; color: rgb(160, 135, 192)">JS原理</a><a href="/tags/webpack/" style="font-size: 1.26em; color: rgb(101, 18, 132)">webpack</a><a href="/tags/JS%E8%AF%AD%E6%B3%95%E5%AD%A6%E4%B9%A0/" style="font-size: 1.23em; color: rgb(111, 68, 43)">JS语法学习</a><a href="/tags/ES6/" style="font-size: 1.18em; color: rgb(46, 8, 10)">ES6</a></div></div><div class="card-widget card-archives"><div class="item-headline"><i class="fas fa-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/03/"><span class="card-archive-list-date">三月 2022</span><span class="card-archive-list-count">2</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/02/"><span class="card-archive-list-date">二月 2022</span><span class="card-archive-list-count">4</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/01/"><span class="card-archive-list-date">一月 2022</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2021/12/"><span class="card-archive-list-date">十二月 2021</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2021/11/"><span class="card-archive-list-date">十一月 2021</span><span class="card-archive-list-count">2</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2021/10/"><span class="card-archive-list-date">十月 2021</span><span class="card-archive-list-count">2</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2021/09/"><span class="card-archive-list-date">九月 2021</span><span class="card-archive-list-count">2</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2021/08/"><span class="card-archive-list-date">八月 2021</span><span class="card-archive-list-count">3</span></a></li><li class="card-archive-list-item more is-center"><a class="card-archive-list-link-more" href="/archives/">
+              <span>查看更多</span><i class="fas fa-angle-right"  ></i></a></li></ul></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站资讯</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">296</div></div><div class="webinfo-item"><div class="item-name">已运行时间 :</div><div class="item-count" id="runtimeshow" data-publishDate="2018-06-06T16:00:00.000Z"></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2022-04-08T01:50:05.755Z"></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2018 - 2022 By Sniper</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="/js/search/local-search.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> {preloader.endLoading()})</script><div class="js-pjax"><script>function subtitleType () {
+  fetch('https://api.btstu.cn/yan/api.php?charset=utf-8&encode=json')
+    .then(response => response.json())
+    .then(data => {
+      if (true) {
+        var sub = "你好，世界,穷且益坚，不坠青云之志".length == 0 ? new Array() : "你好，世界,穷且益坚，不坠青云之志".split(',')
+        var both = sub.unshift(data.text)
+        typed = new Typed('#subtitle', {
+          strings: sub,
+          startDelay: 300,
+          typeSpeed: 150,
+          loop: true,
+          backSpeed: 50,
+        })
+      } else {
+        document.getElementById('subtitle').innerHTML = data.text
+      }
+    })
+}
+
+if (true) {
+  if (typeof Typed === 'function') {
+    subtitleType()
+  } else {
+    getScript('https://cdn.jsdelivr.net/npm/typed.js/lib/typed.min.js').then(subtitleType)
+  }
+} else {
+  subtitleType()
+}
+</script></div><script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.17.0/js/md5.min.js"></script><script>window.addEventListener('load', () => {
+  const changeContent = (content) => {
+    if (content === '') return content
+
+    content = content.replace(/<[^>]+>/g,"") // remove html tag
+    content = content.replace(/(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|jpeg|gif|png|webp)/g, '') // remove image link
+    content = content.replace(/(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi, '') // remove url
+
+    if (content.length > 150) {
+      content = content.substring(0,150) + '...'
+    }
+    return content
+  }
+
+  const getIcon = (icon, mail) => {
+    if (icon) return icon
+    
+    let defaultIcon = '?d=monsterid'
+    let iconUrl = `https://gravatar.loli.net/avatar/${md5(mail.toLowerCase()) + defaultIcon}`
+    return iconUrl
+  }
+
+  const generateHtml = array => {
+    let result = ''
+
+    if (array.length) {
+      for (let i = 0; i < array.length; i++) {
+        result += '<div class=\'aside-list-item\'>'
+
+        if (true) {
+          let name = 'src'
+          if(true) {
+            name = 'data-lazy-src'
+          }
+          result += `<a href='${array[i].url}' class="thumbnail"><img ${name}='${getIcon(array[i].avatar, array[i].mail)}' alt='${array[i].nick}'></a>`
+        }
+
+        result += `<div class='content'>
+        <a class='comment' href='${array[i].url}'>${array[i].content}</a>
+        <div class='name'><span>${array[i].nick}</span><time> / ${btf.diffDate(array[i].date, true)}</time></div>
+        </div></div>`
+      }
+    } else {
+      result += '没有评论'
+    }
+
+    let $dom = document.querySelector('#card-newest-comments .aside-list')
+    $dom.innerHTML= result
+    window.lazyLoadInstance && window.lazyLoadInstance.update()
+    window.pjax && window.pjax.refresh($dom)
+  }
+
+  const getComment = () => {
+      let serverURL = ''
+      if (true) {
+        serverURL = 'https://cwrcuoma.lc-cn-n1-shared.com'
+      } else {
+        serverURL = 'https://cwRCUoMa.api.lncldglobal.com'
+      }
+
+    var settings = {
+      "method": "GET",
+      "headers": {
+        "X-LC-Id": 'cwRCUoMavhC2YwPVr7FS2gq0-gzGzoHsz',
+        "X-LC-Key": 'sqKV8HVVmhAbpKiqokLJUDLU',
+        "Content-Type": "application/json"
+      },
+    }
+
+    fetch(`${serverURL}/1.1/classes/Comment?limit=6&order=-createdAt`,settings)
+      .then(response => response.json())
+      .then(data => {
+        const valineArray = data.results.map(function (e) {
+          return {
+            'avatar': e.QQAvatar,
+            'content': changeContent(e.comment),
+            'mail': e.mail,
+            'nick': e.nick,
+            'url': e.url + '#' + e.objectId,
+            'date': e.createdAt,
+          }
+        })
+        saveToLocal.set('leancloud-newest-comments', JSON.stringify(valineArray), 10/(60*24))
+        generateHtml(valineArray)
+      }).catch(e => {
+        const $dom = document.querySelector('#card-newest-comments .aside-list')
+        $dom.innerHTML= "无法获取评论，请确认相关配置是否正确"
+      }) 
+  }
+
+  const newestCommentInit = () => {
+    if (document.querySelector('#card-newest-comments .aside-list')) {
+      const data = saveToLocal.get('leancloud-newest-comments')
+      if (data) {
+        generateHtml(JSON.parse(data))
+      } else {
+        getComment()
+      }
+    }
+  }
+
+  newestCommentInit()
+  document.addEventListener('pjax:complete', newestCommentInit)
+})</script><div class="aplayer no-destroy" data-id="6587475516" data-server="netease" data-type="playlist" data-fixed="true" data-mini="true" data-listFolded="false" data-order="random" data-preload="none" data-autoplay="false" data-lrctype="1" muted></div><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/gh/metowolf/MetingJS@1.2/dist/Meting.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = [
+  'title',
+  '#config_change',
+  '#body-wrap',
+  '#rightside-config-hide',
+  '#rightside-config-show',
+  '.js-pjax'
+]
+
+if (false) {
+  pjaxSelectors.unshift('meta[property="og:image"]', 'meta[property="og:title"]', 'meta[property="og:url"]')
+}
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  if (typeof gtag === 'function') {
+    gtag('config', '', {'page_path': window.location.pathname});
+  }
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // Analytics
+  if (false) {
+    MtaH5.pgv()
+  }
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+
+document.addEventListener('pjax:send', function () {
+  typeof preloader === 'object' && preloader.initLoading()
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+})</script></div></body></html>

@@ -1,0 +1,490 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>sequelize | Sniper</title><meta name="keywords" content="数据库"><meta name="author" content="Sniper"><meta name="copyright" content="Sniper"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="安装 首先安装 sequelize 之后还需要安装 mysql2（因为sequelize依赖mysql2） yarn add sequelizeyarn add mysql2    连接mysql123456789101112131415const Sequelize &#x3D; require(&amp;#x27;sequelize&amp;#x27;)let sequelize &#x3D; new Sequelize(&amp;#x">
+<meta property="og:type" content="article">
+<meta property="og:title" content="sequelize">
+<meta property="og:url" content="http://zhoujunxiong.gitee.com/2018/12/31/%E6%95%B0%E6%8D%AE%E5%BA%93/sequelize/index.html">
+<meta property="og:site_name" content="Sniper">
+<meta property="og:description" content="安装 首先安装 sequelize 之后还需要安装 mysql2（因为sequelize依赖mysql2） yarn add sequelizeyarn add mysql2    连接mysql123456789101112131415const Sequelize &#x3D; require(&amp;#x27;sequelize&amp;#x27;)let sequelize &#x3D; new Sequelize(&amp;#x">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://api.btstu.cn/sjbz/api.php?lx=dongman&format=images0.2872304077628476">
+<meta property="article:published_time" content="2018-12-30T23:31:23.000Z">
+<meta property="article:modified_time" content="2022-04-06T14:27:38.607Z">
+<meta property="article:author" content="Sniper">
+<meta property="article:tag" content="数据库">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://api.btstu.cn/sjbz/api.php?lx=dongman&format=images0.2872304077628476"><link rel="shortcut icon" href="https://gitee.com/zhoujunxiong/zhoujunxiong.back/raw/master/favicon.ico"><link rel="canonical" href="http://zhoujunxiong.gitee.com/2018/12/31/%E6%95%B0%E6%8D%AE%E5%BA%93/sequelize/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}
+
+// https://stackoverflow.com/questions/16839698/jquery-getscript-alternative-in-native-javascript
+const getScript = url => new Promise((resolve, reject) => {
+  const script = document.createElement('script')
+  script.src = url
+  script.async = true
+  script.onerror = reject
+  script.onload = script.onreadystatechange = function() {
+    const loadState = this.readyState
+    if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+    script.onload = script.onreadystatechange = null
+    resolve()
+  }
+  document.head.appendChild(script)
+})</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-04-06 22:27:38'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><link rel="stylesheet" href="/css/custom.css"<meta name="generator" content="Hexo 5.4.1"><link rel="alternate" href="/atom.xml" title="Sniper" type="application/atom+xml">
+<link rel="alternate" href="/rss2.xml" title="Sniper" type="application/rss+xml">
+</head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div id="loader-wrapper"><div id="loader"></div></div><div class="loader"><div class="inner one"></div><div class="inner two"></div><div class="inner three"></div></div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" data-lazy-src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">296</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">61</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">47</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标籤</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.2872304077628476)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Sniper</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标籤</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">sequelize</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2018-12-30T23:31:23.000Z" title="发表于 2018-12-31 07:31:23">2018-12-31</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-04-06T14:27:38.607Z" title="更新于 2022-04-06 22:27:38">2022-04-06</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-commentcount"><i class="far fa-comments fa-fw post-meta-icon"></i><span class="post-meta-label">评论数:</span><a href="/2018/12/31/%E6%95%B0%E6%8D%AE%E5%BA%93/sequelize/#post-comment" itemprop="discussionUrl"><span class="valine-comment-count" data-xid="/2018/12/31/%E6%95%B0%E6%8D%AE%E5%BA%93/sequelize/" itemprop="commentCount"></span></a></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><ul>
+<li>首先安装 sequelize</li>
+<li>之后还需要安装 mysql2（因为sequelize依赖mysql2）<blockquote>
+<p>yarn add sequelize<br>yarn add mysql2</p>
+</blockquote>
+</li>
+</ul>
+<h4 id="连接mysql"><a href="#连接mysql" class="headerlink" title="连接mysql"></a>连接mysql</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title class_">Sequelize</span> = <span class="built_in">require</span>(<span class="string">&#x27;sequelize&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> sequelize = <span class="keyword">new</span> <span class="title class_">Sequelize</span>(<span class="string">&#x27;cate&#x27;</span>, <span class="string">&#x27;root&#x27;</span>, <span class="string">&#x27;123456&#x27;</span>, &#123;</span><br><span class="line">  <span class="attr">host</span>: <span class="string">&#x27;127.0.0.1&#x27;</span>,</span><br><span class="line">  <span class="attr">dialect</span>: <span class="string">&#x27;mysql&#x27;</span></span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">sequelize</span><br><span class="line">  .<span class="title function_">authenticate</span>() <span class="comment">// 连接mysql测试</span></span><br><span class="line">  .<span class="title function_">then</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;连接成功&#x27;</span>)</span><br><span class="line">  &#125;)</span><br><span class="line">  .<span class="title function_">catch</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;连接失败&#x27;</span>)</span><br><span class="line">  &#125;)</span><br></pre></td></tr></table></figure>
+
+<h4 id="定义模型"><a href="#定义模型" class="headerlink" title="定义模型"></a>定义模型</h4><p>字段值描述：</p>
+<ul>
+<li><pre><code>type：字段类型，String|DataTypes
+</code></pre>
+</li>
+<li><pre><code>allowNull：是否允许为空，默认为true
+</code></pre>
+</li>
+<li><pre><code>defaultValue：默认值，默认为null
+</code></pre>
+</li>
+<li><pre><code>unique：值唯一，默认为false
+</code></pre>
+</li>
+<li><pre><code>primaryKey：是否为主键，默认为false
+</code></pre>
+</li>
+<li><pre><code>field：数据库中字段的实际名称（与实际数据库中对应）            
+</code></pre>
+</li>
+<li><pre><code>autoIncrement：是否自增，默认false
+</code></pre>
+</li>
+</ul>
+<p>数据库的其它配置</p>
+<ul>
+<li>get：字段的getter，函数</li>
+<li>set：字段的setter，函数</li>
+<li>validate：对象，当当前字段值发生改变的时候进行验证</li>
+<li>timestamps：是否给每条记录添加 createdAt 和 updatedAt 字段，并在添加新数据和更新数据的时候自动设置这两个字段的值，默认为true</li>
+<li>paranoid：设置 deletedAt字段，当删除一条记录的时候，并不是真的销毁记录，而是通过该字段来标示，即保留数据，进行假删除，默认为false</li>
+<li>freezeTableName：禁用修改表名;默认情况下，sequelize将自动将所有传递的模型名称（define的第一个参数）转换为复数。 默认为false</li>
+<li>tableName：手动设置表的实际名称</li>
+<li>indexes：Array<Object> 定义表索引<ul>
+<li>每个索引对象可以设置的值<ul>
+<li>   name：索引名称，默认模型名称+字段</li>
+<li>   fields: Array<string>，索引字段</li>
+<li>   unique：唯一索引，默认false</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定义模型</span></span><br><span class="line"><span class="keyword">const</span> <span class="title class_">User</span> = sequelize.<span class="title function_">define</span>(</span><br><span class="line">  <span class="string">&#x27;user&#x27;</span>,</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="attr">id</span>: &#123;</span><br><span class="line">      <span class="attr">type</span>: <span class="title class_">Sequelize</span>.<span class="title function_">INTEGER</span>(<span class="number">11</span>),</span><br><span class="line">      <span class="attr">allowNull</span>: <span class="literal">false</span>,</span><br><span class="line">      <span class="attr">autoIncrement</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="attr">primaryKey</span>: <span class="literal">true</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">username</span>: <span class="title class_">Sequelize</span>.<span class="property">STRING</span>,</span><br><span class="line">    <span class="attr">age</span>: <span class="title class_">Sequelize</span>.<span class="property">TINYINT</span>,</span><br><span class="line">    <span class="attr">gender</span>: <span class="title class_">Sequelize</span>.<span class="property">TINYINT</span></span><br><span class="line">  &#125;,</span><br><span class="line">  &#123;</span><br><span class="line">     <span class="comment">// 用来设置字段以外的其他信息</span></span><br><span class="line">        <span class="attr">timestamps</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="attr">paranoid</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="attr">freezeTableName</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="attr">tableName</span>: <span class="string">&#x27;user&#x27;</span>,</span><br><span class="line">        <span class="attr">indexes</span>: [</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="attr">name</span>: <span class="string">&#x27;uname&#x27;</span>,</span><br><span class="line">                <span class="attr">fields</span>: [<span class="string">&#x27;username&#x27;</span>]</span><br><span class="line">            &#125;,</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="attr">name</span>: <span class="string">&#x27;age&#x27;</span>,</span><br><span class="line">                <span class="attr">fields</span>: [<span class="string">&#x27;age&#x27;</span>]</span><br><span class="line">            &#125;</span><br><span class="line">        ] </span><br><span class="line">  &#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h4 id="增删改查"><a href="#增删改查" class="headerlink" title="增删改查"></a>增删改查</h4><h4 id="查询"><a href="#查询" class="headerlink" title="查询"></a>查询</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 查询所有</span></span><br><span class="line"><span class="title class_">User</span>.<span class="title function_">findAll</span>().<span class="title function_">then</span>(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">  res.<span class="title function_">forEach</span>(<span class="function"><span class="params">item</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(item.<span class="title function_">get</span>(<span class="string">&#x27;username&#x27;</span>))</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 查询id等于1的数据</span></span><br><span class="line"><span class="title class_">USer</span>.<span class="title function_">findOne</span>(&#123;</span><br><span class="line">    <span class="attr">where</span>:&#123;</span><br><span class="line">        <span class="attr">id</span>:<span class="number">1</span></span><br><span class="line">    &#125;，</span><br><span class="line">    <span class="attr">limit</span>:<span class="number">10</span></span><br><span class="line">&#125;).<span class="title function_">then</span>(<span class="function"><span class="params">res</span>=&gt;</span>&#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="property">log</span></span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">//查询大于小于某个值的数据（gt:&gt; lt:&lt; eq:=  gte:&gt;= ne:!=)</span></span><br><span class="line">  <span class="attr">where</span>: &#123;</span><br><span class="line">    <span class="comment">// username: &#x27;Reci&#x27;    // username = &#x27;Reci&#x27;</span></span><br><span class="line">    <span class="attr">username</span>: &#123;</span><br><span class="line">    [<span class="title class_">Sequelize</span>.<span class="property">Op</span>.<span class="property">eq</span>]: <span class="string">&#x27;Reci&#x27;</span>   <span class="comment">//和上面一致</span></span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    <span class="attr">age</span>: &#123;</span><br><span class="line">        [<span class="title class_">Sequelize</span>.<span class="property">Op</span>.<span class="property">gte</span>]: <span class="number">30</span></span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;</span><br><span class="line">    </span><br><span class="line"><span class="comment">//多条件查询(or,and)</span></span><br><span class="line"><span class="attr">where</span>: &#123;</span><br><span class="line">    [<span class="title class_">Sequelize</span>.<span class="property">Op</span>.<span class="property">or</span>]: [</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">age</span>: &#123;</span><br><span class="line">          [<span class="title class_">Sequelize</span>.<span class="property">Op</span>.<span class="property">gt</span>]: <span class="number">30</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">gender</span>: <span class="string">&#x27;女&#x27;</span></span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br><span class="line">    </span><br><span class="line"><span class="comment">// 限制个数</span></span><br><span class="line"><span class="keyword">await</span> <span class="title class_">UserModel</span>.<span class="title function_">findAll</span>(&#123;</span><br><span class="line">    <span class="attr">offset</span>:<span class="number">2</span>, <span class="comment">//偏移，这里就表示 limit 2,2</span></span><br><span class="line">    <span class="attr">limit</span>:<span class="number">2</span></span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 排序</span></span><br><span class="line"><span class="keyword">await</span> <span class="title class_">UserModel</span>.<span class="title function_">findAll</span>(&#123;</span><br><span class="line">    <span class="attr">order</span>:[</span><br><span class="line">        [<span class="string">&#x27;age&#x27;</span>,<span class="string">&#x27;desc&#x27;</span>]</span><br><span class="line">    ]</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 统计数量</span></span><br><span class="line"><span class="keyword">let</span> rs = <span class="keyword">await</span> <span class="title class_">UserModel</span>.<span class="title function_">count</span>()</span><br><span class="line"><span class="keyword">let</span> rs = <span class="keyword">await</span> <span class="title class_">UserModel</span>.<span class="title function_">sum</span>(<span class="string">&#x27;age&#x27;</span>,&#123;</span><br><span class="line">    <span class="attr">where</span>:&#123;</span><br><span class="line">        <span class="attr">gener</span>:<span class="string">&#x27;男&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 关联查询</span></span><br><span class="line">    <span class="comment">// 先定义另一个表模型</span></span><br><span class="line">   <span class="keyword">const</span> <span class="title class_">MessageModel</span> = sequelize.<span class="title function_">define</span>(<span class="string">&#x27;message&#x27;</span>, &#123;</span><br><span class="line">        <span class="attr">id</span>: &#123;</span><br><span class="line">            <span class="attr">type</span>: <span class="title class_">Sequelize</span>.<span class="title function_">INTEGER</span>(<span class="number">10</span>),</span><br><span class="line">            <span class="attr">primaryKey</span>: <span class="literal">true</span>,</span><br><span class="line">            <span class="attr">allowNull</span>: <span class="literal">true</span>,</span><br><span class="line">            <span class="attr">autoIncrement</span>: <span class="literal">true</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">uid</span>: &#123;  <span class="comment">// 其他的表的字段，把当前字段定义为外键</span></span><br><span class="line">            <span class="attr">type</span>: <span class="title class_">Sequelize</span>.<span class="title function_">INTEGER</span>(<span class="number">10</span>),</span><br><span class="line">            <span class="attr">defaultValue</span>: <span class="number">0</span>,</span><br><span class="line">            <span class="attr">references</span>: &#123;</span><br><span class="line">                <span class="attr">model</span>: <span class="title class_">UserModel</span>,</span><br><span class="line">                <span class="attr">key</span>: <span class="string">&#x27;id&#x27;</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">content</span>: &#123;</span><br><span class="line">            <span class="attr">type</span>: <span class="title class_">Sequelize</span>.<span class="title function_">STRING</span>(<span class="number">255</span>),</span><br><span class="line">            <span class="attr">allowNull</span>: <span class="literal">true</span>,</span><br><span class="line">            <span class="attr">defaultValue</span>: <span class="string">&#x27;&#x27;</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;, &#123;</span><br><span class="line">        <span class="attr">timestamps</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="attr">freezeTableName</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="attr">tableName</span>: <span class="string">&#x27;message&#x27;</span></span><br><span class="line">    &#125;);</span><br><span class="line">    </span><br><span class="line">  <span class="comment">// 属于关系</span></span><br><span class="line">  <span class="title class_">MessageModel</span>.<span class="title function_">belongsTo</span>(<span class="title class_">UserModel</span>, &#123;</span><br><span class="line">      <span class="attr">foreignKey</span>: <span class="string">&#x27;uid&#x27;</span></span><br><span class="line">  &#125;)</span><br><span class="line">    </span><br><span class="line">  <span class="keyword">let</span> data2 = <span class="keyword">await</span> <span class="title class_">MessageModel</span>.<span class="title function_">findById</span>(<span class="number">1</span>, &#123;</span><br><span class="line">      <span class="attr">include</span>: [<span class="title class_">UserModel</span>]</span><br><span class="line">  &#125;)</span><br><span class="line">    </span><br><span class="line">  <span class="comment">// 一对多关系</span></span><br><span class="line">  <span class="title class_">UserModel</span>.<span class="title function_">hasMany</span>(<span class="title class_">MessageModel</span>, &#123;</span><br><span class="line">      <span class="attr">foreignKey</span>: <span class="string">&#x27;uid&#x27;</span></span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">let</span> data3 = <span class="keyword">await</span> <span class="title class_">UserModel</span>.<span class="title function_">findById</span>(<span class="number">4</span>, &#123;</span><br><span class="line">      <span class="attr">include</span>: [<span class="title class_">MessageModel</span>]</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(data3);</span><br></pre></td></tr></table></figure>
+
+<h4 id="增加"><a href="#增加" class="headerlink" title="增加"></a>增加</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 直接new也是可以的，let user1 = new User(&#123;&#125;)</span></span><br><span class="line"><span class="keyword">let</span> user1 = <span class="title class_">User</span>.<span class="title function_">build</span>(&#123;</span><br><span class="line">  <span class="attr">username</span>: <span class="string">&#x27;周瑜&#x27;</span>,</span><br><span class="line">  <span class="attr">age</span>: <span class="number">23</span>,</span><br><span class="line">  <span class="attr">gender</span>: <span class="number">1</span></span><br><span class="line">&#125;)</span><br><span class="line">user1.<span class="title function_">set</span>(<span class="string">&#x27;age&#x27;</span>, <span class="number">25</span>)</span><br><span class="line">user1.<span class="title function_">save</span>()</span><br></pre></td></tr></table></figure>
+
+<h4 id="更新"><a href="#更新" class="headerlink" title="更新"></a>更新</h4><p>模型对象.update(updates: Object)</p>
+<ul>
+<li>updates：要更新的字段，调用该方法等同于调用.set()然后.save()</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="title class_">Kimoo</span> = <span class="keyword">await</span> <span class="title class_">User</span>.<span class="title function_">findById</span>(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="title class_">Kimoo</span>.<span class="title function_">set</span>(<span class="string">&#x27;age&#x27;</span>,<span class="number">31</span>)</span><br><span class="line"><span class="keyword">await</span> <span class="title class_">Kimoo</span>.<span class="title function_">save</span>()</span><br><span class="line"><span class="comment">// 或者</span></span><br><span class="line"><span class="keyword">await</span> <span class="title class_">Kimoo</span>.<span class="title function_">update</span>(&#123;</span><br><span class="line">    <span class="attr">age</span>:<span class="number">32</span></span><br><span class="line">&#125;)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h4><p>模型对象.destroy()</p>
+<ul>
+<li>销毁该实例（假删除或真删除）</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Kimoo</span>.<span class="title function_">destroy</span>()</span><br></pre></td></tr></table></figure>
+
+<h4 id="数据库迁移"><a href="#数据库迁移" class="headerlink" title="数据库迁移"></a>数据库迁移</h4><ul>
+<li>首先安装 sequelize-cli</li>
+<li>运行命令初始化 sequelize init <ul>
+<li>config:包含配置文件</li>
+<li>models:包含项目里所有的模型</li>
+<li>migrations:包含所有迁移文件（数据库结构文件,就是修改数据库结构）</li>
+<li>seeders:包含所有种子文件（具体的数据文件）</li>
+</ul>
+</li>
+<li>创建数据库: sequelize db:create</li>
+<li>创建模型：sequelize model:create –name User –attributes username:STRING</li>
+<li>运行迁移文件：sequelize db:migrate  (不会重复执行)<ul>
+<li>查看迁移状态 sequelize   db:migrate:status</li>
+<li>撤销迁移操作 db:migrate:undo</li>
+</ul>
+</li>
+<li>创建种子文件：squelize seed:create –name userTest</li>
+</ul>
+<h4 id="根据数据库自动生成模型"><a href="#根据数据库自动生成模型" class="headerlink" title="根据数据库自动生成模型"></a>根据数据库自动生成模型</h4><ul>
+<li>下载 sequelize-auto ： <code>yarn add global sequelize-auto</code></li>
+<li><code>sequelize-auto -h [localhost] -d [login_demo 数据库名] -u root -x [root 密码] -p 3306 [-t user 表名]</code></li>
+</ul>
+<h4 id="禁用timestamps-false"><a href="#禁用timestamps-false" class="headerlink" title="禁用timestamps: false"></a>禁用<code>timestamps: false</code></h4></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Sniper</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://zhoujunxiong.gitee.com/2018/12/31/%E6%95%B0%E6%8D%AE%E5%BA%93/sequelize/">http://zhoujunxiong.gitee.com/2018/12/31/%E6%95%B0%E6%8D%AE%E5%BA%93/sequelize/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://zhoujunxiong.gitee.com" target="_blank">Sniper</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></div><div class="post_share"><div class="social-share" data-image="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.2872304077628476" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2019/01/01/flutter/flutter%E4%B9%8BText/"><img class="prev-cover" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.1722598448995949" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">flutter之Text</div></div></a></div><div class="next-post pull-right"><a href="/2018/12/26/PHP/PHP7%E6%96%B0%E7%89%B9%E6%80%A7/"><img class="next-cover" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.7569830173612793" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">PHP7新特性</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2018/07/27/数据库/MongoDB之创建/" title="MongoDB之创建"><img class="cover" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&format=images0.7978900012378407" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-07-27</div><div class="title">MongoDB之创建</div></div></a></div><div><a href="/2019/02/05/数据库/MongoDB之增删改查/" title="MongoDB之增删改查"><img class="cover" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&format=images0.09036337286818452" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2019-02-05</div><div class="title">MongoDB之增删改查</div></div></a></div><div><a href="/2019/03/28/数据库/MongoDB之索引/" title="MongoDB之索引"><img class="cover" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&format=images0.007132850644808952" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2019-03-28</div><div class="title">MongoDB之索引</div></div></a></div><div><a href="/2019/02/25/数据库/MongoDB之聚合查询/" title="MongoDB之聚合查询"><img class="cover" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&format=images0.9562448215496548" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2019-02-25</div><div class="title">MongoDB之聚合查询</div></div></a></div><div><a href="/2018/04/20/数据库/MySql之再学习/" title="MySql之再学习"><img class="cover" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&format=images0.24484405466026016" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-04-20</div><div class="title">MySql之再学习</div></div></a></div><div><a href="/2019/02/02/数据库/数据库概念/" title="数据库概念"><img class="cover" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&format=images0.8079325243752808" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2019-02-02</div><div class="title">数据库概念</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-info-avatar is-center"><img class="avatar-img" data-lazy-src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">Sniper</div><div class="author-info__description"></div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">296</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">61</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">47</div></a></div></div><div class="card-info-social-icons is-center"><a class="social-icon" href="/atom.xml" target="_blank" title="rss-atom"><i class="fas fa-rss"></i></a><a class="social-icon" href="/rss2.xml" target="_blank" title="rss-rss2"><i class="fas fa-rss-square"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">这个博客还有点儿意思吧</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%89%E8%A3%85"><span class="toc-number">1.</span> <span class="toc-text">安装</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BF%9E%E6%8E%A5mysql"><span class="toc-number">2.</span> <span class="toc-text">连接mysql</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89%E6%A8%A1%E5%9E%8B"><span class="toc-number">3.</span> <span class="toc-text">定义模型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A2%9E%E5%88%A0%E6%94%B9%E6%9F%A5"><span class="toc-number">4.</span> <span class="toc-text">增删改查</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2"><span class="toc-number">5.</span> <span class="toc-text">查询</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A2%9E%E5%8A%A0"><span class="toc-number">6.</span> <span class="toc-text">增加</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9B%B4%E6%96%B0"><span class="toc-number">7.</span> <span class="toc-text">更新</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%A0%E9%99%A4"><span class="toc-number">8.</span> <span class="toc-text">删除</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%81%E7%A7%BB"><span class="toc-number">9.</span> <span class="toc-text">数据库迁移</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A0%B9%E6%8D%AE%E6%95%B0%E6%8D%AE%E5%BA%93%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90%E6%A8%A1%E5%9E%8B"><span class="toc-number">10.</span> <span class="toc-text">根据数据库自动生成模型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A6%81%E7%94%A8timestamps-false"><span class="toc-number">11.</span> <span class="toc-text">禁用timestamps: false</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/03/26/nodejs/koa%E6%BA%90%E7%A0%81%E5%86%8D%E8%AF%BB/" title="koa源码再读"><img data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.4963417575252631" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="koa源码再读"/></a><div class="content"><a class="title" href="/2022/03/26/nodejs/koa%E6%BA%90%E7%A0%81%E5%86%8D%E8%AF%BB/" title="koa源码再读">koa源码再读</a><time datetime="2022-03-26T01:39:44.000Z" title="发表于 2022-03-26 09:39:44">2022-03-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/03/18/%E5%89%8D%E7%AB%AF/Typescript/Typescript%E4%B9%8B%E5%B8%B8%E8%A7%81%E5%A5%97%E8%B7%AF/" title="Typescript之常见套路"><img data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.9584090414206019" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Typescript之常见套路"/></a><div class="content"><a class="title" href="/2022/03/18/%E5%89%8D%E7%AB%AF/Typescript/Typescript%E4%B9%8B%E5%B8%B8%E8%A7%81%E5%A5%97%E8%B7%AF/" title="Typescript之常见套路">Typescript之常见套路</a><time datetime="2022-03-18T10:53:49.000Z" title="发表于 2022-03-18 18:53:49">2022-03-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/02/13/%E5%89%8D%E7%AB%AF/JS%E5%8E%9F%E7%90%86/V8%E4%B8%AD%E7%9A%84JS%E6%95%B0%E7%BB%84/" title="V8中的JS数组"><img data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.26310617936839553" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="V8中的JS数组"/></a><div class="content"><a class="title" href="/2022/02/13/%E5%89%8D%E7%AB%AF/JS%E5%8E%9F%E7%90%86/V8%E4%B8%AD%E7%9A%84JS%E6%95%B0%E7%BB%84/" title="V8中的JS数组">V8中的JS数组</a><time datetime="2022-02-13T08:12:44.000Z" title="发表于 2022-02-13 16:12:44">2022-02-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/02/06/%E5%89%8D%E7%AB%AF/%E6%A1%86%E6%9E%B6/Nuxt3/" title="Nuxt3"><img data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.3676739232204689" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Nuxt3"/></a><div class="content"><a class="title" href="/2022/02/06/%E5%89%8D%E7%AB%AF/%E6%A1%86%E6%9E%B6/Nuxt3/" title="Nuxt3">Nuxt3</a><time datetime="2022-02-06T14:00:30.000Z" title="发表于 2022-02-06 22:00:30">2022-02-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/02/04/flutter/flutter%E4%B9%8Bkey/" title="flutter之animation"><img data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.9126924101130238" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="flutter之animation"/></a><div class="content"><a class="title" href="/2022/02/04/flutter/flutter%E4%B9%8Bkey/" title="flutter之animation">flutter之animation</a><time datetime="2022-02-04T00:06:27.000Z" title="发表于 2022-02-04 08:06:27">2022-02-04</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2018 - 2022 By Sniper</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="/js/search/local-search.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> {preloader.endLoading()})</script><div class="js-pjax"><script>function loadValine () {
+  function initValine () {
+    let initData = {
+      el: '#vcomment',
+      appId: 'cwRCUoMavhC2YwPVr7FS2gq0-gzGzoHsz',
+      appKey: 'sqKV8HVVmhAbpKiqokLJUDLU',
+      placeholder: '来，谈谈你的梦想',
+      avatar: 'monsterid',
+      meta: 'nick,mail,link'.split(','),
+      pageSize: '10',
+      lang: 'zh-CN',
+      recordIP: false,
+      serverURLs: 'https://cwrcuoma.lc-cn-n1-shared.com',
+      emojiCDN: '',
+      emojiMaps: "",
+      enableQQ: false,
+      path: window.location.pathname,
+    }
+
+    if (true) { 
+      initData.requiredFields= ('nick'.split(','))
+    }
+    
+    if (false) {
+      const otherData = false
+      initData = Object.assign(initData, otherData)
+    }
+    
+    const valine = new Valine(initData)
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !false) {
+  if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.17.0/js/md5.min.js"></script><script>window.addEventListener('load', () => {
+  const changeContent = (content) => {
+    if (content === '') return content
+
+    content = content.replace(/<[^>]+>/g,"") // remove html tag
+    content = content.replace(/(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|jpeg|gif|png|webp)/g, '') // remove image link
+    content = content.replace(/(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi, '') // remove url
+
+    if (content.length > 150) {
+      content = content.substring(0,150) + '...'
+    }
+    return content
+  }
+
+  const getIcon = (icon, mail) => {
+    if (icon) return icon
+    
+    let defaultIcon = '?d=monsterid'
+    let iconUrl = `https://gravatar.loli.net/avatar/${md5(mail.toLowerCase()) + defaultIcon}`
+    return iconUrl
+  }
+
+  const generateHtml = array => {
+    let result = ''
+
+    if (array.length) {
+      for (let i = 0; i < array.length; i++) {
+        result += '<div class=\'aside-list-item\'>'
+
+        if (true) {
+          let name = 'src'
+          if(true) {
+            name = 'data-lazy-src'
+          }
+          result += `<a href='${array[i].url}' class="thumbnail"><img ${name}='${getIcon(array[i].avatar, array[i].mail)}' alt='${array[i].nick}'></a>`
+        }
+
+        result += `<div class='content'>
+        <a class='comment' href='${array[i].url}'>${array[i].content}</a>
+        <div class='name'><span>${array[i].nick}</span><time> / ${btf.diffDate(array[i].date, true)}</time></div>
+        </div></div>`
+      }
+    } else {
+      result += '没有评论'
+    }
+
+    let $dom = document.querySelector('#card-newest-comments .aside-list')
+    $dom.innerHTML= result
+    window.lazyLoadInstance && window.lazyLoadInstance.update()
+    window.pjax && window.pjax.refresh($dom)
+  }
+
+  const getComment = () => {
+      let serverURL = ''
+      if (true) {
+        serverURL = 'https://cwrcuoma.lc-cn-n1-shared.com'
+      } else {
+        serverURL = 'https://cwRCUoMa.api.lncldglobal.com'
+      }
+
+    var settings = {
+      "method": "GET",
+      "headers": {
+        "X-LC-Id": 'cwRCUoMavhC2YwPVr7FS2gq0-gzGzoHsz',
+        "X-LC-Key": 'sqKV8HVVmhAbpKiqokLJUDLU',
+        "Content-Type": "application/json"
+      },
+    }
+
+    fetch(`${serverURL}/1.1/classes/Comment?limit=6&order=-createdAt`,settings)
+      .then(response => response.json())
+      .then(data => {
+        const valineArray = data.results.map(function (e) {
+          return {
+            'avatar': e.QQAvatar,
+            'content': changeContent(e.comment),
+            'mail': e.mail,
+            'nick': e.nick,
+            'url': e.url + '#' + e.objectId,
+            'date': e.createdAt,
+          }
+        })
+        saveToLocal.set('leancloud-newest-comments', JSON.stringify(valineArray), 10/(60*24))
+        generateHtml(valineArray)
+      }).catch(e => {
+        const $dom = document.querySelector('#card-newest-comments .aside-list')
+        $dom.innerHTML= "无法获取评论，请确认相关配置是否正确"
+      }) 
+  }
+
+  const newestCommentInit = () => {
+    if (document.querySelector('#card-newest-comments .aside-list')) {
+      const data = saveToLocal.get('leancloud-newest-comments')
+      if (data) {
+        generateHtml(JSON.parse(data))
+      } else {
+        getComment()
+      }
+    }
+  }
+
+  newestCommentInit()
+  document.addEventListener('pjax:complete', newestCommentInit)
+})</script><div class="aplayer no-destroy" data-id="6587475516" data-server="netease" data-type="playlist" data-fixed="true" data-mini="true" data-listFolded="false" data-order="random" data-preload="none" data-autoplay="false" data-lrctype="1" muted></div><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/gh/metowolf/MetingJS@1.2/dist/Meting.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = [
+  'title',
+  '#config_change',
+  '#body-wrap',
+  '#rightside-config-hide',
+  '#rightside-config-show',
+  '.js-pjax'
+]
+
+if (false) {
+  pjaxSelectors.unshift('meta[property="og:image"]', 'meta[property="og:title"]', 'meta[property="og:url"]')
+}
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  if (typeof gtag === 'function') {
+    gtag('config', '', {'page_path': window.location.pathname});
+  }
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // Analytics
+  if (false) {
+    MtaH5.pgv()
+  }
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+
+document.addEventListener('pjax:send', function () {
+  typeof preloader === 'object' && preloader.initLoading()
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+})</script></div></body></html>

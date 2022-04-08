@@ -1,0 +1,429 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>husky与lint-staged | Sniper</title><meta name="keywords" content="前端,lint"><meta name="author" content="Sniper"><meta name="copyright" content="Sniper"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="首先是eslinteslint本身配置非常简单，直接引入yarn add eslint,添加配置文件.eslintrc.js 1234567891011121314151617module.exports &#x3D; &amp;#123;    &amp;#x27;env&amp;#x27;: &amp;#123;        &amp;#x27;browser&amp;#x27;: true,        &amp;#x27;es2021&amp;#x27;:">
+<meta property="og:type" content="article">
+<meta property="og:title" content="husky与lint-staged">
+<meta property="og:url" content="http://zhoujunxiong.gitee.com/2020/10/16/%E5%89%8D%E7%AB%AF/%E6%A1%86%E6%9E%B6/eslint%E4%B8%8Ehusky/index.html">
+<meta property="og:site_name" content="Sniper">
+<meta property="og:description" content="首先是eslinteslint本身配置非常简单，直接引入yarn add eslint,添加配置文件.eslintrc.js 1234567891011121314151617module.exports &#x3D; &amp;#123;    &amp;#x27;env&amp;#x27;: &amp;#123;        &amp;#x27;browser&amp;#x27;: true,        &amp;#x27;es2021&amp;#x27;:">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://api.btstu.cn/sjbz/api.php?lx=dongman&format=images0.24499450757491226">
+<meta property="article:published_time" content="2020-10-16T03:02:25.000Z">
+<meta property="article:modified_time" content="2022-04-06T14:27:38.599Z">
+<meta property="article:author" content="Sniper">
+<meta property="article:tag" content="前端">
+<meta property="article:tag" content="lint">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://api.btstu.cn/sjbz/api.php?lx=dongman&format=images0.24499450757491226"><link rel="shortcut icon" href="https://gitee.com/zhoujunxiong/zhoujunxiong.back/raw/master/favicon.ico"><link rel="canonical" href="http://zhoujunxiong.gitee.com/2020/10/16/%E5%89%8D%E7%AB%AF/%E6%A1%86%E6%9E%B6/eslint%E4%B8%8Ehusky/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}
+
+// https://stackoverflow.com/questions/16839698/jquery-getscript-alternative-in-native-javascript
+const getScript = url => new Promise((resolve, reject) => {
+  const script = document.createElement('script')
+  script.src = url
+  script.async = true
+  script.onerror = reject
+  script.onload = script.onreadystatechange = function() {
+    const loadState = this.readyState
+    if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+    script.onload = script.onreadystatechange = null
+    resolve()
+  }
+  document.head.appendChild(script)
+})</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-04-06 22:27:38'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><link rel="stylesheet" href="/css/custom.css"<meta name="generator" content="Hexo 5.4.1"><link rel="alternate" href="/atom.xml" title="Sniper" type="application/atom+xml">
+<link rel="alternate" href="/rss2.xml" title="Sniper" type="application/rss+xml">
+</head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div id="loader-wrapper"><div id="loader"></div></div><div class="loader"><div class="inner one"></div><div class="inner two"></div><div class="inner three"></div></div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" data-lazy-src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">296</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">61</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">47</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标籤</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.24499450757491226)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Sniper</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标籤</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">husky与lint-staged</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-10-16T03:02:25.000Z" title="发表于 2020-10-16 11:02:25">2020-10-16</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-04-06T14:27:38.599Z" title="更新于 2022-04-06 22:27:38">2022-04-06</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-commentcount"><i class="far fa-comments fa-fw post-meta-icon"></i><span class="post-meta-label">评论数:</span><a href="/2020/10/16/%E5%89%8D%E7%AB%AF/%E6%A1%86%E6%9E%B6/eslint%E4%B8%8Ehusky/#post-comment" itemprop="discussionUrl"><span class="valine-comment-count" data-xid="/2020/10/16/%E5%89%8D%E7%AB%AF/%E6%A1%86%E6%9E%B6/eslint%E4%B8%8Ehusky/" itemprop="commentCount"></span></a></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h4 id="首先是eslint"><a href="#首先是eslint" class="headerlink" title="首先是eslint"></a>首先是eslint</h4><p><code>eslint</code>本身配置非常简单，直接引入<code>yarn add eslint</code>,添加配置文件<code>.eslintrc.js</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">    <span class="string">&#x27;env&#x27;</span>: &#123;</span><br><span class="line">        <span class="string">&#x27;browser&#x27;</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="string">&#x27;es2021&#x27;</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="string">&#x27;node&#x27;</span>: <span class="literal">true</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">&#x27;extends&#x27;</span>: <span class="string">&#x27;eslint:recommended&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;parserOptions&#x27;</span>: &#123;</span><br><span class="line">        <span class="string">&#x27;ecmaVersion&#x27;</span>: <span class="number">12</span>,</span><br><span class="line">        <span class="string">&#x27;sourceType&#x27;</span>: <span class="string">&#x27;module&#x27;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">rules</span>: &#123;</span><br><span class="line">      <span class="string">&#x27;no-debugger&#x27;</span>: <span class="string">&#x27;error&#x27;</span>, <span class="comment">// 禁止在代码中使用 debugger</span></span><br><span class="line">      <span class="attr">quotes</span>: [<span class="string">&#x27;error&#x27;</span>, <span class="string">&#x27;single&#x27;</span>], <span class="comment">// 单引号</span></span><br><span class="line">      <span class="attr">semi</span>: [<span class="string">&#x27;error&#x27;</span>, <span class="string">&#x27;always&#x27;</span>] <span class="comment">// 代码需要以分号结尾</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>extends</code>可以继承别人的规则使用，<code>eslint:recommended</code>是使用默认的eslint自带规则</li>
+<li><code>env</code>是指定不同环境的变量，为你添加全局变量避免报错</li>
+<li><code>parserOptions</code>指定一些parse选项，比如你要使用ts还需要ts的parse</li>
+<li><code>rule</code>是指定一些规则</li>
+</ul>
+<h4 id="然后是husky与lint-staged"><a href="#然后是husky与lint-staged" class="headerlink" title="然后是husky与lint-staged"></a>然后是husky与lint-staged</h4><p><code>husky</code>是让你的代码在commit之前可以进行一些检查</p>
+<p><code>lint-staged</code>是让你只有提交的代码才进行检查</p>
+<blockquote>
+<p>新版本husky与老版本之间有一些区别</p>
+</blockquote>
+<h5 id="新版本配置"><a href="#新版本配置" class="headerlink" title="新版本配置"></a>新版本配置</h5><p>下载<code>husky</code>之后，运行下面命令</p>
+<ul>
+<li><code>npx husky install</code></li>
+<li><code>npx husky add .husky/pre-commit &quot;npm run pre-commit&quot;</code></li>
+</ul>
+<p>然后你需要在<code>package.json</code>添加</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;scripts&quot;</span>: &#123;</span><br><span class="line">  <span class="string">&quot;pre-commit&quot;</span>: <span class="string">&quot;lint-staged&quot;</span></span><br><span class="line">&#125;,</span><br><span class="line"><span class="string">&quot;lint-staged&quot;</span>: &#123;</span><br><span class="line">  <span class="string">&quot;./**.js&quot;</span>: [</span><br><span class="line">    <span class="string">&quot;eslint&quot;</span></span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="旧版本配置-4以及4以前"><a href="#旧版本配置-4以及4以前" class="headerlink" title="旧版本配置(4以及4以前)"></a>旧版本配置(4以及4以前)</h5><p>直接在<code>package.json</code>中添加就可以了</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">  <span class="string">&quot;husky&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;hooks&quot;</span>: &#123;</span><br><span class="line">      <span class="string">&quot;pre-commit&quot;</span>: <span class="string">&quot;lint-staged&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">&quot;lint-staged&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;./**.js&quot;</span>: [</span><br><span class="line">      <span class="string">&quot;eslint&quot;</span></span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="规则"><a href="#规则" class="headerlink" title="规则"></a>规则</h4><p><code>standard</code>需要使用额外的包<code>yarn add standard eslint-plugin-standard eslint-config-standard \-D </code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">  <span class="attr">root</span>: <span class="literal">true</span>,</span><br><span class="line">  <span class="attr">extends</span>: [<span class="string">&#x27;standard&#x27;</span>]</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p><code>airbnb</code>需要使用<code>eslint-config-airbnb</code>相关的包</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">  <span class="attr">root</span>: <span class="literal">true</span>,</span><br><span class="line">  <span class="attr">extends</span>: <span class="string">&#x27;airbnb&#x27;</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Sniper</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://zhoujunxiong.gitee.com/2020/10/16/%E5%89%8D%E7%AB%AF/%E6%A1%86%E6%9E%B6/eslint%E4%B8%8Ehusky/">http://zhoujunxiong.gitee.com/2020/10/16/%E5%89%8D%E7%AB%AF/%E6%A1%86%E6%9E%B6/eslint%E4%B8%8Ehusky/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://zhoujunxiong.gitee.com" target="_blank">Sniper</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%89%8D%E7%AB%AF/">前端</a><a class="post-meta__tags" href="/tags/lint/">lint</a></div><div class="post_share"><div class="social-share" data-image="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.24499450757491226" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2020/10/17/%E5%89%8D%E7%AB%AF/%E6%A1%86%E6%9E%B6/REACT/react%E4%B9%8B%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/"><img class="prev-cover" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.727912864540051" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">react之生命周期</div></div></a></div><div class="next-post pull-right"><a href="/2020/10/16/%E5%89%8D%E7%AB%AF/%E6%A1%86%E6%9E%B6/Eectron/electron%E5%85%A5%E9%97%A8/"><img class="next-cover" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.591546442427616" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">electron入门</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2020/09/21/前端/CSS/Bootstrap与移动端开发/" title="Bootstrap与移动端开发"><img class="cover" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&format=images0.013255071941886243" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-09-21</div><div class="title">Bootstrap与移动端开发</div></div></a></div><div><a href="/2020/06/23/前端/CSS/css世界/" title="css世界"><img class="cover" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&format=images0.8568882798740582" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-06-23</div><div class="title">css世界</div></div></a></div><div><a href="/2020/11/22/前端/CSS/css浮动终极解决方案/" title="css浮动终极解决方案"><img class="cover" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&format=images0.7905137813016672" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-11-22</div><div class="title">css浮动终极解决方案</div></div></a></div><div><a href="/2018/07/25/前端/CSS/css总结/" title="css总结"><img class="cover" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&format=images0.17963197687333454" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-07-25</div><div class="title">css总结</div></div></a></div><div><a href="/2020/07/27/前端/CSS/flex/" title="flex"><img class="cover" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&format=images0.19041066149493124" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-07-27</div><div class="title">flex</div></div></a></div><div><a href="/2020/06/29/前端/CSS/magin auto垂直居中原理/" title="magin auto垂直居中原理"><img class="cover" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&format=images0.22203944107068008" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-06-29</div><div class="title">magin auto垂直居中原理</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-info-avatar is-center"><img class="avatar-img" data-lazy-src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">Sniper</div><div class="author-info__description"></div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">296</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">61</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">47</div></a></div></div><div class="card-info-social-icons is-center"><a class="social-icon" href="/atom.xml" target="_blank" title="rss-atom"><i class="fas fa-rss"></i></a><a class="social-icon" href="/rss2.xml" target="_blank" title="rss-rss2"><i class="fas fa-rss-square"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">这个博客还有点儿意思吧</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%A6%96%E5%85%88%E6%98%AFeslint"><span class="toc-number">1.</span> <span class="toc-text">首先是eslint</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%84%B6%E5%90%8E%E6%98%AFhusky%E4%B8%8Elint-staged"><span class="toc-number">2.</span> <span class="toc-text">然后是husky与lint-staged</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%96%B0%E7%89%88%E6%9C%AC%E9%85%8D%E7%BD%AE"><span class="toc-number">2.1.</span> <span class="toc-text">新版本配置</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%97%A7%E7%89%88%E6%9C%AC%E9%85%8D%E7%BD%AE-4%E4%BB%A5%E5%8F%8A4%E4%BB%A5%E5%89%8D"><span class="toc-number">2.2.</span> <span class="toc-text">旧版本配置(4以及4以前)</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A7%84%E5%88%99"><span class="toc-number">3.</span> <span class="toc-text">规则</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/03/26/nodejs/koa%E6%BA%90%E7%A0%81%E5%86%8D%E8%AF%BB/" title="koa源码再读"><img data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.4963417575252631" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="koa源码再读"/></a><div class="content"><a class="title" href="/2022/03/26/nodejs/koa%E6%BA%90%E7%A0%81%E5%86%8D%E8%AF%BB/" title="koa源码再读">koa源码再读</a><time datetime="2022-03-26T01:39:44.000Z" title="发表于 2022-03-26 09:39:44">2022-03-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/03/18/%E5%89%8D%E7%AB%AF/Typescript/Typescript%E4%B9%8B%E5%B8%B8%E8%A7%81%E5%A5%97%E8%B7%AF/" title="Typescript之常见套路"><img data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.9584090414206019" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Typescript之常见套路"/></a><div class="content"><a class="title" href="/2022/03/18/%E5%89%8D%E7%AB%AF/Typescript/Typescript%E4%B9%8B%E5%B8%B8%E8%A7%81%E5%A5%97%E8%B7%AF/" title="Typescript之常见套路">Typescript之常见套路</a><time datetime="2022-03-18T10:53:49.000Z" title="发表于 2022-03-18 18:53:49">2022-03-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/02/13/%E5%89%8D%E7%AB%AF/JS%E5%8E%9F%E7%90%86/V8%E4%B8%AD%E7%9A%84JS%E6%95%B0%E7%BB%84/" title="V8中的JS数组"><img data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.26310617936839553" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="V8中的JS数组"/></a><div class="content"><a class="title" href="/2022/02/13/%E5%89%8D%E7%AB%AF/JS%E5%8E%9F%E7%90%86/V8%E4%B8%AD%E7%9A%84JS%E6%95%B0%E7%BB%84/" title="V8中的JS数组">V8中的JS数组</a><time datetime="2022-02-13T08:12:44.000Z" title="发表于 2022-02-13 16:12:44">2022-02-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/02/06/%E5%89%8D%E7%AB%AF/%E6%A1%86%E6%9E%B6/Nuxt3/" title="Nuxt3"><img data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.3676739232204689" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Nuxt3"/></a><div class="content"><a class="title" href="/2022/02/06/%E5%89%8D%E7%AB%AF/%E6%A1%86%E6%9E%B6/Nuxt3/" title="Nuxt3">Nuxt3</a><time datetime="2022-02-06T14:00:30.000Z" title="发表于 2022-02-06 22:00:30">2022-02-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/02/04/flutter/flutter%E4%B9%8Bkey/" title="flutter之animation"><img data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.9126924101130238" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="flutter之animation"/></a><div class="content"><a class="title" href="/2022/02/04/flutter/flutter%E4%B9%8Bkey/" title="flutter之animation">flutter之animation</a><time datetime="2022-02-04T00:06:27.000Z" title="发表于 2022-02-04 08:06:27">2022-02-04</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2018 - 2022 By Sniper</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="/js/search/local-search.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> {preloader.endLoading()})</script><div class="js-pjax"><script>function loadValine () {
+  function initValine () {
+    let initData = {
+      el: '#vcomment',
+      appId: 'cwRCUoMavhC2YwPVr7FS2gq0-gzGzoHsz',
+      appKey: 'sqKV8HVVmhAbpKiqokLJUDLU',
+      placeholder: '来，谈谈你的梦想',
+      avatar: 'monsterid',
+      meta: 'nick,mail,link'.split(','),
+      pageSize: '10',
+      lang: 'zh-CN',
+      recordIP: false,
+      serverURLs: 'https://cwrcuoma.lc-cn-n1-shared.com',
+      emojiCDN: '',
+      emojiMaps: "",
+      enableQQ: false,
+      path: window.location.pathname,
+    }
+
+    if (true) { 
+      initData.requiredFields= ('nick'.split(','))
+    }
+    
+    if (false) {
+      const otherData = false
+      initData = Object.assign(initData, otherData)
+    }
+    
+    const valine = new Valine(initData)
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !false) {
+  if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.17.0/js/md5.min.js"></script><script>window.addEventListener('load', () => {
+  const changeContent = (content) => {
+    if (content === '') return content
+
+    content = content.replace(/<[^>]+>/g,"") // remove html tag
+    content = content.replace(/(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|jpeg|gif|png|webp)/g, '') // remove image link
+    content = content.replace(/(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi, '') // remove url
+
+    if (content.length > 150) {
+      content = content.substring(0,150) + '...'
+    }
+    return content
+  }
+
+  const getIcon = (icon, mail) => {
+    if (icon) return icon
+    
+    let defaultIcon = '?d=monsterid'
+    let iconUrl = `https://gravatar.loli.net/avatar/${md5(mail.toLowerCase()) + defaultIcon}`
+    return iconUrl
+  }
+
+  const generateHtml = array => {
+    let result = ''
+
+    if (array.length) {
+      for (let i = 0; i < array.length; i++) {
+        result += '<div class=\'aside-list-item\'>'
+
+        if (true) {
+          let name = 'src'
+          if(true) {
+            name = 'data-lazy-src'
+          }
+          result += `<a href='${array[i].url}' class="thumbnail"><img ${name}='${getIcon(array[i].avatar, array[i].mail)}' alt='${array[i].nick}'></a>`
+        }
+
+        result += `<div class='content'>
+        <a class='comment' href='${array[i].url}'>${array[i].content}</a>
+        <div class='name'><span>${array[i].nick}</span><time> / ${btf.diffDate(array[i].date, true)}</time></div>
+        </div></div>`
+      }
+    } else {
+      result += '没有评论'
+    }
+
+    let $dom = document.querySelector('#card-newest-comments .aside-list')
+    $dom.innerHTML= result
+    window.lazyLoadInstance && window.lazyLoadInstance.update()
+    window.pjax && window.pjax.refresh($dom)
+  }
+
+  const getComment = () => {
+      let serverURL = ''
+      if (true) {
+        serverURL = 'https://cwrcuoma.lc-cn-n1-shared.com'
+      } else {
+        serverURL = 'https://cwRCUoMa.api.lncldglobal.com'
+      }
+
+    var settings = {
+      "method": "GET",
+      "headers": {
+        "X-LC-Id": 'cwRCUoMavhC2YwPVr7FS2gq0-gzGzoHsz',
+        "X-LC-Key": 'sqKV8HVVmhAbpKiqokLJUDLU',
+        "Content-Type": "application/json"
+      },
+    }
+
+    fetch(`${serverURL}/1.1/classes/Comment?limit=6&order=-createdAt`,settings)
+      .then(response => response.json())
+      .then(data => {
+        const valineArray = data.results.map(function (e) {
+          return {
+            'avatar': e.QQAvatar,
+            'content': changeContent(e.comment),
+            'mail': e.mail,
+            'nick': e.nick,
+            'url': e.url + '#' + e.objectId,
+            'date': e.createdAt,
+          }
+        })
+        saveToLocal.set('leancloud-newest-comments', JSON.stringify(valineArray), 10/(60*24))
+        generateHtml(valineArray)
+      }).catch(e => {
+        const $dom = document.querySelector('#card-newest-comments .aside-list')
+        $dom.innerHTML= "无法获取评论，请确认相关配置是否正确"
+      }) 
+  }
+
+  const newestCommentInit = () => {
+    if (document.querySelector('#card-newest-comments .aside-list')) {
+      const data = saveToLocal.get('leancloud-newest-comments')
+      if (data) {
+        generateHtml(JSON.parse(data))
+      } else {
+        getComment()
+      }
+    }
+  }
+
+  newestCommentInit()
+  document.addEventListener('pjax:complete', newestCommentInit)
+})</script><div class="aplayer no-destroy" data-id="6587475516" data-server="netease" data-type="playlist" data-fixed="true" data-mini="true" data-listFolded="false" data-order="random" data-preload="none" data-autoplay="false" data-lrctype="1" muted></div><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/gh/metowolf/MetingJS@1.2/dist/Meting.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = [
+  'title',
+  '#config_change',
+  '#body-wrap',
+  '#rightside-config-hide',
+  '#rightside-config-show',
+  '.js-pjax'
+]
+
+if (false) {
+  pjaxSelectors.unshift('meta[property="og:image"]', 'meta[property="og:title"]', 'meta[property="og:url"]')
+}
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  if (typeof gtag === 'function') {
+    gtag('config', '', {'page_path': window.location.pathname});
+  }
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // Analytics
+  if (false) {
+    MtaH5.pgv()
+  }
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+
+document.addEventListener('pjax:send', function () {
+  typeof preloader === 'object' && preloader.initLoading()
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+})</script></div></body></html>

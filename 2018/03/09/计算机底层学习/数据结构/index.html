@@ -1,0 +1,642 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>数据结构 | Sniper</title><meta name="keywords" content="Python,数据结构"><meta name="author" content="Sniper"><meta name="copyright" content="Sniper"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="数据结构是相互之间存在一种或多种特定关系的数据元素的集合 数据结构分类数据结构分为逻辑结构和存储结构 逻辑结构有：集合结构（仅同属一个集合），线性结构(一对一，栈，队列，数组等)，树形结构(一对多)，图形结构（多对多，网状结构） 存储结构有：顺序结构（顺序映像），链式结构（非顺序映像）,索引结构，散列结构 数据结构的基本概念 数据：所有能被计算机识别、存储和处理的符号的集合（包括数字、字符、声音、">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据结构">
+<meta property="og:url" content="http://zhoujunxiong.gitee.com/2018/03/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%BA%95%E5%B1%82%E5%AD%A6%E4%B9%A0/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/index.html">
+<meta property="og:site_name" content="Sniper">
+<meta property="og:description" content="数据结构是相互之间存在一种或多种特定关系的数据元素的集合 数据结构分类数据结构分为逻辑结构和存储结构 逻辑结构有：集合结构（仅同属一个集合），线性结构(一对一，栈，队列，数组等)，树形结构(一对多)，图形结构（多对多，网状结构） 存储结构有：顺序结构（顺序映像），链式结构（非顺序映像）,索引结构，散列结构 数据结构的基本概念 数据：所有能被计算机识别、存储和处理的符号的集合（包括数字、字符、声音、">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://api.btstu.cn/sjbz/api.php?lx=dongman&format=images0.16569056571786223">
+<meta property="article:published_time" content="2018-03-09T01:24:00.000Z">
+<meta property="article:modified_time" content="2022-04-06T14:27:38.607Z">
+<meta property="article:author" content="Sniper">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="数据结构">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://api.btstu.cn/sjbz/api.php?lx=dongman&format=images0.16569056571786223"><link rel="shortcut icon" href="https://gitee.com/zhoujunxiong/zhoujunxiong.back/raw/master/favicon.ico"><link rel="canonical" href="http://zhoujunxiong.gitee.com/2018/03/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%BA%95%E5%B1%82%E5%AD%A6%E4%B9%A0/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}
+
+// https://stackoverflow.com/questions/16839698/jquery-getscript-alternative-in-native-javascript
+const getScript = url => new Promise((resolve, reject) => {
+  const script = document.createElement('script')
+  script.src = url
+  script.async = true
+  script.onerror = reject
+  script.onload = script.onreadystatechange = function() {
+    const loadState = this.readyState
+    if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+    script.onload = script.onreadystatechange = null
+    resolve()
+  }
+  document.head.appendChild(script)
+})</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-04-06 22:27:38'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><link rel="stylesheet" href="/css/custom.css"<meta name="generator" content="Hexo 5.4.1"><link rel="alternate" href="/atom.xml" title="Sniper" type="application/atom+xml">
+<link rel="alternate" href="/rss2.xml" title="Sniper" type="application/rss+xml">
+</head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div id="loader-wrapper"><div id="loader"></div></div><div class="loader"><div class="inner one"></div><div class="inner two"></div><div class="inner three"></div></div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" data-lazy-src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">296</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">61</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">47</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标籤</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.16569056571786223)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Sniper</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标籤</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">数据结构</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2018-03-09T01:24:00.000Z" title="发表于 2018-03-09 09:24:00">2018-03-09</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-04-06T14:27:38.607Z" title="更新于 2022-04-06 22:27:38">2022-04-06</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Python/">Python</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-commentcount"><i class="far fa-comments fa-fw post-meta-icon"></i><span class="post-meta-label">评论数:</span><a href="/2018/03/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%BA%95%E5%B1%82%E5%AD%A6%E4%B9%A0/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/#post-comment" itemprop="discussionUrl"><span class="valine-comment-count" data-xid="/2018/03/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%BA%95%E5%B1%82%E5%AD%A6%E4%B9%A0/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" itemprop="commentCount"></span></a></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p><strong>数据结构是相互之间存在一种或多种特定关系的数据元素的集合</strong></p>
+<h4 id="数据结构分类"><a href="#数据结构分类" class="headerlink" title="数据结构分类"></a>数据结构分类</h4><p>数据结构分为逻辑结构和存储结构</p>
+<p><strong>逻辑结构有</strong>：集合结构（仅同属一个集合），线性结构(一对一，栈，队列，数组等)，树形结构(一对多)，图形结构（多对多，网状结构）</p>
+<p><strong>存储结构有</strong>：顺序结构（顺序映像），链式结构（非顺序映像）,索引结构，散列结构</p>
+<h4 id="数据结构的基本概念"><a href="#数据结构的基本概念" class="headerlink" title="数据结构的基本概念"></a>数据结构的基本概念</h4><ol>
+<li>数据：所有能被计算机识别、存储和处理的符号的集合（包括数字、字符、声音、图像等信息 ）。</li>
+<li>数据元素:是数据的基本单位，具有完整确定的实际意义。在计算机程序中通常作为一个整体进行考虑和处理。一个数据元素可由若干个数据项组成。</li>
+<li>数据项:构成数据元素的项目。它是数据不可分割的最小单位。</li>
+<li>数据类型：指一个类型和定义在这个类型上的操作集合。例：C 语言（基本类型：整型、浮点型、字符型等构造类型：数组、结构、联合、指针、枚举等）</li>
+<li>抽象数据元素：抽象定义的、没有实际含义的数据元素。</li>
+<li>抽象数据类型 ADT：用户自己定义的数据类型。</li>
+</ol>
+<h4 id="复杂度"><a href="#复杂度" class="headerlink" title="复杂度"></a>复杂度</h4><p><strong>时间复杂度和空间复杂度</strong></p>
+<p><strong>频度是指语句重复执行的次数</strong></p>
+<h4 id="线性表"><a href="#线性表" class="headerlink" title="线性表"></a>线性表</h4><p><strong>线性表顺序存储</strong></p>
+<p>顺序表的基本运算的复杂度</p>
+<p>•插入</p>
+<p>nT(n)=O(n) ，S(n)=O(1)</p>
+<p>•删除</p>
+<p>nT(n)=O(n) ，S(n)=O(1)</p>
+<h4 id="栈和队列"><a href="#栈和队列" class="headerlink" title="栈和队列"></a>栈和队列</h4><p><strong>栈 STACK</strong>： 先进后出</p>
+<p>栈的出栈规律：如果入栈是从小到大，在出栈序列中任选一个，这个值到最小值（只看这个值后面）一定是从大到小排列</p>
+<p><strong>队列 QUEUE</strong>：先进先出</p>
+<p><strong>队列的假溢</strong>：假溢是指队列在达到下标最大位置之后队列空间感觉用尽了，但是在数组的低端还有空闲空间，循环队列就是解决这个问题的。</p>
+<h4 id="数组和广义表"><a href="#数组和广义表" class="headerlink" title="数组和广义表"></a>数组和广义表</h4><p><strong>压缩存储</strong>：为多个值相同的非零元素只分配一个存储空间；对零元素不分配空间</p>
+<p>对于对称矩阵来说,只有算出前 i-1 行的总数就可以求出 dii 行第一个的值，加上 j 就可以求得 aij</p>
+<p>第 i 行 j 列 的下标为 k = i(i-1)/2+j-1</p>
+<p><strong>稀疏矩阵</strong> 第一个是横坐标，第二个是纵坐标，第三个是值</p>
+<p>( (1,2,12), (1,3,9), (3,1,-3), (3,6,14),</p>
+<p>​ (4,3,24), (5,2,18), (6,1,15), (6,4,-7) )</p>
+<p><strong>广义表</strong> 广义表是线性表的推广。</p>
+<p>L=(a1,a2,…,an ),n≥0,ai 可以是单元素，也可以是一个表。类似 pyhton 中的列表</p>
+<p>**表头(Head)**：第一个元素</p>
+<p>**表尾(Tail)**：除第一个元素外其余元素构成的表</p>
+<p><strong>广义表的深度和长度</strong> 长度指的是包含多少个元素，深度指的是一个元素中最多嵌套了多少层</p>
+<h4 id="二叉树"><a href="#二叉树" class="headerlink" title="二叉树"></a>二叉树</h4><p><strong>树的基本术语</strong></p>
+<ol>
+<li> 树的结点:包含一个 DE 和指向其子树的所有分支;</li>
+<li> 结点的度:一个结点拥有的子树的个数,度为零的结点称为叶结点;</li>
+<li>树的度:树中所有结点的度的最大值 Max(D(I))<br> 含义:树中最大分支数为树的度;</li>
+<li>结点的层次及树的深度:根为第一层,根的孩子为第二层,若某结点为第 k 层,则其孩子为 k+1 层.<br> 树中结点的最大层次称为树的深度或高度</li>
+<li>森林:是 m(m=0)棵互不相的树的集合<br> 森林与树概念相近,相互很容易转换.</li>
+</ol>
+<p>结论：一棵树的各结点的度之和，等于该树的分支数目。</p>
+<p><strong>二叉树的性质</strong></p>
+<p><strong>性质 1</strong>. 在二叉树的第 i 层上至多有 2^(i-1)个结点(i≥1)。</p>
+<p>​ M 叉树第 i 层有 m^(i - 1)个结点</p>
+<p><strong>性质 2</strong>. 深度为 k 的二叉树至多有 2^k-1 个结点(k≥1)。（深度一定，二叉树的最大结点数也确定）</p>
+<p>​ 深度为 k 的 M 叉树最多有 (M^k-1)/M-1 个结点</p>
+<p><strong>性质 3</strong>. 二叉树中,终端结点数 n0 与度为 2 的结点数 n2 有如下关系: n0=n2+1</p>
+<p><strong>性质 4</strong>. 结点数为 n 的完全二叉树，其深度为 log2n + 1</p>
+<p><strong>性质 5</strong>. 在按层序编号的 n 个结点的完全二叉树中，任意一结点 i(1≤i≤n)有：</p>
+<p>⑴ i=1 时，结点 i 是树的根；否则(i1)，结点 i 的双亲为结点 └i/2┘。</p>
+<p>⑵ 2i ＞ n 时，结点 i 无左孩子，为叶结点；否则，结点 i 的左孩子为结点 2i。</p>
+<p>⑶ 2i+1 ＞ n 时，结点 i 无右孩子；否则，结点 i 的右孩子为结点 2i+1。</p>
+<p><strong>性质 6</strong>. 含有 n 个结点的二叉链表中，有 n+1 个空指针。(二叉树的节点都有 2 个指针。每个节点有 0 个、1 个或 2 个空指针。对应的有 2 个、1 个、0 个非空指针。非空指针的总数就是二叉树的边的个数。所以空指针就是 2n-(n-1)=n+1 )</p>
+<p><strong>树的遍历</strong></p>
+<ol>
+<li> 先序遍历： 根左右 根据前序遍历的结果可知第一个访问的必定是 root 结点</li>
+<li> 中序遍历：左根右 根据中序遍历的结果，再结合前序遍历的 root 结点去划分 root 结点的左右子树</li>
+<li> 后序遍历：左右根 根据后序遍历的结果可知最后访问的必定是 root 结点</li>
+<li> 层序遍历：一层一层遍历 可知第一个访问的必定是 root 结点</li>
+<li> 树的性质 1：n0 = 1 +n2 + 2n3 + 3n4 + …. + (m-1)Nm</li>
+<li> 树的性质 2：第 i 层有 m^(i-1)个结点</li>
+<li> 树的性质 3：一共有 m^i-1/m-1 个结点</li>
+</ol>
+<p><strong>线索二叉树</strong></p>
+<ol>
+<li> 线索二叉树是为了解决 无法直接获得一个结点的前驱和后继</li>
+<li> 添加两个指针，LTag 和 RTag</li>
+<li> 若结点有左子树，则 lchild 指向左孩子，否则指向前驱，若结点有右子树，则 rchild 指向右孩子，否则指向后继（需要注意的是，这里的前驱后继指的是根据先序中序后序排列之后的）</li>
+</ol>
+<p><strong>树的存储</strong></p>
+<ol>
+<li><p>双亲表示法</p>
+<p> 采用一组地址连续的存储单元存储树的结点,通过保存每个结点的双亲结点的位置，表示树中结点之间的结构关系。</p>
+</li>
+<li><p>孩子表示法</p>
+<p> 通过保存每个结点的孩子结点的位置，表示树中结点之间的结构关系</p>
+</li>
+<li><p>孩子兄弟表示法</p>
+<p> 用二叉链表作为树的存贮结构。链表的两个指针域分别指向该结点的第一个孩子结点和其右边的下一个兄弟结点</p>
+</li>
+</ol>
+<p><strong>树的遍历</strong></p>
+<ol>
+<li><p> 树的先根遍历等同于对转换所得的二叉树进行先序遍历</p>
+</li>
+<li><p> 树的后根遍历等同于对转换所得的二叉树进行中序遍历</p>
+</li>
+</ol>
+<p><strong>森林和树的转换</strong></p>
+<ol>
+<li> 树转化为二叉树：树的左节点为孩子，右节点为兄弟</li>
+<li> 森林转化为二叉树：与树转化基本相同，但是森林左边的树作为顶点</li>
+</ol>
+<p><strong>最优二叉树</strong> 每次选择最小的两个作为叶节点，约定小的放左边，大的放右边</p>
+<p>**二叉排序树(二叉检索树、二叉查找树)BST ** ：折半查找法</p>
+<p>二叉排序树或者是一棵空树，或者是具有下列性质的二叉树：</p>
+<p>1)若其左子树不空，则左子树上所有结点的值均小于它的根结点的值；</p>
+<p>2)若其右子树不空，则右子树上所有结点的值均大于它的根结点的值</p>
+<p>3)其左、右子树也分别为二叉排序树</p>
+<p><strong>平衡二叉树 AVL</strong> ：</p>
+<p>定义：</p>
+<p>平衡二叉树或者是一棵空树，或者是具有下列性质的二叉树：它的左子树和右子树都是平衡二叉树，且左、右子树的深度之差的绝对值不超过</p>
+<p>**二叉排序树的删除运算 **：</p>
+<ol>
+<li><p> 若待删除的结点<em>p 是个叶子结点，则将</em>p 的父结点<em>f 的左孩子指针置空(若</em>p 是<em>f 的左孩子)，或者将</em>f 的右孩子指针置空(若<em>p 是</em>f 的右孩子)</p>
+</li>
+<li><p> 若待删除的结点<em>p 是仅有一个孩子的非叶子结点，则将</em>p 的左孩子(或右孩子)接为<em>p 的父结点</em>f 的左孩子(若<em>p 是</em>f 的左孩子)，或者将<em>p 的左孩子(或右孩子)接为</em>p 的父结点<em>f 的右孩子(若</em>p 是*f 的右孩子)</p>
+</li>
+<li><p>若待删除的结点*p 的两个子树都不为空，则有两种处理方式：</p>
+<p> 其一是令 p 的左子树为<em>f 的左子树，而</em>p 的右子树为*s 的右子树；示例</p>
+<p> 其二是令 p 的直接前驱或直接后继代替*p，然后再删除其直接前驱(或直接后继)（采用中序排列）</p>
+</li>
+</ol>
+<h4 id="图"><a href="#图" class="headerlink" title="图"></a>图</h4><p><strong>基本术语</strong></p>
+<ol>
+<li><p>邻接点及关联边</p>
+<p> 邻接点：边的两个顶点互为邻接点</p>
+<p> 关联边：若有边 e= (v, u), 则称顶点 v、u 关联边 e</p>
+</li>
+<li><p> 有向完全图：具有 n(n-1)个顶点的图，每两个定点具有两根线</p>
+</li>
+<li><p> 无向完全图：具有 n(n-1)/2 个顶点的图</p>
+</li>
+<li><p> 网：在图中赋予每条边或弧一定的权值，这种带权的图称为网</p>
+</li>
+<li><p>顶点的度、入度和出度 ：</p>
+<p> 顶点 V 的出度 = 以 V 为起点有向边数，</p>
+<p> 顶点 V 的入度 = 以 V 为终点有向边数，</p>
+<p> 顶点 V 的度 = V 的出度+V 的入度</p>
+</li>
+<li><p> 连通图、强连通图 ：</p>
+</li>
+</ol>
+<p><strong>数组表示法（邻接矩阵）</strong> 矩阵的横坐标表示起始点，纵坐标表示终点，值为距离</p>
+<p><img src= "/img/loading.svg" data-lazy-src="https://gitee.com/zhoujunxiong/BlogImg/raw/master/blog/20210911132705.png"></p>
+<p><strong>链表表示法（邻接表）</strong> 每个顶点都是一个链表，链表记录了与其相连接的顶点</p>
+<p><img src= "/img/loading.svg" data-lazy-src="https://gitee.com/zhoujunxiong/BlogImg/raw/master/blog/20210911132807.png"></p>
+<p><strong>遍历方法</strong>:深度优先遍历 DFS（类似树的先序遍历）和广度优先遍历 BFS（类似树的层次遍历）</p>
+<p><strong>连通图</strong> 无向图中任意两个顶点都存在路径到达，那么就是连通图，n 个顶点的连通图最少有 n-1 条边</p>
+<p><strong>强连通图</strong> 有向图中任意两个顶点都存在路径到达，那么就是强连通图，n 个顶点的强连通图最少有 n 条边（环状结构）</p>
+<p><strong>连通完全图</strong>：指顶点两两之间均有连接，n 个顶点有 n(n-1)/2 条边</p>
+<p><strong>强连通完全图</strong>：指顶点两两之间均有连接，n 个顶点有 n(n-1)条边</p>
+<p><strong>连通分量和强连通分量</strong> 就是指图中的部分顶点可以形成连通图，那么这个部分连通图就是一个连通分量或者强连通分量（官方解释：无（有）向图的极大连通子图称为图的连通分量（强连通分量） ）</p>
+<p><strong>生成树</strong> ： 一个连通图的生成树是一个极小连通子图，它含有图中全部顶点，但只有足以构成一棵树的 n-1 条边</p>
+<p><strong>赋权图</strong> ：指的是路径带权值的图</p>
+<p><strong>拓扑序列</strong>：如果图中从 V 到 W 有一条有向路径，则 V 一定排在 W 之前。满足此条件的顶点序列为一个拓扑序列</p>
+<p><strong>拓扑排序</strong>：将有向图中的顶点排成一个序列。</p>
+<p><strong>AOE 网</strong>：AOE 网(Activity On Edge Network)是边表示活动的网，AOE 网是带权有向无环图</p>
+<p><strong>AOV 网</strong>：AOV 网（Activity On Vertex NetWork）用顶点表示活动，边表示活动（顶点）发生的先后关系。AOE 网的边不设权值，若存在边则表示活动 a 必须发生在活动 b 之前。</p>
+<p><strong>关键活动</strong>：若活动 ak 的延迟时间等于 0，则称之为关键活动。</p>
+<p><strong>关键路径</strong>：从源点到汇点的所有路径中，长度最长的路径叫做关键路径</p>
+<p><strong>普里姆(Prim)算法</strong> ：每次选择与顶点相连接的最小的且没有回路的路径</p>
+<p><strong>克鲁斯卡尔(Kruskal)算法</strong> ：每次选择权重最小的并且不形成回路的路径，这样既可求得最小生成树</p>
+<h4 id="内部排序"><a href="#内部排序" class="headerlink" title="内部排序"></a>内部排序</h4><p><strong>稳定排序</strong>：所谓稳定的排序算法就是你排序之后相同大小的数值没有发生变化，比如： 2 4 4 1 6 3 排序之后第二 4 的位置依然在一个 4 之后就是他们两个没有发生位置变化;称之为稳定；</p>
+<p><strong>直接插入排序</strong></p>
+<ol>
+<li><p> 时间复杂度：O(n2)</p>
+</li>
+<li><p> 空间复杂度：O(1)</p>
+</li>
+<li><p> 是一种稳定的排序方法</p>
+</li>
+<li><p> 适用情况：元素数目少，或者元素的初始序列基本有序</p>
+</li>
+<li><p>n 在最好情况下(正序)，元素的移动次数为 0，比较次数为 n – 1；</p>
+<p> n 在最坏情况下(逆序)，元素的移动次数为(n+4)(n-1)/2，比较次数为 (n+2)(n-1)/2</p>
+</li>
+</ol>
+<p><strong>希尔排序(Shell’s Sort)也称为缩小增量排序</strong></p>
+<ol>
+<li> 时间复杂度：希尔排序的分析是一个复杂问题，增量序列的设置是关键，尚没有正式的依据说明如何设置最佳的增量序列，大量的实验表明希尔排序所需的比较和移动次数可达到 n1.3</li>
+<li> 希尔排序的空间复杂度为 O(1)</li>
+<li> 是不稳定的排序方法</li>
+</ol>
+<p><strong>冒泡排序</strong></p>
+<ol>
+<li><p> 时间复杂度：O(n2)</p>
+</li>
+<li><p> 空间复杂度：O(1)</p>
+</li>
+<li><p> 是一种稳定的排序方法</p>
+</li>
+<li><p> 适用情况：元素数目少，或者元素的初始序列基本有序</p>
+</li>
+<li><p>n 在最好情况下(正序)，元素的交换次数为 0，比较次数为 n – 1；</p>
+<p> n 在最坏情况下(逆序)，元素的交换次数为 n(n-1)/2，比较次数为 (n+2)(n-1)/2</p>
+</li>
+</ol>
+<p><strong>快速排序</strong></p>
+<ol>
+<li><p> 时间复杂度：O(nlog2n) 最坏情况为 O(n2)</p>
+</li>
+<li><p> 空间复杂度：O(log2n)</p>
+</li>
+<li><p> 不稳定的排序方法</p>
+</li>
+<li><p> 适用情况：快速排序不适合对小规模的序列进行排序</p>
+</li>
+<li><p>n 快速排序在最好情形下(左、右子区间的长度大致相等)，则结点数 n 与二叉树深度 h 应满足 log2n&lt;h&lt;log2n+1，所以总的比较次数不会超过(n+1)log2n。因此，快速排序的最好时间复杂度应为 O(nlog2n)。理论上已经证明，快速排序的平均时间复杂度也为 O(nlog2n)。</p>
+<p> n 在最坏情况下(逆序或正序)，时间复杂度为 O(n2)</p>
+</li>
+</ol>
+<p><strong>直接选择排序</strong></p>
+<ol>
+<li> 时间复杂度：O(n2)</li>
+<li> 空间复杂度：O(1)</li>
+<li> 不稳定的排序方法</li>
+<li> 适用情况：元素数目少的情况，无需完全排序的情况，比如，选出第 i 小的元素</li>
+<li> 在 n 个关键字中选出最小者，需要 n-1 次比较，继续在剩余的 n-1 个元素中选出次小者需要 n-2 次比较，依此类推</li>
+</ol>
+<p>**堆排序(Heap Sort) **</p>
+<p>​ 基本概念：大顶堆指的是 根节点的元素 大于 孩子节点的元素，小顶堆就是根节点小于孩子节点</p>
+<ol>
+<li> 时间复杂度：O(nlog2n)</li>
+<li> 空间复杂度：O(1)</li>
+<li> 不稳定的排序方法</li>
+<li> 适用情况：对于记录数较少的序列来说，堆排序的优越性并不明显，但对大量的记录来说堆排序是很有效的</li>
+</ol>
+<p><strong>归并排序</strong></p>
+<ol>
+<li><p> 时间复杂度：O(nlog2n)</p>
+</li>
+<li><p> 空间复杂度：O(n)</p>
+</li>
+<li><p> 稳定的排序方法</p>
+</li>
+<li><p> 适用情况：数据量不是特别大的情况，因为空间复杂度太大</p>
+</li>
+<li><p>n 对于一个具有 n 个元素的序列，元素的移动次数可以使用下面的递归公式计算：</p>
+<p> M(1) = 0</p>
+<p> M(n) = 2M(n/2) + 2n</p>
+</li>
+</ol>
+<p><strong>基数排序</strong></p>
+<ol>
+<li> 时间复杂度：O(d(n+rd))，rd 为每个关键字的基数</li>
+<li> 空间复杂度：O(rd)</li>
+<li> 稳定的排序方法</li>
+<li> 适用于元素数目 n 很大且关键字很小的情况</li>
+</ol>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Sniper</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://zhoujunxiong.gitee.com/2018/03/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%BA%95%E5%B1%82%E5%AD%A6%E4%B9%A0/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">http://zhoujunxiong.gitee.com/2018/03/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%BA%95%E5%B1%82%E5%AD%A6%E4%B9%A0/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://zhoujunxiong.gitee.com" target="_blank">Sniper</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Python/">Python</a><a class="post-meta__tags" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a></div><div class="post_share"><div class="social-share" data-image="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.16569056571786223" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2018/03/26/JAVA/java%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"><img class="prev-cover" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.8380294858082058" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">JAVA学习总结</div></div></a></div><div class="next-post pull-right"><a href="/2018/03/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%BA%95%E5%B1%82%E5%AD%A6%E4%B9%A0/%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%E5%92%8C%E8%AE%BE%E8%AE%A1/"><img class="next-cover" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.5652322940118333" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">常见算法总结</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2018/11/07/Python/GC模块/" title="GC模块"><img class="cover" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&format=images0.03980864900767389" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-11-07</div><div class="title">GC模块</div></div></a></div><div><a href="/2018/04/13/Python/FTP服务器搭建(python)/" title="FTP服务器的搭建（python）"><img class="cover" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&format=images0.2728891639530293" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-04-13</div><div class="title">FTP服务器的搭建（python）</div></div></a></div><div><a href="/2018/11/09/Python/Python配置国内镜像源/" title="Python配置国内镜像源"><img class="cover" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&format=images0.8053475715802472" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-11-09</div><div class="title">Python配置国内镜像源</div></div></a></div><div><a href="/2018/10/05/Python/python中的垃圾多线程？/" title="python中的垃圾多线程？"><img class="cover" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&format=images0.5393886517451862" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-10-05</div><div class="title">python中的垃圾多线程？</div></div></a></div><div><a href="/2018/10/03/Python/python中自带的装饰器/" title="python中自带的装饰器"><img class="cover" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&format=images0.5936164783630267" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-10-03</div><div class="title">python中自带的装饰器</div></div></a></div><div><a href="/2018/11/30/Python/python之numpy/" title="python之numpy"><img class="cover" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&format=images0.8162244321256029" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-11-30</div><div class="title">python之numpy</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-info-avatar is-center"><img class="avatar-img" data-lazy-src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">Sniper</div><div class="author-info__description"></div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">296</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">61</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">47</div></a></div></div><div class="card-info-social-icons is-center"><a class="social-icon" href="/atom.xml" target="_blank" title="rss-atom"><i class="fas fa-rss"></i></a><a class="social-icon" href="/rss2.xml" target="_blank" title="rss-rss2"><i class="fas fa-rss-square"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">这个博客还有点儿意思吧</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%88%86%E7%B1%BB"><span class="toc-number">1.</span> <span class="toc-text">数据结构分类</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-number">2.</span> <span class="toc-text">数据结构的基本概念</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%8D%E6%9D%82%E5%BA%A6"><span class="toc-number">3.</span> <span class="toc-text">复杂度</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BA%BF%E6%80%A7%E8%A1%A8"><span class="toc-number">4.</span> <span class="toc-text">线性表</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A0%88%E5%92%8C%E9%98%9F%E5%88%97"><span class="toc-number">5.</span> <span class="toc-text">栈和队列</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E7%BB%84%E5%92%8C%E5%B9%BF%E4%B9%89%E8%A1%A8"><span class="toc-number">6.</span> <span class="toc-text">数组和广义表</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%8C%E5%8F%89%E6%A0%91"><span class="toc-number">7.</span> <span class="toc-text">二叉树</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9B%BE"><span class="toc-number">8.</span> <span class="toc-text">图</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%86%85%E9%83%A8%E6%8E%92%E5%BA%8F"><span class="toc-number">9.</span> <span class="toc-text">内部排序</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/03/26/nodejs/koa%E6%BA%90%E7%A0%81%E5%86%8D%E8%AF%BB/" title="koa源码再读"><img data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.4963417575252631" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="koa源码再读"/></a><div class="content"><a class="title" href="/2022/03/26/nodejs/koa%E6%BA%90%E7%A0%81%E5%86%8D%E8%AF%BB/" title="koa源码再读">koa源码再读</a><time datetime="2022-03-26T01:39:44.000Z" title="发表于 2022-03-26 09:39:44">2022-03-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/03/18/%E5%89%8D%E7%AB%AF/Typescript/Typescript%E4%B9%8B%E5%B8%B8%E8%A7%81%E5%A5%97%E8%B7%AF/" title="Typescript之常见套路"><img data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.9584090414206019" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Typescript之常见套路"/></a><div class="content"><a class="title" href="/2022/03/18/%E5%89%8D%E7%AB%AF/Typescript/Typescript%E4%B9%8B%E5%B8%B8%E8%A7%81%E5%A5%97%E8%B7%AF/" title="Typescript之常见套路">Typescript之常见套路</a><time datetime="2022-03-18T10:53:49.000Z" title="发表于 2022-03-18 18:53:49">2022-03-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/02/13/%E5%89%8D%E7%AB%AF/JS%E5%8E%9F%E7%90%86/V8%E4%B8%AD%E7%9A%84JS%E6%95%B0%E7%BB%84/" title="V8中的JS数组"><img data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.26310617936839553" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="V8中的JS数组"/></a><div class="content"><a class="title" href="/2022/02/13/%E5%89%8D%E7%AB%AF/JS%E5%8E%9F%E7%90%86/V8%E4%B8%AD%E7%9A%84JS%E6%95%B0%E7%BB%84/" title="V8中的JS数组">V8中的JS数组</a><time datetime="2022-02-13T08:12:44.000Z" title="发表于 2022-02-13 16:12:44">2022-02-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/02/06/%E5%89%8D%E7%AB%AF/%E6%A1%86%E6%9E%B6/Nuxt3/" title="Nuxt3"><img data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.3676739232204689" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Nuxt3"/></a><div class="content"><a class="title" href="/2022/02/06/%E5%89%8D%E7%AB%AF/%E6%A1%86%E6%9E%B6/Nuxt3/" title="Nuxt3">Nuxt3</a><time datetime="2022-02-06T14:00:30.000Z" title="发表于 2022-02-06 22:00:30">2022-02-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/02/04/flutter/flutter%E4%B9%8Bkey/" title="flutter之animation"><img data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.9126924101130238" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="flutter之animation"/></a><div class="content"><a class="title" href="/2022/02/04/flutter/flutter%E4%B9%8Bkey/" title="flutter之animation">flutter之animation</a><time datetime="2022-02-04T00:06:27.000Z" title="发表于 2022-02-04 08:06:27">2022-02-04</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2018 - 2022 By Sniper</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="/js/search/local-search.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> {preloader.endLoading()})</script><div class="js-pjax"><script>function loadValine () {
+  function initValine () {
+    let initData = {
+      el: '#vcomment',
+      appId: 'cwRCUoMavhC2YwPVr7FS2gq0-gzGzoHsz',
+      appKey: 'sqKV8HVVmhAbpKiqokLJUDLU',
+      placeholder: '来，谈谈你的梦想',
+      avatar: 'monsterid',
+      meta: 'nick,mail,link'.split(','),
+      pageSize: '10',
+      lang: 'zh-CN',
+      recordIP: false,
+      serverURLs: 'https://cwrcuoma.lc-cn-n1-shared.com',
+      emojiCDN: '',
+      emojiMaps: "",
+      enableQQ: false,
+      path: window.location.pathname,
+    }
+
+    if (true) { 
+      initData.requiredFields= ('nick'.split(','))
+    }
+    
+    if (false) {
+      const otherData = false
+      initData = Object.assign(initData, otherData)
+    }
+    
+    const valine = new Valine(initData)
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !false) {
+  if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.17.0/js/md5.min.js"></script><script>window.addEventListener('load', () => {
+  const changeContent = (content) => {
+    if (content === '') return content
+
+    content = content.replace(/<[^>]+>/g,"") // remove html tag
+    content = content.replace(/(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|jpeg|gif|png|webp)/g, '') // remove image link
+    content = content.replace(/(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi, '') // remove url
+
+    if (content.length > 150) {
+      content = content.substring(0,150) + '...'
+    }
+    return content
+  }
+
+  const getIcon = (icon, mail) => {
+    if (icon) return icon
+    
+    let defaultIcon = '?d=monsterid'
+    let iconUrl = `https://gravatar.loli.net/avatar/${md5(mail.toLowerCase()) + defaultIcon}`
+    return iconUrl
+  }
+
+  const generateHtml = array => {
+    let result = ''
+
+    if (array.length) {
+      for (let i = 0; i < array.length; i++) {
+        result += '<div class=\'aside-list-item\'>'
+
+        if (true) {
+          let name = 'src'
+          if(true) {
+            name = 'data-lazy-src'
+          }
+          result += `<a href='${array[i].url}' class="thumbnail"><img ${name}='${getIcon(array[i].avatar, array[i].mail)}' alt='${array[i].nick}'></a>`
+        }
+
+        result += `<div class='content'>
+        <a class='comment' href='${array[i].url}'>${array[i].content}</a>
+        <div class='name'><span>${array[i].nick}</span><time> / ${btf.diffDate(array[i].date, true)}</time></div>
+        </div></div>`
+      }
+    } else {
+      result += '没有评论'
+    }
+
+    let $dom = document.querySelector('#card-newest-comments .aside-list')
+    $dom.innerHTML= result
+    window.lazyLoadInstance && window.lazyLoadInstance.update()
+    window.pjax && window.pjax.refresh($dom)
+  }
+
+  const getComment = () => {
+      let serverURL = ''
+      if (true) {
+        serverURL = 'https://cwrcuoma.lc-cn-n1-shared.com'
+      } else {
+        serverURL = 'https://cwRCUoMa.api.lncldglobal.com'
+      }
+
+    var settings = {
+      "method": "GET",
+      "headers": {
+        "X-LC-Id": 'cwRCUoMavhC2YwPVr7FS2gq0-gzGzoHsz',
+        "X-LC-Key": 'sqKV8HVVmhAbpKiqokLJUDLU',
+        "Content-Type": "application/json"
+      },
+    }
+
+    fetch(`${serverURL}/1.1/classes/Comment?limit=6&order=-createdAt`,settings)
+      .then(response => response.json())
+      .then(data => {
+        const valineArray = data.results.map(function (e) {
+          return {
+            'avatar': e.QQAvatar,
+            'content': changeContent(e.comment),
+            'mail': e.mail,
+            'nick': e.nick,
+            'url': e.url + '#' + e.objectId,
+            'date': e.createdAt,
+          }
+        })
+        saveToLocal.set('leancloud-newest-comments', JSON.stringify(valineArray), 10/(60*24))
+        generateHtml(valineArray)
+      }).catch(e => {
+        const $dom = document.querySelector('#card-newest-comments .aside-list')
+        $dom.innerHTML= "无法获取评论，请确认相关配置是否正确"
+      }) 
+  }
+
+  const newestCommentInit = () => {
+    if (document.querySelector('#card-newest-comments .aside-list')) {
+      const data = saveToLocal.get('leancloud-newest-comments')
+      if (data) {
+        generateHtml(JSON.parse(data))
+      } else {
+        getComment()
+      }
+    }
+  }
+
+  newestCommentInit()
+  document.addEventListener('pjax:complete', newestCommentInit)
+})</script><div class="aplayer no-destroy" data-id="6587475516" data-server="netease" data-type="playlist" data-fixed="true" data-mini="true" data-listFolded="false" data-order="random" data-preload="none" data-autoplay="false" data-lrctype="1" muted></div><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/gh/metowolf/MetingJS@1.2/dist/Meting.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = [
+  'title',
+  '#config_change',
+  '#body-wrap',
+  '#rightside-config-hide',
+  '#rightside-config-show',
+  '.js-pjax'
+]
+
+if (false) {
+  pjaxSelectors.unshift('meta[property="og:image"]', 'meta[property="og:title"]', 'meta[property="og:url"]')
+}
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  if (typeof gtag === 'function') {
+    gtag('config', '', {'page_path': window.location.pathname});
+  }
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // Analytics
+  if (false) {
+    MtaH5.pgv()
+  }
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+
+document.addEventListener('pjax:send', function () {
+  typeof preloader === 'object' && preloader.initLoading()
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+})</script></div></body></html>

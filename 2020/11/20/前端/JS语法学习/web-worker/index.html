@@ -1,0 +1,514 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>web-worker | Sniper</title><meta name="keywords" content="前端,JS语法学习"><meta name="author" content="Sniper"><meta name="copyright" content="Sniper"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="woker是什么 worker就是js中的多线程，但是Web Worker 有以下几个使用注意点。  （1）同源限制 分配给 Worker 线程运行的脚本文件，必须与主线程的脚本文件同源。 （2）DOM 限制 Worker 线程所在的全局对象，与主线程不一样，无法读取主线程所在网页的 DOM 对象，也无法使用document、window、parent这些对象。但是，Worker 线程可以navi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="web-worker">
+<meta property="og:url" content="http://zhoujunxiong.gitee.com/2020/11/20/%E5%89%8D%E7%AB%AF/JS%E8%AF%AD%E6%B3%95%E5%AD%A6%E4%B9%A0/web-worker/index.html">
+<meta property="og:site_name" content="Sniper">
+<meta property="og:description" content="woker是什么 worker就是js中的多线程，但是Web Worker 有以下几个使用注意点。  （1）同源限制 分配给 Worker 线程运行的脚本文件，必须与主线程的脚本文件同源。 （2）DOM 限制 Worker 线程所在的全局对象，与主线程不一样，无法读取主线程所在网页的 DOM 对象，也无法使用document、window、parent这些对象。但是，Worker 线程可以navi">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://api.btstu.cn/sjbz/api.php?lx=dongman&format=images0.960927541001952">
+<meta property="article:published_time" content="2020-11-19T22:56:08.000Z">
+<meta property="article:modified_time" content="2022-04-06T14:27:38.592Z">
+<meta property="article:author" content="Sniper">
+<meta property="article:tag" content="前端">
+<meta property="article:tag" content="JS语法学习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://api.btstu.cn/sjbz/api.php?lx=dongman&format=images0.960927541001952"><link rel="shortcut icon" href="https://gitee.com/zhoujunxiong/zhoujunxiong.back/raw/master/favicon.ico"><link rel="canonical" href="http://zhoujunxiong.gitee.com/2020/11/20/%E5%89%8D%E7%AB%AF/JS%E8%AF%AD%E6%B3%95%E5%AD%A6%E4%B9%A0/web-worker/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}
+
+// https://stackoverflow.com/questions/16839698/jquery-getscript-alternative-in-native-javascript
+const getScript = url => new Promise((resolve, reject) => {
+  const script = document.createElement('script')
+  script.src = url
+  script.async = true
+  script.onerror = reject
+  script.onload = script.onreadystatechange = function() {
+    const loadState = this.readyState
+    if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+    script.onload = script.onreadystatechange = null
+    resolve()
+  }
+  document.head.appendChild(script)
+})</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-04-06 22:27:38'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><link rel="stylesheet" href="/css/custom.css"<meta name="generator" content="Hexo 5.4.1"><link rel="alternate" href="/atom.xml" title="Sniper" type="application/atom+xml">
+<link rel="alternate" href="/rss2.xml" title="Sniper" type="application/rss+xml">
+</head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div id="loader-wrapper"><div id="loader"></div></div><div class="loader"><div class="inner one"></div><div class="inner two"></div><div class="inner three"></div></div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" data-lazy-src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">296</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">61</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">47</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标籤</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.960927541001952)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Sniper</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标籤</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">web-worker</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-11-19T22:56:08.000Z" title="发表于 2020-11-20 06:56:08">2020-11-20</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-04-06T14:27:38.592Z" title="更新于 2022-04-06 22:27:38">2022-04-06</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/JS%E8%AF%AD%E6%B3%95%E5%AD%A6%E4%B9%A0/">JS语法学习</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-commentcount"><i class="far fa-comments fa-fw post-meta-icon"></i><span class="post-meta-label">评论数:</span><a href="/2020/11/20/%E5%89%8D%E7%AB%AF/JS%E8%AF%AD%E6%B3%95%E5%AD%A6%E4%B9%A0/web-worker/#post-comment" itemprop="discussionUrl"><span class="valine-comment-count" data-xid="/2020/11/20/%E5%89%8D%E7%AB%AF/JS%E8%AF%AD%E6%B3%95%E5%AD%A6%E4%B9%A0/web-worker/" itemprop="commentCount"></span></a></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h4 id="woker是什么"><a href="#woker是什么" class="headerlink" title="woker是什么"></a>woker是什么</h4><blockquote>
+<p>worker就是js中的多线程，但是Web Worker 有以下几个使用注意点。</p>
+</blockquote>
+<p>（1）同源限制</p>
+<p>分配给 Worker 线程运行的脚本文件，必须与主线程的脚本文件同源。</p>
+<p>（2）DOM 限制</p>
+<p>Worker 线程所在的全局对象，与主线程不一样，无法读取主线程所在网页的 DOM 对象，也无法使用document、window、parent这些对象。但是，Worker 线程可以navigator对象和location对象。</p>
+<p>（3）通信联系</p>
+<p>Worker 线程和主线程不在同一个上下文环境，它们不能直接通信，必须通过消息完成。</p>
+<p>（4）脚本限制</p>
+<p>Worker 线程不能执行alert()方法和confirm()方法，但可以使用 XMLHttpRequest 对象发出 AJAX 请求。</p>
+<p>（5）文件限制</p>
+<p>Worker 线程无法读取本地文件，即不能打开本机的文件系统（file://），它所加载的脚本，必须来自网络。</p>
+<h4 id="启动worker（十个线程都从1到10万）"><a href="#启动worker（十个线程都从1到10万）" class="headerlink" title="启动worker（十个线程都从1到10万）"></a>启动worker（十个线程都从1到10万）</h4><p>在node环境下，可以这样启动<code>new Worker(filepath)</code></p>
+<p>下面的代码是演示开是开十个线程，每个线程都从1加到10万</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123; <span class="title class_">Worker</span>, isMainThread, parentPort, threadId &#125; = <span class="built_in">require</span>(<span class="string">&#x27;worker_threads&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 判断是不是主线程</span></span><br><span class="line"><span class="keyword">if</span> (isMainThread) &#123;</span><br><span class="line">  <span class="comment">// 实际主线程运行的代码块</span></span><br><span class="line">  <span class="keyword">let</span> workers = []</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">    <span class="comment">// 生成worker实例，参数为你的js文件路径</span></span><br><span class="line">    <span class="keyword">let</span> worker = <span class="keyword">new</span> <span class="title class_">Worker</span>(__filename)</span><br><span class="line">    workers.<span class="title function_">push</span>(worker)</span><br><span class="line">  &#125;</span><br><span class="line">  workers.<span class="title function_">forEach</span>(<span class="function"><span class="params">worker</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 发送一个消息来启动线程</span></span><br><span class="line">    worker.<span class="title function_">postMessage</span>(&#123;&#125;);</span><br><span class="line">  &#125;)</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  <span class="comment">// 实际子线程运行的代码</span></span><br><span class="line">  <span class="keyword">let</span> res = <span class="number">0</span></span><br><span class="line">  <span class="comment">// 接受到消息然后运行定义好的函数</span></span><br><span class="line">  parentPort.<span class="title function_">once</span>(<span class="string">&#x27;message&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">1000000</span>; i++) &#123;</span><br><span class="line">      res++</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`线程：<span class="subst">$&#123;threadId&#125;</span> 计算完成：结果为<span class="subst">$&#123;res&#125;</span>`</span>)</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">线程：<span class="number">3</span> 计算完成：结果为<span class="number">1000000</span></span><br><span class="line">线程：<span class="number">4</span> 计算完成：结果为<span class="number">1000000</span></span><br><span class="line">线程：<span class="number">6</span> 计算完成：结果为<span class="number">1000000</span></span><br><span class="line">线程：<span class="number">8</span> 计算完成：结果为<span class="number">1000000</span></span><br><span class="line">线程：<span class="number">10</span> 计算完成：结果为<span class="number">1000000</span></span><br><span class="line">线程：<span class="number">2</span> 计算完成：结果为<span class="number">1000000</span></span><br><span class="line">线程：<span class="number">5</span> 计算完成：结果为<span class="number">1000000</span></span><br><span class="line">线程：<span class="number">7</span> 计算完成：结果为<span class="number">1000000</span></span><br><span class="line">线程：<span class="number">1</span> 计算完成：结果为<span class="number">1000000</span></span><br><span class="line">线程：<span class="number">9</span> 计算完成：结果为<span class="number">1000000</span></span><br></pre></td></tr></table></figure>
+
+<p>代码运行的结果就是每个线程都输出10万</p>
+<p>嗯，这很正常，但是往往实际生活中需要多个线程操作一个变量（比如让10个线程一起数1到10万，那结果是不是100万呢）</p>
+<h4 id="共享变量"><a href="#共享变量" class="headerlink" title="共享变量"></a>共享变量</h4><p><strong>我们得出一个结论，<code>js</code>的<code>worker</code>默认无法共享变量</strong></p>
+<p>可以观察到上面代码中<code> worker.postMessage(&#123;&#125;)</code>，我为子线程传递了一个空对象，没错，父子线程就是通过这个参数进行通信，于是我们写出下面的代码</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123; <span class="title class_">Worker</span>, isMainThread, parentPort, threadId &#125; = <span class="built_in">require</span>(<span class="string">&#x27;worker_threads&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (isMainThread) &#123;</span><br><span class="line">  <span class="keyword">let</span> res = <span class="number">0</span></span><br><span class="line">  <span class="keyword">let</span> workers = []</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">    <span class="comment">// 生成worker实例，参数为你的js文件路径</span></span><br><span class="line">    <span class="keyword">let</span> worker = <span class="keyword">new</span> <span class="title class_">Worker</span>(__filename)</span><br><span class="line">    workers.<span class="title function_">push</span>(worker)</span><br><span class="line">  &#125;</span><br><span class="line">  workers.<span class="title function_">forEach</span>(<span class="function"><span class="params">worker</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 发送一个消息来启动线程</span></span><br><span class="line">    worker.<span class="title function_">postMessage</span>(&#123; res &#125;);</span><br><span class="line">  &#125;)</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  <span class="comment">// 接受到消息然后运行定义好的函数</span></span><br><span class="line">  parentPort.<span class="title function_">once</span>(<span class="string">&#x27;message&#x27;</span>, <span class="function">(<span class="params">&#123; res &#125;</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">1000000</span>; i++) &#123;</span><br><span class="line">      res++</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`线程：<span class="subst">$&#123;threadId&#125;</span> 计算完成：结果为<span class="subst">$&#123;res&#125;</span>`</span>)</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后我们运行发现结果与上面的代码是一样的，这是为什么呢？理论上传递对象是引用传参(这里可能有争议，有人会说是赋值传递传的是指针的值，这里不讨论)，引用传递理论是共享的，难道这里不是？</p>
+<p>答案：是的，这里是赋值传递，每一个都是拷贝</p>
+<p>那么怎么办呢？</p>
+<p>通过查阅<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer">文档</a>，我们知道可以通过<code>SharedArrayBuffer</code>进行共享</p>
+<p>于是有了下面的代码</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> buffer = <span class="keyword">new</span> <span class="title class_">SharedArrayBuffer</span>(<span class="number">4</span>)</span><br><span class="line">buffer = <span class="keyword">new</span> <span class="title class_">Uint32Array</span>(buffer)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123; <span class="title class_">Worker</span>, isMainThread, parentPort, threadId &#125; = <span class="built_in">require</span>(<span class="string">&#x27;worker_threads&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 通过SharedArrayBuffer让多个worker可以操作同一段内存 </span></span><br><span class="line"><span class="comment">// https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer</span></span><br><span class="line"><span class="keyword">if</span> (isMainThread) &#123;</span><br><span class="line">  <span class="keyword">let</span> buffer = <span class="keyword">new</span> <span class="title class_">SharedArrayBuffer</span>(<span class="number">4</span>)</span><br><span class="line">  buffer = <span class="keyword">new</span> <span class="title class_">Uint32Array</span>(buffer)</span><br><span class="line">  <span class="keyword">let</span> workers = []</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">    <span class="keyword">let</span> worker = <span class="keyword">new</span> <span class="title class_">Worker</span>(__filename)</span><br><span class="line">    workers.<span class="title function_">push</span>(worker)</span><br><span class="line">  &#125;</span><br><span class="line">  workers.<span class="title function_">forEach</span>(<span class="function"><span class="params">worker</span> =&gt;</span> &#123;</span><br><span class="line">    worker.<span class="title function_">postMessage</span>(buffer);</span><br><span class="line">  &#125;)</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  parentPort.<span class="title function_">once</span>(<span class="string">&#x27;message&#x27;</span>, <span class="function">(<span class="params">buffer</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">1000000</span>; i++) &#123;</span><br><span class="line">      buffer[<span class="number">0</span>]++</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`线程：<span class="subst">$&#123;threadId&#125;</span>`</span>, buffer[<span class="number">0</span>])</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line">线程：<span class="number">8</span> <span class="number">1000160</span></span><br><span class="line">线程：<span class="number">1</span> <span class="number">1643613</span></span><br><span class="line">线程：<span class="number">10</span> <span class="number">3009020</span></span><br><span class="line">线程：<span class="number">9</span> <span class="number">3396602</span></span><br><span class="line">线程：<span class="number">3</span> <span class="number">5129766</span></span><br><span class="line">线程：<span class="number">7</span> <span class="number">4951613</span></span><br><span class="line">线程：<span class="number">2</span> <span class="number">5256798</span></span><br><span class="line">线程：<span class="number">6</span> <span class="number">6403301</span></span><br><span class="line">线程：<span class="number">5</span> <span class="number">6422144</span></span><br><span class="line">线程：<span class="number">4</span> <span class="number">6728778</span></span><br></pre></td></tr></table></figure>
+
+<p>可以看到，最接近1000000的结果是线程8，但是貌似有点儿不对？</p>
+<p>没错，这就是<code>线程同步</code>问题，线程同步一般有三种方式</p>
+<ul>
+<li>互斥锁</li>
+<li>条件变量</li>
+<li>信号量</li>
+</ul>
+<h4 id="多线程操作会产生的问题"><a href="#多线程操作会产生的问题" class="headerlink" title="多线程操作会产生的问题"></a>多线程操作会产生的问题</h4><ol>
+<li><p>原子性:即一个操作或者多个操作 要么全部执行并且执行的过程不会被任何因素打断，要么就都不执行。<br>例如,如果i=32;不具备原子性的话,当给它的低16赋值完时,突然中断,其他线程在去读这个值时,就是错误的值.</p>
+</li>
+<li><p>可见性:指当多个线程访问同一个变量时，一个线程修改了这个变量的值，其他线程能够立即看得到修改的值。<br>这就是可见性问题，线程1对变量i修改了之后，线程2没有立即看到线程1修改的值。</p>
+</li>
+<li><p>有序性:即程序执行的顺序按照代码的先后顺序执行，首先什么是指令重排序，一般来说，处理器为了提高程序运行效率，可能会对输入代码进行优化，<br>它不保证程序中各个语句的执行先后顺序同代码中的顺序一致，但是它会保证程序最终执行结果和代码顺序执行的结果是一致的。处理器在进行重排序时也是会考虑指令之间的数据依赖性</p>
+</li>
+</ol>
+<blockquote>
+<p>上面说的比较理论，简单来说就是多个线程同时操作一个变量，比如 a = 1, A线程发现a等于1，B线程也发现a等于1，然后他们分别执行 1+1,然后 A执行a = 1+1 B执行 a=1+1，这个时候就会少加一次</p>
+</blockquote>
+<h4 id="扩展阅读-可以跳过"><a href="#扩展阅读-可以跳过" class="headerlink" title="扩展阅读(可以跳过)"></a>扩展阅读(可以跳过)</h4><p>  小明：怎么证明？我不信   </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Simple</span> &#123;</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span>&#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">abc</span> <span class="operator">=</span> <span class="number">99</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>对应的<code>class</code>字节码</p>
+<blockquote>
+<p>javap -c Simple.class</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">public class Simple &#123;</span><br><span class="line">  public Simple();</span><br><span class="line">    Code:</span><br><span class="line">       0: aload_0</span><br><span class="line">       1: invokespecial #1                  // Method java/lang/Object.&quot;&lt;init&gt;&quot;:()V</span><br><span class="line">       4: return</span><br><span class="line"></span><br><span class="line">  public static void main(java.lang.String[]);</span><br><span class="line">    Code:</span><br><span class="line">       0: bipush        99</span><br><span class="line">       2: istore_1</span><br><span class="line">       3: return</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>iconst_1 //将一个常量加载到操作数栈</li>
+<li>istore_1 //将一个数值从操作数栈存储到局部变量表<br><img src= "/img/loading.svg" data-lazy-src="https://gitee.com/zhoujunxiong/BlogImg/raw/master/blog/20200907162631.png" alt="指令"></li>
+</ol>
+<blockquote>
+<p>synchronized 做了什么？</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public class Simple &#123;</span><br><span class="line">  public static void main(String[] args)&#123;</span><br><span class="line">    synchronized (Simple.class)&#123;</span><br><span class="line">      int abc = 99;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>那么加锁后又做了什么？</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">public class Simple &#123;</span><br><span class="line">  public Simple();</span><br><span class="line">    Code:</span><br><span class="line">       0: aload_0</span><br><span class="line">       1: invokespecial #1                  // Method java/lang/Object.&quot;&lt;init&gt;&quot;:()V</span><br><span class="line">       4: return</span><br><span class="line"></span><br><span class="line">  public static void main(java.lang.String[]);</span><br><span class="line">    Code:</span><br><span class="line">       0: ldc           #2                  // class Simple</span><br><span class="line">       2: dup</span><br><span class="line">       3: astore_1</span><br><span class="line">       4: monitorenter</span><br><span class="line">       5: bipush        99</span><br><span class="line">       7: istore_2</span><br><span class="line">       8: aload_1</span><br><span class="line">       9: monitorexit</span><br><span class="line">      10: goto          18</span><br><span class="line">      13: astore_3</span><br><span class="line">      14: aload_1</span><br><span class="line">      15: monitorexit</span><br><span class="line">      16: aload_3</span><br><span class="line">      17: athrow</span><br><span class="line">      18: return</span><br><span class="line">    Exception table:</span><br><span class="line">       from    to  target type</span><br><span class="line">           5    10    13   any</span><br><span class="line">          13    16    13   any</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="线程同步"><a href="#线程同步" class="headerlink" title="线程同步"></a>线程同步</h4><p>先解决上面的问题，我们要先看看什么是<code>CAS</code></p>
+<h5 id="CAS-Compare-And-Swap"><a href="#CAS-Compare-And-Swap" class="headerlink" title="CAS(Compare-And-Swap)"></a>CAS(Compare-And-Swap)</h5><p><code>cas</code>是一种<code>原子操作</code></p>
+<p>处理器如何实现原子操作？</p>
+<p>首先处理器会自动保证基本的内存操作的原子性：处理器保证从系统内存当中读取或者写入一个字节是原子的，意思是当一个处理器读取一个字节时，其他处理器不能访问这个字节的内存地址。</p>
+<p>总线锁保证原子性：所谓总线锁就是使用处理器提供的一个LOCK＃信号，当一个处理器在总线上输出此信号时，其他处理器的请求将被阻塞住,那么该处理器可以独占使用共享内存。</p>
+<p>缓存锁定保证原子性：锁住总线的消耗太大，于是有了缓存锁，在Lock期间处理器缓存的内存区域会被锁定，其他处理其无法更改该块内存中的数据。具体的cache一致性可以看<a target="_blank" rel="noopener" href="http://www.docin.com/p-92508695.html%E3%80%82">多核处理器cache一致性技术</a></p>
+<p>CAS的思想很简单：三个参数，一个当前内存值V、旧的预期值A、即将更新的值B，当且仅当预期值A和内存值V相同时，将内存值修改为B并返回true，否则什么都不做，并返回false。处理器提供的CMPXCHG指令实现,循环CAS实现的基本思路就是循环进行CAS操作直到成功为止</p>
+<p>cas这个方式也存在一定的问题：</p>
+<ol>
+<li>自循环时间长，开销大</li>
+<li>只能保证一个共享变量的原子操作</li>
+<li>ABA问题</li>
+</ol>
+<h5 id="Atomics"><a href="#Atomics" class="headerlink" title="Atomics"></a>Atomics</h5><p><code>Atomics</code>就是对原子操作的封装</p>
+<ol>
+<li><code>Atomics.add(typedArray, index, value)</code> 增加指定位置的值，返回值为旧的值</li>
+<li><code>Atomics.compareExchange(typedArray, index, expectedValue, replacementValue)</code> cas操作，比较并交换指定位置的值，原子操作，返回值为旧的值</li>
+<li><code>Atomics.wait(typedArray, index, value[, timeout])</code> 当给定值是指定索引的值时暂停当前线程，一个 String 字符串，值为 “ok”, “not-equal”, 或 “timed-out” 三种之一</li>
+<li><code>Atomics.notify(typedArray, index, count)</code> 唤醒由于指定下标等待的线程，返回值为唤醒的线程数量，count指定需要唤醒的线程数量，默认无穷大</li>
+<li><code>Atomics.load(typedArray, index)</code> 返回指定位置的值</li>
+</ol>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://github.com/tc39/ecma262/pull/1220">https://github.com/tc39/ecma262/pull/1220</a> wake改名notify</p>
+</blockquote>
+<p>于是我们就可以基于<code>Atomic</code>写一个自己的锁</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Lock</span> &#123;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params">stateBuffer, index = <span class="number">0</span></span>) &#123;</span><br><span class="line">    <span class="comment">// 存放状态的buffer</span></span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">stateBuffer</span> = stateBuffer;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">stateBuffer</span>[index] = <span class="number">0</span></span><br><span class="line">    <span class="comment">// 作为锁的索引</span></span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">index</span> = index;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">lock</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> stateBuffer = <span class="variable language_">this</span>.<span class="property">stateBuffer</span>;</span><br><span class="line">    <span class="keyword">const</span> index = <span class="variable language_">this</span>.<span class="property">index</span>;</span><br><span class="line">    <span class="keyword">while</span> (!<span class="variable language_">this</span>.<span class="title function_">tryLock</span>()) &#123;</span><br><span class="line">      <span class="title class_">Atomics</span>.<span class="title function_">wait</span>(stateBuffer, index, <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">tryLock</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> stateBuffer = <span class="variable language_">this</span>.<span class="property">stateBuffer</span>;</span><br><span class="line">    <span class="keyword">const</span> index = <span class="variable language_">this</span>.<span class="property">index</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="title class_">Atomics</span>.<span class="title function_">compareExchange</span>(stateBuffer, index, <span class="number">0</span>, <span class="number">1</span>) === <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">unlock</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> stateBuffer = <span class="variable language_">this</span>.<span class="property">stateBuffer</span>;</span><br><span class="line">    <span class="keyword">const</span> index = <span class="variable language_">this</span>.<span class="property">index</span>;</span><br><span class="line">    <span class="keyword">if</span> (<span class="title class_">Atomics</span>.<span class="title function_">compareExchange</span>(stateBuffer, index, <span class="number">1</span>, <span class="number">0</span>) === <span class="number">1</span>) &#123;</span><br><span class="line">      <span class="title class_">Atomics</span>.<span class="title function_">notify</span>(stateBuffer, index, <span class="number">1</span>)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = <span class="title class_">Lock</span></span><br></pre></td></tr></table></figure>
+
+<p>然后我们测试一下</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123; <span class="title class_">Worker</span>, isMainThread, parentPort, threadId &#125; = <span class="built_in">require</span>(<span class="string">&#x27;worker_threads&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> <span class="title class_">Lock</span> = <span class="built_in">require</span>(<span class="string">&#x27;./MyLock&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 通过Atomic实现原子操作</span></span><br><span class="line"><span class="keyword">if</span> (isMainThread) &#123;</span><br><span class="line">  <span class="keyword">let</span> buffer = <span class="keyword">new</span> <span class="title class_">SharedArrayBuffer</span>(<span class="number">4</span>)</span><br><span class="line">  buffer = <span class="keyword">new</span> <span class="title class_">Uint32Array</span>(buffer)</span><br><span class="line">  <span class="keyword">let</span> lockBuffer = <span class="keyword">new</span> <span class="title class_">Int32Array</span>(<span class="keyword">new</span> <span class="title class_">SharedArrayBuffer</span>(<span class="number">4</span>))</span><br><span class="line">  <span class="keyword">let</span> workers = []</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">    <span class="keyword">let</span> worker = <span class="keyword">new</span> <span class="title class_">Worker</span>(__filename)</span><br><span class="line">    workers.<span class="title function_">push</span>(worker)</span><br><span class="line">  &#125;</span><br><span class="line">  workers.<span class="title function_">forEach</span>(<span class="function"><span class="params">worker</span> =&gt;</span> &#123;</span><br><span class="line">    worker.<span class="title function_">postMessage</span>(&#123; buffer, lockBuffer &#125;);</span><br><span class="line">  &#125;)</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  parentPort.<span class="title function_">once</span>(<span class="string">&#x27;message&#x27;</span>, <span class="function">(<span class="params">&#123; buffer, lockBuffer &#125;</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> lock = <span class="keyword">new</span> <span class="title class_">Lock</span>(lockBuffer, <span class="number">0</span>)</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`线程：<span class="subst">$&#123;threadId&#125;</span>准备获取锁`</span>)</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">100000</span>; i++) &#123;</span><br><span class="line">      lock.<span class="title function_">lock</span>()</span><br><span class="line">      buffer[<span class="number">0</span>]++</span><br><span class="line">      lock.<span class="title function_">unlock</span>()</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`线程：<span class="subst">$&#123;threadId&#125;</span>执行结束`</span>)</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`线程：<span class="subst">$&#123;threadId&#125;</span>`</span>, buffer[<span class="number">0</span>])</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line">线程：<span class="number">4</span> <span class="number">924286</span></span><br><span class="line">线程：<span class="number">7</span> <span class="number">950768</span></span><br><span class="line">线程：<span class="number">8</span> <span class="number">954512</span></span><br><span class="line">线程：<span class="number">5</span> <span class="number">955509</span></span><br><span class="line">线程：<span class="number">6</span> <span class="number">961698</span></span><br><span class="line">线程：<span class="number">1</span> <span class="number">979216</span></span><br><span class="line">线程：<span class="number">3</span> <span class="number">985470</span></span><br><span class="line">线程：<span class="number">9</span> <span class="number">995982</span></span><br><span class="line">线程：<span class="number">2</span> <span class="number">999913</span></span><br><span class="line">线程：<span class="number">10</span> <span class="number">1000000</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="其它语言"><a href="#其它语言" class="headerlink" title="其它语言"></a>其它语言</h4><h5 id="go"><a href="#go" class="headerlink" title="go"></a>go</h5><p>go一般有两种方式进行线程同步</p>
+<ol>
+<li>通过共享变量</li>
+<li>通过channel</li>
+</ol>
+<p>共享变量</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> thread</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;fmt&quot;</span></span><br><span class="line">	<span class="string">&quot;sync&quot;</span></span><br><span class="line">	<span class="string">&quot;testing&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> thread2 sync.WaitGroup</span><br><span class="line"><span class="keyword">var</span> lock sync.Mutex</span><br><span class="line"></span><br><span class="line"><span class="comment">// 解决多个线程操作同一个数发生的问题</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">TestDemo2</span><span class="params">(t *testing.T)</span></span> &#123;</span><br><span class="line">	num := <span class="number">0</span></span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">10</span>; i++ &#123;</span><br><span class="line">		thread2.Add(<span class="number">1</span>)</span><br><span class="line">		<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">			<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">100000</span>; i++ &#123;</span><br><span class="line">				lock.Lock()</span><br><span class="line">				num++</span><br><span class="line">				lock.Unlock()</span><br><span class="line">			&#125;</span><br><span class="line">			fmt.Println(num)</span><br><span class="line">			thread2.Done()</span><br><span class="line">		&#125;()</span><br><span class="line">	&#125;</span><br><span class="line">	thread2.Wait()</span><br><span class="line">	<span class="comment">// fmt.Println(num)</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>channel方法</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> thread sync.WaitGroup</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	num := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="type">int</span>, <span class="number">1</span>)</span><br><span class="line">	num &lt;- <span class="number">0</span></span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">10</span>; i++ &#123;</span><br><span class="line">		thread.Add(<span class="number">1</span>)</span><br><span class="line">		<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">			<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">100000</span>; i++ &#123;</span><br><span class="line">				tmp := &lt;-num</span><br><span class="line">				tmp++</span><br><span class="line">				num &lt;- tmp</span><br><span class="line">			&#125;</span><br><span class="line">			thread.Done()</span><br><span class="line">		&#125;()</span><br><span class="line">	&#125;</span><br><span class="line">	thread.Wait()</span><br><span class="line">	fmt.Println(&lt;-num)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="java"><a href="#java" class="headerlink" title="java"></a>java</h5><ol>
+<li>synchronized</li>
+<li>Lock(ReentrantLock)</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Demo7</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">Tmp</span> <span class="variable">tmp</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Tmp</span>();</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">            <span class="type">Thread</span> <span class="variable">thread</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>(tmp);</span><br><span class="line">            thread.start();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Tmp</span> <span class="keyword">implements</span> <span class="title class_">Runnable</span>&#123;</span><br><span class="line">    <span class="type">int</span> num;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">synchronized</span> <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt; <span class="number">100000</span>; j++) &#123;</span><br><span class="line">            num += <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(num);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.concurrent.locks.Lock;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.locks.ReentrantLock;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Demo8</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">Tmp1</span> <span class="variable">tmp</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Tmp1</span>();</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">            <span class="type">Thread</span> <span class="variable">thread</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>(tmp);</span><br><span class="line">            thread.start();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Tmp1</span> <span class="keyword">implements</span> <span class="title class_">Runnable</span>&#123;</span><br><span class="line">    <span class="type">int</span> num;</span><br><span class="line">    <span class="type">Lock</span> <span class="variable">lock</span> <span class="operator">=</span>  <span class="keyword">new</span> <span class="title class_">ReentrantLock</span>();</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="number">100000</span>; i++) &#123;</span><br><span class="line">            lock.lock();</span><br><span class="line">            num += <span class="number">1</span>;</span><br><span class="line">            lock.unlock();</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(num);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Sniper</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://zhoujunxiong.gitee.com/2020/11/20/%E5%89%8D%E7%AB%AF/JS%E8%AF%AD%E6%B3%95%E5%AD%A6%E4%B9%A0/web-worker/">http://zhoujunxiong.gitee.com/2020/11/20/%E5%89%8D%E7%AB%AF/JS%E8%AF%AD%E6%B3%95%E5%AD%A6%E4%B9%A0/web-worker/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://zhoujunxiong.gitee.com" target="_blank">Sniper</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%89%8D%E7%AB%AF/">前端</a><a class="post-meta__tags" href="/tags/JS%E8%AF%AD%E6%B3%95%E5%AD%A6%E4%B9%A0/">JS语法学习</a></div><div class="post_share"><div class="social-share" data-image="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.960927541001952" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2020/11/22/%E5%89%8D%E7%AB%AF/CSS/css%E6%B5%AE%E5%8A%A8%E7%BB%88%E6%9E%81%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/"><img class="prev-cover" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.7905137813016672" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">css浮动终极解决方案</div></div></a></div><div class="next-post pull-right"><a href="/2020/11/18/GO/go%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99/"><img class="next-cover" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.48983836678862835" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">go文件读写</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2020/11/03/前端/JS语法学习/ES6之标签模板/" title="ES6之标签模板"><img class="cover" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&format=images0.9816625716980969" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-11-03</div><div class="title">ES6之标签模板</div></div></a></div><div><a href="/2020/08/19/前端/JS语法学习/Iterator和Generator/" title="Iterator和Generator"><img class="cover" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&format=images0.9278326861603066" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-08-19</div><div class="title">Iterator和Generator</div></div></a></div><div><a href="/2020/07/21/前端/JS语法学习/Javascript之函数式编程/" title="Javascript之函数式编程"><img class="cover" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&format=images0.1458527721881151" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-07-21</div><div class="title">Javascript之函数式编程</div></div></a></div><div><a href="/2020/10/26/前端/JS语法学习/Object全解析/" title="Object全解析"><img class="cover" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&format=images0.1651866299091984" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-10-26</div><div class="title">Object全解析</div></div></a></div><div><a href="/2020/11/26/前端/JS语法学习/javascript正则表达式总结/" title="javascript正则表达式总结"><img class="cover" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&format=images0.19231124606332095" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-11-26</div><div class="title">javascript正则表达式总结</div></div></a></div><div><a href="/2020/11/17/前端/JS语法学习/js精巧代码/" title="js精巧代码"><img class="cover" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&format=images0.26596403568338256" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-11-17</div><div class="title">js精巧代码</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-info-avatar is-center"><img class="avatar-img" data-lazy-src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">Sniper</div><div class="author-info__description"></div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">296</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">61</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">47</div></a></div></div><div class="card-info-social-icons is-center"><a class="social-icon" href="/atom.xml" target="_blank" title="rss-atom"><i class="fas fa-rss"></i></a><a class="social-icon" href="/rss2.xml" target="_blank" title="rss-rss2"><i class="fas fa-rss-square"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">这个博客还有点儿意思吧</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#woker%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-number">1.</span> <span class="toc-text">woker是什么</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8worker%EF%BC%88%E5%8D%81%E4%B8%AA%E7%BA%BF%E7%A8%8B%E9%83%BD%E4%BB%8E1%E5%88%B010%E4%B8%87%EF%BC%89"><span class="toc-number">2.</span> <span class="toc-text">启动worker（十个线程都从1到10万）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B1%E4%BA%AB%E5%8F%98%E9%87%8F"><span class="toc-number">3.</span> <span class="toc-text">共享变量</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%93%8D%E4%BD%9C%E4%BC%9A%E4%BA%A7%E7%94%9F%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">4.</span> <span class="toc-text">多线程操作会产生的问题</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%89%A9%E5%B1%95%E9%98%85%E8%AF%BB-%E5%8F%AF%E4%BB%A5%E8%B7%B3%E8%BF%87"><span class="toc-number">5.</span> <span class="toc-text">扩展阅读(可以跳过)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5"><span class="toc-number">6.</span> <span class="toc-text">线程同步</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#CAS-Compare-And-Swap"><span class="toc-number">6.1.</span> <span class="toc-text">CAS(Compare-And-Swap)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Atomics"><span class="toc-number">6.2.</span> <span class="toc-text">Atomics</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B6%E5%AE%83%E8%AF%AD%E8%A8%80"><span class="toc-number">7.</span> <span class="toc-text">其它语言</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#go"><span class="toc-number">7.1.</span> <span class="toc-text">go</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#java"><span class="toc-number">7.2.</span> <span class="toc-text">java</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/03/26/nodejs/koa%E6%BA%90%E7%A0%81%E5%86%8D%E8%AF%BB/" title="koa源码再读"><img data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.4963417575252631" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="koa源码再读"/></a><div class="content"><a class="title" href="/2022/03/26/nodejs/koa%E6%BA%90%E7%A0%81%E5%86%8D%E8%AF%BB/" title="koa源码再读">koa源码再读</a><time datetime="2022-03-26T01:39:44.000Z" title="发表于 2022-03-26 09:39:44">2022-03-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/03/18/%E5%89%8D%E7%AB%AF/Typescript/Typescript%E4%B9%8B%E5%B8%B8%E8%A7%81%E5%A5%97%E8%B7%AF/" title="Typescript之常见套路"><img data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.9584090414206019" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Typescript之常见套路"/></a><div class="content"><a class="title" href="/2022/03/18/%E5%89%8D%E7%AB%AF/Typescript/Typescript%E4%B9%8B%E5%B8%B8%E8%A7%81%E5%A5%97%E8%B7%AF/" title="Typescript之常见套路">Typescript之常见套路</a><time datetime="2022-03-18T10:53:49.000Z" title="发表于 2022-03-18 18:53:49">2022-03-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/02/13/%E5%89%8D%E7%AB%AF/JS%E5%8E%9F%E7%90%86/V8%E4%B8%AD%E7%9A%84JS%E6%95%B0%E7%BB%84/" title="V8中的JS数组"><img data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.26310617936839553" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="V8中的JS数组"/></a><div class="content"><a class="title" href="/2022/02/13/%E5%89%8D%E7%AB%AF/JS%E5%8E%9F%E7%90%86/V8%E4%B8%AD%E7%9A%84JS%E6%95%B0%E7%BB%84/" title="V8中的JS数组">V8中的JS数组</a><time datetime="2022-02-13T08:12:44.000Z" title="发表于 2022-02-13 16:12:44">2022-02-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/02/06/%E5%89%8D%E7%AB%AF/%E6%A1%86%E6%9E%B6/Nuxt3/" title="Nuxt3"><img data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.3676739232204689" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Nuxt3"/></a><div class="content"><a class="title" href="/2022/02/06/%E5%89%8D%E7%AB%AF/%E6%A1%86%E6%9E%B6/Nuxt3/" title="Nuxt3">Nuxt3</a><time datetime="2022-02-06T14:00:30.000Z" title="发表于 2022-02-06 22:00:30">2022-02-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/02/04/flutter/flutter%E4%B9%8Bkey/" title="flutter之animation"><img data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.9126924101130238" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="flutter之animation"/></a><div class="content"><a class="title" href="/2022/02/04/flutter/flutter%E4%B9%8Bkey/" title="flutter之animation">flutter之animation</a><time datetime="2022-02-04T00:06:27.000Z" title="发表于 2022-02-04 08:06:27">2022-02-04</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2018 - 2022 By Sniper</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="/js/search/local-search.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> {preloader.endLoading()})</script><div class="js-pjax"><script>function loadValine () {
+  function initValine () {
+    let initData = {
+      el: '#vcomment',
+      appId: 'cwRCUoMavhC2YwPVr7FS2gq0-gzGzoHsz',
+      appKey: 'sqKV8HVVmhAbpKiqokLJUDLU',
+      placeholder: '来，谈谈你的梦想',
+      avatar: 'monsterid',
+      meta: 'nick,mail,link'.split(','),
+      pageSize: '10',
+      lang: 'zh-CN',
+      recordIP: false,
+      serverURLs: 'https://cwrcuoma.lc-cn-n1-shared.com',
+      emojiCDN: '',
+      emojiMaps: "",
+      enableQQ: false,
+      path: window.location.pathname,
+    }
+
+    if (true) { 
+      initData.requiredFields= ('nick'.split(','))
+    }
+    
+    if (false) {
+      const otherData = false
+      initData = Object.assign(initData, otherData)
+    }
+    
+    const valine = new Valine(initData)
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !false) {
+  if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.17.0/js/md5.min.js"></script><script>window.addEventListener('load', () => {
+  const changeContent = (content) => {
+    if (content === '') return content
+
+    content = content.replace(/<[^>]+>/g,"") // remove html tag
+    content = content.replace(/(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|jpeg|gif|png|webp)/g, '') // remove image link
+    content = content.replace(/(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi, '') // remove url
+
+    if (content.length > 150) {
+      content = content.substring(0,150) + '...'
+    }
+    return content
+  }
+
+  const getIcon = (icon, mail) => {
+    if (icon) return icon
+    
+    let defaultIcon = '?d=monsterid'
+    let iconUrl = `https://gravatar.loli.net/avatar/${md5(mail.toLowerCase()) + defaultIcon}`
+    return iconUrl
+  }
+
+  const generateHtml = array => {
+    let result = ''
+
+    if (array.length) {
+      for (let i = 0; i < array.length; i++) {
+        result += '<div class=\'aside-list-item\'>'
+
+        if (true) {
+          let name = 'src'
+          if(true) {
+            name = 'data-lazy-src'
+          }
+          result += `<a href='${array[i].url}' class="thumbnail"><img ${name}='${getIcon(array[i].avatar, array[i].mail)}' alt='${array[i].nick}'></a>`
+        }
+
+        result += `<div class='content'>
+        <a class='comment' href='${array[i].url}'>${array[i].content}</a>
+        <div class='name'><span>${array[i].nick}</span><time> / ${btf.diffDate(array[i].date, true)}</time></div>
+        </div></div>`
+      }
+    } else {
+      result += '没有评论'
+    }
+
+    let $dom = document.querySelector('#card-newest-comments .aside-list')
+    $dom.innerHTML= result
+    window.lazyLoadInstance && window.lazyLoadInstance.update()
+    window.pjax && window.pjax.refresh($dom)
+  }
+
+  const getComment = () => {
+      let serverURL = ''
+      if (true) {
+        serverURL = 'https://cwrcuoma.lc-cn-n1-shared.com'
+      } else {
+        serverURL = 'https://cwRCUoMa.api.lncldglobal.com'
+      }
+
+    var settings = {
+      "method": "GET",
+      "headers": {
+        "X-LC-Id": 'cwRCUoMavhC2YwPVr7FS2gq0-gzGzoHsz',
+        "X-LC-Key": 'sqKV8HVVmhAbpKiqokLJUDLU',
+        "Content-Type": "application/json"
+      },
+    }
+
+    fetch(`${serverURL}/1.1/classes/Comment?limit=6&order=-createdAt`,settings)
+      .then(response => response.json())
+      .then(data => {
+        const valineArray = data.results.map(function (e) {
+          return {
+            'avatar': e.QQAvatar,
+            'content': changeContent(e.comment),
+            'mail': e.mail,
+            'nick': e.nick,
+            'url': e.url + '#' + e.objectId,
+            'date': e.createdAt,
+          }
+        })
+        saveToLocal.set('leancloud-newest-comments', JSON.stringify(valineArray), 10/(60*24))
+        generateHtml(valineArray)
+      }).catch(e => {
+        const $dom = document.querySelector('#card-newest-comments .aside-list')
+        $dom.innerHTML= "无法获取评论，请确认相关配置是否正确"
+      }) 
+  }
+
+  const newestCommentInit = () => {
+    if (document.querySelector('#card-newest-comments .aside-list')) {
+      const data = saveToLocal.get('leancloud-newest-comments')
+      if (data) {
+        generateHtml(JSON.parse(data))
+      } else {
+        getComment()
+      }
+    }
+  }
+
+  newestCommentInit()
+  document.addEventListener('pjax:complete', newestCommentInit)
+})</script><div class="aplayer no-destroy" data-id="6587475516" data-server="netease" data-type="playlist" data-fixed="true" data-mini="true" data-listFolded="false" data-order="random" data-preload="none" data-autoplay="false" data-lrctype="1" muted></div><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/gh/metowolf/MetingJS@1.2/dist/Meting.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = [
+  'title',
+  '#config_change',
+  '#body-wrap',
+  '#rightside-config-hide',
+  '#rightside-config-show',
+  '.js-pjax'
+]
+
+if (false) {
+  pjaxSelectors.unshift('meta[property="og:image"]', 'meta[property="og:title"]', 'meta[property="og:url"]')
+}
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  if (typeof gtag === 'function') {
+    gtag('config', '', {'page_path': window.location.pathname});
+  }
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // Analytics
+  if (false) {
+    MtaH5.pgv()
+  }
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+
+document.addEventListener('pjax:send', function () {
+  typeof preloader === 'object' && preloader.initLoading()
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+})</script></div></body></html>

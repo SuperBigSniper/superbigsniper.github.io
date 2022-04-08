@@ -1,0 +1,531 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Linux | Sniper</title><meta name="keywords" content="Linux"><meta name="author" content="Sniper"><meta name="copyright" content="Sniper"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="基本命令修改终端语言locale命令列出当前支持的语言 修改语言 123[dmtsai@study ~]$ LANG&#x3D;en_US.utf8[dmtsai@study ~]$ export LC_ALL&#x3D;en_US.utf8# LANG 只与输出讯息有关，若需要更改其他不同的信息，要同步更新 LC_ALL 才行！  显示日期date +%Y&#x2F;%m&#x2F;%d: 2015&#x2F;05&#x2F;29 date +%H:%M">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux">
+<meta property="og:url" content="http://zhoujunxiong.gitee.com/2019/07/06/Linux/Linux/index.html">
+<meta property="og:site_name" content="Sniper">
+<meta property="og:description" content="基本命令修改终端语言locale命令列出当前支持的语言 修改语言 123[dmtsai@study ~]$ LANG&#x3D;en_US.utf8[dmtsai@study ~]$ export LC_ALL&#x3D;en_US.utf8# LANG 只与输出讯息有关，若需要更改其他不同的信息，要同步更新 LC_ALL 才行！  显示日期date +%Y&#x2F;%m&#x2F;%d: 2015&#x2F;05&#x2F;29 date +%H:%M">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://api.btstu.cn/sjbz/api.php?lx=dongman&format=images0.7990295789050657">
+<meta property="article:published_time" content="2019-07-05T19:40:17.000Z">
+<meta property="article:modified_time" content="2022-04-06T14:27:38.577Z">
+<meta property="article:author" content="Sniper">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://api.btstu.cn/sjbz/api.php?lx=dongman&format=images0.7990295789050657"><link rel="shortcut icon" href="https://gitee.com/zhoujunxiong/zhoujunxiong.back/raw/master/favicon.ico"><link rel="canonical" href="http://zhoujunxiong.gitee.com/2019/07/06/Linux/Linux/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}
+
+// https://stackoverflow.com/questions/16839698/jquery-getscript-alternative-in-native-javascript
+const getScript = url => new Promise((resolve, reject) => {
+  const script = document.createElement('script')
+  script.src = url
+  script.async = true
+  script.onerror = reject
+  script.onload = script.onreadystatechange = function() {
+    const loadState = this.readyState
+    if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+    script.onload = script.onreadystatechange = null
+    resolve()
+  }
+  document.head.appendChild(script)
+})</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-04-06 22:27:38'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><link rel="stylesheet" href="/css/custom.css"<meta name="generator" content="Hexo 5.4.1"><link rel="alternate" href="/atom.xml" title="Sniper" type="application/atom+xml">
+<link rel="alternate" href="/rss2.xml" title="Sniper" type="application/rss+xml">
+</head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div id="loader-wrapper"><div id="loader"></div></div><div class="loader"><div class="inner one"></div><div class="inner two"></div><div class="inner three"></div></div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" data-lazy-src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">296</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">61</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">47</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标籤</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.7990295789050657)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Sniper</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标籤</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Linux</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2019-07-05T19:40:17.000Z" title="发表于 2019-07-06 03:40:17">2019-07-06</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-04-06T14:27:38.577Z" title="更新于 2022-04-06 22:27:38">2022-04-06</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Linux/">Linux</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-commentcount"><i class="far fa-comments fa-fw post-meta-icon"></i><span class="post-meta-label">评论数:</span><a href="/2019/07/06/Linux/Linux/#post-comment" itemprop="discussionUrl"><span class="valine-comment-count" data-xid="/2019/07/06/Linux/Linux/" itemprop="commentCount"></span></a></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h4 id="基本命令"><a href="#基本命令" class="headerlink" title="基本命令"></a>基本命令</h4><h5 id="修改终端语言"><a href="#修改终端语言" class="headerlink" title="修改终端语言"></a>修改终端语言</h5><p><code>locale</code>命令列出当前支持的语言</p>
+<p>修改语言</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[dmtsai@study ~]$ LANG=en_US.utf8</span><br><span class="line">[dmtsai@study ~]$ export LC_ALL=en_US.utf8</span><br><span class="line"># LANG 只与输出讯息有关，若需要更改其他不同的信息，要同步更新 LC_ALL 才行！</span><br></pre></td></tr></table></figure>
+
+<h5 id="显示日期"><a href="#显示日期" class="headerlink" title="显示日期"></a>显示日期</h5><p><code>date +%Y/%m/%d</code>: 2015/05/29</p>
+<p><code>date +%H:%M</code>: 14:33</p>
+<h5 id="显示日历"><a href="#显示日历" class="headerlink" title="显示日历"></a>显示日历</h5><p><code>cal</code>: 显示当前月份<br><code>cal 2015</code>: 显示指定年份日历<br><code>cal 7 2015</code>: 显示指定年份与月份日历</p>
+<h5 id="开关机"><a href="#开关机" class="headerlink" title="开关机"></a>开关机</h5><ol>
+<li>将数据同步写入硬盘中的指令： <code>sync</code></li>
+<li>惯用的关机指令： <code>shutdown</code><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-k     ： 不要真的关机，只是发送警告讯息出去！</span><br><span class="line">-r     ： 在将系统的服务停掉之后就重新开机（常用）</span><br><span class="line">-h     ： 将系统的服务停掉后，立即关机。 （常用）</span><br><span class="line">-c     ： 取消已经在进行的 shutdown 指令内容。</span><br><span class="line">/sbin/shutdown -h 10 &#x27;I will shutdown after 10 mins&#x27; 10分钟后关闭</span><br></pre></td></tr></table></figure></li>
+<li>重新开机，关机： <code>reboot, halt, poweroff</code></li>
+</ol>
+<h5 id="用户相关"><a href="#用户相关" class="headerlink" title="用户相关"></a>用户相关</h5><p>useradd 选项 用户名</p>
+<p><code>useradd –d /home/sam zzz</code> 指定用户zzz的家目录为/home/sam</p>
+<p>-c comment 指定一段注释性描述。<br>-d 目录 指定用户主目录，如果此目录不存在，则同时使用-m选项，可以创建主目录。<br>-g 用户组 指定用户所属的用户组。<br>-G 用户组，用户组 指定用户所属的附加组。<br>-s Shell文件 指定用户的登录Shell。<br>-u 用户号 指定用户的用户号，如果同时有-o选项，则可以重复使用其他用户的标识号。</p>
+<p>userdel 选项 用户名</p>
+<p><code>userdel -r sam</code> 添加了-r选项会把用户的家目录一起删除</p>
+<p>usermod 选项 用户名 （修改用户相关的属性，与添加用户的参数相同）</p>
+<p>例如：添加一个额外的组给用户，可以使用如下命令：<code>sudo usermod -G root sniper</code></p>
+<p>使用<code>id sniper</code>就会得到<code>用户id=1000(sniper) 组id=1000(sniper) 组=1000(sniper),0(root)</code></p>
+<p>passwd 选项 用户名</p>
+<p>-l 锁定口令，即禁用账号。<br>-u 口令解锁。<br>-d 使账号无口令。<br>-f 强迫用户下次登录时修改口令。</p>
+<p>groupadd 选项 用户组</p>
+<p>-g GID 指定新用户组的组标识号（GID）。<br>-o 一般与-g选项同时使用，表示新用户组的GID可以与系统已有用户组的GID相同。</p>
+<p>例如 <code>groupadd group1</code></p>
+<p>groupdel 用户组</p>
+<p>groupmod 选项 用户组</p>
+<p><code>/etc/passwd</code>文件是用户管理工作涉及的最重要的一个文件(<code>/etc/shadow</code>, <code>/etc/group</code>也很重要)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">root:x:0:0:Superuser:/:</span><br><span class="line">daemon:x:1:1:System daemons:/etc:</span><br><span class="line">bin:x:2:2:Owner of system commands:/bin:</span><br></pre></td></tr></table></figure>
+
+<p>gpasswd 用于管理用户与用户组的关系</p>
+<p>-a：添加用户到组；<br>-d：从组删除用户；<br>-A：指定管理员；<br>-M：指定组成员和-A的用途差不多；<br>-r：删除密码；<br>-R：限制用户登入组，只有组中的成员才可以用newgrp加入该组。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gpasswd -d git Agroup # 将git用户从Agroup中删除</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>用户名:口令:用户标识号:组标识号:注释性描述:主目录:登录Shell</p>
+</blockquote>
+<h5 id="改变文件属性与权限"><a href="#改变文件属性与权限" class="headerlink" title="改变文件属性与权限"></a>改变文件属性与权限</h5><ul>
+<li>chgrp ：改变文件所属群组</li>
+<li>chown ：改变文件拥有者与群组 <code>chown -R root:root /home/sam</code> // -R表示递归，root:root前面是用户，后面是群组</li>
+<li>chmod ：改变文件的权限, SUID, SGID, SBIT 等等的特性</li>
+</ul>
+<p>都有<code>-R</code>属性</p>
+<h5 id="复制"><a href="#复制" class="headerlink" title="复制"></a>复制</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[root@study ~]# cp [options] source1 source2 source3 .... directory</span><br><span class="line">选项与参数：</span><br><span class="line">-a  ：相当于 -dr --preserve=all 的意思，至于 dr 请参考下列说明；（常用）</span><br><span class="line">-d  ：若来源文件为链接文件的属性（link file），则复制链接文件属性而非文件本身；</span><br><span class="line">-f  ：为强制（force）的意思，若目标文件已经存在且无法打开，则移除后再尝试一次；</span><br><span class="line">-i  ：若目标文件（destination）已经存在时，在覆盖时会先询问动作的进行（常用）</span><br><span class="line">-l  ：进行硬式链接（hard link）的链接文件创建，而非复制文件本身；</span><br><span class="line">-p  ：连同文件的属性（权限、用户、时间）一起复制过去，而非使用默认属性（备份常用）；</span><br><span class="line">-r  ：递回持续复制，用于目录的复制行为；（常用）</span><br><span class="line">-s  ：复制成为符号链接文件 （symbolic link），亦即“捷径”文件；</span><br><span class="line">-u  ：destination 比 source 旧才更新 destination，或 destination 不存在的情况下才复制。</span><br><span class="line">--preserve=all ：除了 -p 的权限相关参数外，还加入 SELinux 的属性, links, xattr 等也复制了。</span><br><span class="line">最后需要注意的，如果来源文件有两个以上，则最后一个目的文件一定要是“目录”才行！</span><br></pre></td></tr></table></figure>
+
+<h5 id="文件内容查阅"><a href="#文件内容查阅" class="headerlink" title="文件内容查阅"></a>文件内容查阅</h5><ul>
+<li>cat 由第一行开始显示文件内容</li>
+<li>tac 从最后一行开始显示，可以看出 tac 是 cat 的倒着写！</li>
+<li>nl 显示的时候，顺道输出行号！</li>
+<li>more 一页一页的显示文件内容</li>
+<li>less 与 more 类似，但是比 more 更好的是，他可以往前翻页！</li>
+<li>head 只看头几行</li>
+<li>tail 只看尾巴几行</li>
+<li>od 以二进制的方式读取文件内容！</li>
+</ul>
+<h5 id="解压缩"><a href="#解压缩" class="headerlink" title="解压缩"></a>解压缩</h5><ul>
+<li>c 表示压缩，打包(不会压缩)</li>
+<li>f 表示后面接文件名(表示输出到文件，而不是打印到控制台)</li>
+<li>v 参数表示显示执行过程</li>
+<li>z 打包为gz格式</li>
+<li>j 打包为bz2格式（压缩比率更高，但是更慢）</li>
+<li>x 解压缩</li>
+</ul>
+<blockquote>
+<p>必须把f放在最后面，因为f后面要接参数</p>
+</blockquote>
+<p><code>tar -zcvf xxx.tar.gz 目录</code></p>
+<p><code>tar -jcvf xxx.tar.bz2 目录</code> bz2 压缩</p>
+<p>将目录添加到 xxx.tar.gz</p>
+<p>解压</p>
+<p><code>tar -zxvf xxx.tar.gz 目录</code> 解压缩</p>
+<p><code>tar -jxvf xxx.tar.bz2 目录</code> 解压缩 bz2</p>
+<h5 id="显示进程"><a href="#显示进程" class="headerlink" title="显示进程"></a>显示进程</h5><p>ps</p>
+<ul>
+<li>e 显示所有shell启动的进程</li>
+<li>f 显示uid, pid, parent pid, cpu使用情况等等</li>
+<li>L 显示线程</li>
+</ul>
+<p><code>ps -eLf</code></p>
+<h5 id="systemctl"><a href="#systemctl" class="headerlink" title="systemctl"></a>systemctl</h5><p>systemctl [command] [unit]</p>
+<p>配置文件一般在 <code>/usr/lib/systemd/system</code></p>
+<ul>
+<li>command 主要有：</li>
+<li>start：立刻启动后面接的 unit。</li>
+<li>stop：立刻关闭后面接的 unit。</li>
+<li>restart：立刻关闭后启动后面接的 unit，亦即执行 stop 再 start 的意思。</li>
+<li>reload：不关闭 unit 的情况下，重新载入配置文件，让设置生效。</li>
+<li>enable：设置下次开机时，后面接的 unit 会被启动。</li>
+<li>disable：设置下次开机时，后面接的 unit 不会被启动。</li>
+<li>status：目前后面接的这个 unit 的状态，会列出有没有正在执行、开机时是否启动等信息。</li>
+<li>is-active：目前有没有正在运行中。</li>
+<li>is-enabled：开机时有没有默认要启用这个 unit。</li>
+<li>kill ：不要被 kill 这个名字吓着了，它其实是向运行 unit 的进程发送信号。</li>
+<li>show：列出 unit 的配置。</li>
+<li>mask：注销 unit，注销后你就无法启动这个 unit 了。</li>
+<li>unmask：取消对 unit 的注销。</li>
+</ul>
+<p>systemctl get-default 获取默认系统启动的级别<br>systemctl set-default mutil-user.target 设置默认系统启动的级别</p>
+<p>默认的ssh.service服务如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">[Unit]</span><br><span class="line">Description=OpenBSD Secure Shell server   # 介绍</span><br><span class="line">Documentation=man:sshd(8) man:sshd_config(5) # 用man获取的文件以及级别</span><br><span class="line">After=network.target auditd.service  a.services # 在哪些服务之后启动</span><br><span class="line">Before=xxxx # 在哪些服务之前启动</span><br><span class="line">Requires=a.services # 在哪些服务之后启动，这是必须的，而before和after只是一个提示</span><br><span class="line">ConditionPathExists=!/etc/ssh/sshd_not_to_be_run</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">EnvironmentFile=-/etc/default/ssh</span><br><span class="line">ExecStartPre=/usr/sbin/sshd -t</span><br><span class="line">ExecStart=/usr/sbin/sshd -D $SSHD_OPTS  # 启动的命令</span><br><span class="line">ExecReload=/usr/sbin/sshd -t # 重新加载配置文件</span><br><span class="line">ExecReload=/bin/kill -HUP $MAINPID # 重新加载配置文件</span><br><span class="line">KillMode=process</span><br><span class="line">Restart=on-failure</span><br><span class="line">RestartPreventExitStatus=255</span><br><span class="line">Type=notify</span><br><span class="line">RuntimeDirectory=sshd</span><br><span class="line">RuntimeDirectoryMode=0755</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br><span class="line">Alias=sshd.service</span><br></pre></td></tr></table></figure>
+
+<h4 id="ssh"><a href="#ssh" class="headerlink" title="ssh"></a>ssh</h4><p><code>sudo apt-get install openssh-server</code></p>
+<p>然后使用<code>systemctl</code>进行管理，默认安装完成就启动了</p>
+<h4 id="ftp"><a href="#ftp" class="headerlink" title="ftp"></a>ftp</h4><p>linux 一般使用 vsftpd 来实现 ftp 服务 (客户端是<code>ftp</code>)</p>
+<p><code>sudo apt-get install vsftpd</code>(<code>sudo apt-get install ftp</code>)</p>
+<p>配置文件在 </p>
+<ul>
+<li><code>/etc/vsftpd.conf</code></li>
+<li><code>/etc/ftpusers</code></li>
+<li><code>/etc/vsftpd.user_list</code> </li>
+</ul>
+<p><code>/etc/vsftpd.user_list</code>需要开启下面的配置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">userlist_enable=YES</span><br><span class="line">userlist_file=/etc/vsftpd.user_list</span><br><span class="line">userlist_deny=NO</span><br></pre></td></tr></table></figure>
+
+<p>常用的配置文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">anonymous_enable=NO # 匿名登录 anonymous</span><br><span class="line">local_enable=YES # 本地账户登录</span><br><span class="line">write_enable=YES # 是否可以写入</span><br><span class="line">local_root=/media # 设置登录时的根目录，默认是home，可以通过这个改变</span><br><span class="line">connect_from_port_20=YES # 开启主动连接模式</span><br></pre></td></tr></table></figure>
+<p>更多配置<code>man 5 vsftpd.conf</code></p>
+<p>虚拟用户配置（设置麻烦）<a target="_blank" rel="noopener" href="https://blog.51cto.com/xmomo/2074258">具体</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#以下这些是关于Vsftpd虚拟用户支持的重要配置项目。默认Vsftpd.conf中不包含这些设定项目，需要自己手动添加配置</span><br><span class="line">guest_enable=YES # 设定启用虚拟用户功能</span><br><span class="line">guest_username=vuser # 指定虚拟用户的宿主用户</span><br><span class="line">virtual_use_local_privs=YES # 设定虚拟用户的权限符合他们的宿主用户 </span><br><span class="line">user_config_dir=/etc/vsftpd/vconf # 设定虚拟用户个人Vsftp的配置文件存放路径。也就是说，这个被指定的目录里，将存放每个Vsftp虚拟用户个性的配置文件，</span><br><span class="line"># pam_service_name=vsftpd.vuser # 设定PAM服务名称，默认是vsftpd</span><br></pre></td></tr></table></figure>
+
+<h5 id="smb"><a href="#smb" class="headerlink" title="smb"></a>smb</h5><p>一般使用<code>samba</code>来实现 smb 服务</p>
+<p>安装<code>sudo apt install samba</code></p>
+<p>添加用户<code>sudo smbpasswd -a [username]</code></p>
+<p>配置文件<code>/etc/samba/smb.conf</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[nas]    #共享目录名，访问时的展示名</span><br><span class="line">   # comment = Printer Drivers</span><br><span class="line">   path = /media</span><br><span class="line">   browseable = yes # 是否可以浏览</span><br><span class="line">   comment = sniper nas       #该共享目录的描述</span><br><span class="line">   valid users = sniper       #设置可访问的用户，此处为前面添加的用户smbuser（注意users不要拼写错误）</span><br><span class="line">   guest ok = no               #是否允许访客，否</span><br><span class="line">   create mask = 0777</span><br><span class="line">   directory mask = 0777</span><br><span class="line">   read only = no</span><br></pre></td></tr></table></figure>
+
+<h4 id="创建systemctl启动文件"><a href="#创建systemctl启动文件" class="headerlink" title="创建systemctl启动文件"></a>创建systemctl启动文件</h4><p>有下面这样的一个bash（放在<code>/etc/auto-reboot</code>文件中）</p>
+<blockquote>
+<p>sudo chmod +x /etc/auto-reboot  记得给执行权限</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;如果你看到这行文字说明执行成功！&quot;</span> &gt; ~/mytest.log</span><br><span class="line"><span class="built_in">sleep</span> 20s</span><br><span class="line">docker compose -f /home/sniper/文档/jellyfin/docker-compose.yaml down</span><br><span class="line">docker compose -f /home/sniper/文档/jellyfin/docker-compose.yaml up &amp;</span><br><span class="line">init 3</span><br></pre></td></tr></table></figure>
+
+<p>在<code>/etc/systemd/system</code>创建一个<code>auto-reboot.service</code>文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[Unit]</span><br><span class="line">Description=/etc/auto-reboot Compatibility</span><br><span class="line">ConditionPathExists=/etc/auto-reboot</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type=forking</span><br><span class="line">ExecStart=/etc/auto-reboot</span><br><span class="line">TimeoutSec=0</span><br><span class="line">StandardOutput=tty</span><br><span class="line">RemainAfterExit=yes</span><br><span class="line">SysVStartPriority=99</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Sniper</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://zhoujunxiong.gitee.com/2019/07/06/Linux/Linux/">http://zhoujunxiong.gitee.com/2019/07/06/Linux/Linux/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://zhoujunxiong.gitee.com" target="_blank">Sniper</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Linux/">Linux</a></div><div class="post_share"><div class="social-share" data-image="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.7990295789050657" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2019/07/15/Linux/shell/"><img class="prev-cover" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.5947536225793726" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">shell</div></div></a></div><div class="next-post pull-right"><a href="/2019/06/30/nodejs/CLI%E7%9A%84%E7%BC%96%E5%86%99/"><img class="next-cover" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.6306471122181381" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">CLI的编写</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2019/07/27/Linux/linux之网络管理/" title="linux之网络管理"><img class="cover" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&format=images0.295808636434749" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2019-07-27</div><div class="title">linux之网络管理</div></div></a></div><div><a href="/2019/07/23/Linux/linux目录/" title="linux目录"><img class="cover" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&format=images0.1754168652899324" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2019-07-23</div><div class="title">linux目录</div></div></a></div><div><a href="/2019/07/15/Linux/shell/" title="shell"><img class="cover" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&format=images0.5947536225793726" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2019-07-15</div><div class="title">shell</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-info-avatar is-center"><img class="avatar-img" data-lazy-src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">Sniper</div><div class="author-info__description"></div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">296</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">61</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">47</div></a></div></div><div class="card-info-social-icons is-center"><a class="social-icon" href="/atom.xml" target="_blank" title="rss-atom"><i class="fas fa-rss"></i></a><a class="social-icon" href="/rss2.xml" target="_blank" title="rss-rss2"><i class="fas fa-rss-square"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">这个博客还有点儿意思吧</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4"><span class="toc-number">1.</span> <span class="toc-text">基本命令</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E7%BB%88%E7%AB%AF%E8%AF%AD%E8%A8%80"><span class="toc-number">1.1.</span> <span class="toc-text">修改终端语言</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%98%BE%E7%A4%BA%E6%97%A5%E6%9C%9F"><span class="toc-number">1.2.</span> <span class="toc-text">显示日期</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%98%BE%E7%A4%BA%E6%97%A5%E5%8E%86"><span class="toc-number">1.3.</span> <span class="toc-text">显示日历</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%BC%80%E5%85%B3%E6%9C%BA"><span class="toc-number">1.4.</span> <span class="toc-text">开关机</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E7%9B%B8%E5%85%B3"><span class="toc-number">1.5.</span> <span class="toc-text">用户相关</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%94%B9%E5%8F%98%E6%96%87%E4%BB%B6%E5%B1%9E%E6%80%A7%E4%B8%8E%E6%9D%83%E9%99%90"><span class="toc-number">1.6.</span> <span class="toc-text">改变文件属性与权限</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%A4%8D%E5%88%B6"><span class="toc-number">1.7.</span> <span class="toc-text">复制</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E5%86%85%E5%AE%B9%E6%9F%A5%E9%98%85"><span class="toc-number">1.8.</span> <span class="toc-text">文件内容查阅</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%A7%A3%E5%8E%8B%E7%BC%A9"><span class="toc-number">1.9.</span> <span class="toc-text">解压缩</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%98%BE%E7%A4%BA%E8%BF%9B%E7%A8%8B"><span class="toc-number">1.10.</span> <span class="toc-text">显示进程</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#systemctl"><span class="toc-number">1.11.</span> <span class="toc-text">systemctl</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ssh"><span class="toc-number">2.</span> <span class="toc-text">ssh</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ftp"><span class="toc-number">3.</span> <span class="toc-text">ftp</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#smb"><span class="toc-number">3.1.</span> <span class="toc-text">smb</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%9B%E5%BB%BAsystemctl%E5%90%AF%E5%8A%A8%E6%96%87%E4%BB%B6"><span class="toc-number">4.</span> <span class="toc-text">创建systemctl启动文件</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/03/26/nodejs/koa%E6%BA%90%E7%A0%81%E5%86%8D%E8%AF%BB/" title="koa源码再读"><img data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.4963417575252631" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="koa源码再读"/></a><div class="content"><a class="title" href="/2022/03/26/nodejs/koa%E6%BA%90%E7%A0%81%E5%86%8D%E8%AF%BB/" title="koa源码再读">koa源码再读</a><time datetime="2022-03-26T01:39:44.000Z" title="发表于 2022-03-26 09:39:44">2022-03-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/03/18/%E5%89%8D%E7%AB%AF/Typescript/Typescript%E4%B9%8B%E5%B8%B8%E8%A7%81%E5%A5%97%E8%B7%AF/" title="Typescript之常见套路"><img data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.9584090414206019" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Typescript之常见套路"/></a><div class="content"><a class="title" href="/2022/03/18/%E5%89%8D%E7%AB%AF/Typescript/Typescript%E4%B9%8B%E5%B8%B8%E8%A7%81%E5%A5%97%E8%B7%AF/" title="Typescript之常见套路">Typescript之常见套路</a><time datetime="2022-03-18T10:53:49.000Z" title="发表于 2022-03-18 18:53:49">2022-03-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/02/13/%E5%89%8D%E7%AB%AF/JS%E5%8E%9F%E7%90%86/V8%E4%B8%AD%E7%9A%84JS%E6%95%B0%E7%BB%84/" title="V8中的JS数组"><img data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.26310617936839553" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="V8中的JS数组"/></a><div class="content"><a class="title" href="/2022/02/13/%E5%89%8D%E7%AB%AF/JS%E5%8E%9F%E7%90%86/V8%E4%B8%AD%E7%9A%84JS%E6%95%B0%E7%BB%84/" title="V8中的JS数组">V8中的JS数组</a><time datetime="2022-02-13T08:12:44.000Z" title="发表于 2022-02-13 16:12:44">2022-02-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/02/06/%E5%89%8D%E7%AB%AF/%E6%A1%86%E6%9E%B6/Nuxt3/" title="Nuxt3"><img data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.3676739232204689" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Nuxt3"/></a><div class="content"><a class="title" href="/2022/02/06/%E5%89%8D%E7%AB%AF/%E6%A1%86%E6%9E%B6/Nuxt3/" title="Nuxt3">Nuxt3</a><time datetime="2022-02-06T14:00:30.000Z" title="发表于 2022-02-06 22:00:30">2022-02-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/02/04/flutter/flutter%E4%B9%8Bkey/" title="flutter之animation"><img data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.9126924101130238" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="flutter之animation"/></a><div class="content"><a class="title" href="/2022/02/04/flutter/flutter%E4%B9%8Bkey/" title="flutter之animation">flutter之animation</a><time datetime="2022-02-04T00:06:27.000Z" title="发表于 2022-02-04 08:06:27">2022-02-04</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2018 - 2022 By Sniper</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="/js/search/local-search.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> {preloader.endLoading()})</script><div class="js-pjax"><script>function loadValine () {
+  function initValine () {
+    let initData = {
+      el: '#vcomment',
+      appId: 'cwRCUoMavhC2YwPVr7FS2gq0-gzGzoHsz',
+      appKey: 'sqKV8HVVmhAbpKiqokLJUDLU',
+      placeholder: '来，谈谈你的梦想',
+      avatar: 'monsterid',
+      meta: 'nick,mail,link'.split(','),
+      pageSize: '10',
+      lang: 'zh-CN',
+      recordIP: false,
+      serverURLs: 'https://cwrcuoma.lc-cn-n1-shared.com',
+      emojiCDN: '',
+      emojiMaps: "",
+      enableQQ: false,
+      path: window.location.pathname,
+    }
+
+    if (true) { 
+      initData.requiredFields= ('nick'.split(','))
+    }
+    
+    if (false) {
+      const otherData = false
+      initData = Object.assign(initData, otherData)
+    }
+    
+    const valine = new Valine(initData)
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !false) {
+  if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.17.0/js/md5.min.js"></script><script>window.addEventListener('load', () => {
+  const changeContent = (content) => {
+    if (content === '') return content
+
+    content = content.replace(/<[^>]+>/g,"") // remove html tag
+    content = content.replace(/(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|jpeg|gif|png|webp)/g, '') // remove image link
+    content = content.replace(/(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi, '') // remove url
+
+    if (content.length > 150) {
+      content = content.substring(0,150) + '...'
+    }
+    return content
+  }
+
+  const getIcon = (icon, mail) => {
+    if (icon) return icon
+    
+    let defaultIcon = '?d=monsterid'
+    let iconUrl = `https://gravatar.loli.net/avatar/${md5(mail.toLowerCase()) + defaultIcon}`
+    return iconUrl
+  }
+
+  const generateHtml = array => {
+    let result = ''
+
+    if (array.length) {
+      for (let i = 0; i < array.length; i++) {
+        result += '<div class=\'aside-list-item\'>'
+
+        if (true) {
+          let name = 'src'
+          if(true) {
+            name = 'data-lazy-src'
+          }
+          result += `<a href='${array[i].url}' class="thumbnail"><img ${name}='${getIcon(array[i].avatar, array[i].mail)}' alt='${array[i].nick}'></a>`
+        }
+
+        result += `<div class='content'>
+        <a class='comment' href='${array[i].url}'>${array[i].content}</a>
+        <div class='name'><span>${array[i].nick}</span><time> / ${btf.diffDate(array[i].date, true)}</time></div>
+        </div></div>`
+      }
+    } else {
+      result += '没有评论'
+    }
+
+    let $dom = document.querySelector('#card-newest-comments .aside-list')
+    $dom.innerHTML= result
+    window.lazyLoadInstance && window.lazyLoadInstance.update()
+    window.pjax && window.pjax.refresh($dom)
+  }
+
+  const getComment = () => {
+      let serverURL = ''
+      if (true) {
+        serverURL = 'https://cwrcuoma.lc-cn-n1-shared.com'
+      } else {
+        serverURL = 'https://cwRCUoMa.api.lncldglobal.com'
+      }
+
+    var settings = {
+      "method": "GET",
+      "headers": {
+        "X-LC-Id": 'cwRCUoMavhC2YwPVr7FS2gq0-gzGzoHsz',
+        "X-LC-Key": 'sqKV8HVVmhAbpKiqokLJUDLU',
+        "Content-Type": "application/json"
+      },
+    }
+
+    fetch(`${serverURL}/1.1/classes/Comment?limit=6&order=-createdAt`,settings)
+      .then(response => response.json())
+      .then(data => {
+        const valineArray = data.results.map(function (e) {
+          return {
+            'avatar': e.QQAvatar,
+            'content': changeContent(e.comment),
+            'mail': e.mail,
+            'nick': e.nick,
+            'url': e.url + '#' + e.objectId,
+            'date': e.createdAt,
+          }
+        })
+        saveToLocal.set('leancloud-newest-comments', JSON.stringify(valineArray), 10/(60*24))
+        generateHtml(valineArray)
+      }).catch(e => {
+        const $dom = document.querySelector('#card-newest-comments .aside-list')
+        $dom.innerHTML= "无法获取评论，请确认相关配置是否正确"
+      }) 
+  }
+
+  const newestCommentInit = () => {
+    if (document.querySelector('#card-newest-comments .aside-list')) {
+      const data = saveToLocal.get('leancloud-newest-comments')
+      if (data) {
+        generateHtml(JSON.parse(data))
+      } else {
+        getComment()
+      }
+    }
+  }
+
+  newestCommentInit()
+  document.addEventListener('pjax:complete', newestCommentInit)
+})</script><div class="aplayer no-destroy" data-id="6587475516" data-server="netease" data-type="playlist" data-fixed="true" data-mini="true" data-listFolded="false" data-order="random" data-preload="none" data-autoplay="false" data-lrctype="1" muted></div><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/gh/metowolf/MetingJS@1.2/dist/Meting.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = [
+  'title',
+  '#config_change',
+  '#body-wrap',
+  '#rightside-config-hide',
+  '#rightside-config-show',
+  '.js-pjax'
+]
+
+if (false) {
+  pjaxSelectors.unshift('meta[property="og:image"]', 'meta[property="og:title"]', 'meta[property="og:url"]')
+}
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  if (typeof gtag === 'function') {
+    gtag('config', '', {'page_path': window.location.pathname});
+  }
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // Analytics
+  if (false) {
+    MtaH5.pgv()
+  }
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+
+document.addEventListener('pjax:send', function () {
+  typeof preloader === 'object' && preloader.initLoading()
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+})</script></div></body></html>

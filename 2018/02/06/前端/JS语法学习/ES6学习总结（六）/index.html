@@ -1,0 +1,445 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ES6学习总结（六） | Sniper</title><meta name="keywords" content="JavaScript,ES6"><meta name="author" content="Sniper"><meta name="copyright" content="Sniper"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="Class 的基本语法，extends关键字，ES6继承关系  （参考书籍《ECMAScript 6 入门》）  Class 的基本语法 class关键字123456789101112131415&#96;ES6 提供了更接近传统语言的写法，引入了 Class（类）这个概念，作为对象的模板。通过class关键字，可以定义类&#96;&#x2F;&#x2F;定义类class Point &amp;#123;  constructor(x,">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ES6学习总结（六）">
+<meta property="og:url" content="http://zhoujunxiong.gitee.com/2018/02/06/%E5%89%8D%E7%AB%AF/JS%E8%AF%AD%E6%B3%95%E5%AD%A6%E4%B9%A0/ES6%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93%EF%BC%88%E5%85%AD%EF%BC%89/index.html">
+<meta property="og:site_name" content="Sniper">
+<meta property="og:description" content="Class 的基本语法，extends关键字，ES6继承关系  （参考书籍《ECMAScript 6 入门》）  Class 的基本语法 class关键字123456789101112131415&#96;ES6 提供了更接近传统语言的写法，引入了 Class（类）这个概念，作为对象的模板。通过class关键字，可以定义类&#96;&#x2F;&#x2F;定义类class Point &amp;#123;  constructor(x,">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://api.btstu.cn/sjbz/api.php?lx=dongman&format=images0.3524572967598447">
+<meta property="article:published_time" content="2018-02-06T07:10:00.000Z">
+<meta property="article:modified_time" content="2022-04-06T14:27:38.591Z">
+<meta property="article:author" content="Sniper">
+<meta property="article:tag" content="JavaScript">
+<meta property="article:tag" content="ES6">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://api.btstu.cn/sjbz/api.php?lx=dongman&format=images0.3524572967598447"><link rel="shortcut icon" href="https://gitee.com/zhoujunxiong/zhoujunxiong.back/raw/master/favicon.ico"><link rel="canonical" href="http://zhoujunxiong.gitee.com/2018/02/06/%E5%89%8D%E7%AB%AF/JS%E8%AF%AD%E6%B3%95%E5%AD%A6%E4%B9%A0/ES6%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93%EF%BC%88%E5%85%AD%EF%BC%89/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}
+
+// https://stackoverflow.com/questions/16839698/jquery-getscript-alternative-in-native-javascript
+const getScript = url => new Promise((resolve, reject) => {
+  const script = document.createElement('script')
+  script.src = url
+  script.async = true
+  script.onerror = reject
+  script.onload = script.onreadystatechange = function() {
+    const loadState = this.readyState
+    if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+    script.onload = script.onreadystatechange = null
+    resolve()
+  }
+  document.head.appendChild(script)
+})</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-04-06 22:27:38'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><link rel="stylesheet" href="/css/custom.css"<meta name="generator" content="Hexo 5.4.1"><link rel="alternate" href="/atom.xml" title="Sniper" type="application/atom+xml">
+<link rel="alternate" href="/rss2.xml" title="Sniper" type="application/rss+xml">
+</head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div id="loader-wrapper"><div id="loader"></div></div><div class="loader"><div class="inner one"></div><div class="inner two"></div><div class="inner three"></div></div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" data-lazy-src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">296</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">61</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">47</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标籤</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.3524572967598447)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Sniper</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标籤</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">ES6学习总结（六）</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2018-02-06T07:10:00.000Z" title="发表于 2018-02-06 15:10:00">2018-02-06</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-04-06T14:27:38.591Z" title="更新于 2022-04-06 22:27:38">2022-04-06</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/ES6/">ES6</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-commentcount"><i class="far fa-comments fa-fw post-meta-icon"></i><span class="post-meta-label">评论数:</span><a href="/2018/02/06/%E5%89%8D%E7%AB%AF/JS%E8%AF%AD%E6%B3%95%E5%AD%A6%E4%B9%A0/ES6%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93%EF%BC%88%E5%85%AD%EF%BC%89/#post-comment" itemprop="discussionUrl"><span class="valine-comment-count" data-xid="/2018/02/06/%E5%89%8D%E7%AB%AF/JS%E8%AF%AD%E6%B3%95%E5%AD%A6%E4%B9%A0/ES6%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93%EF%BC%88%E5%85%AD%EF%BC%89/" itemprop="commentCount"></span></a></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><blockquote>
+<p>Class 的基本语法，extends关键字，ES6继承关系  <a target="_blank" rel="noopener" href="http://es6.ruanyifeng.com/">（参考书籍《ECMAScript 6 入门》）</a></p>
+</blockquote>
+<h3 id="Class-的基本语法"><a href="#Class-的基本语法" class="headerlink" title="Class 的基本语法"></a>Class 的基本语法</h3><ol>
+<li><h4 id="class关键字"><a href="#class关键字" class="headerlink" title="class关键字"></a>class关键字</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">`ES6 提供了更接近传统语言的写法，引入了 Class（类）这个概念，</span></span><br><span class="line"><span class="string">作为对象的模板。通过class关键字，可以定义类`</span></span><br><span class="line"><span class="comment">//定义类</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Point</span> &#123;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params">x, y</span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">x</span> = x;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">y</span> = y;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">toString</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;(&#x27;</span> + <span class="variable language_">this</span>.<span class="property">x</span> + <span class="string">&#x27;, &#x27;</span> + <span class="variable language_">this</span>.<span class="property">y</span> + <span class="string">&#x27;)&#x27;</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="title class_">ES6</span> 的类，完全可以看作构造函数的另一种写法。</span><br><span class="line">另外，类的内部所有定义的方法，都是不可枚举的（non-enumerable）。</span><br></pre></td></tr></table></figure>
+</li>
+<li><h4 id="类的实例对象"><a href="#类的实例对象" class="headerlink" title="类的实例对象"></a>类的实例对象</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">实例的属性除非显式定义在其本身（即定义在<span class="variable language_">this</span>对象上），否则都是定义在原型上（即定义在<span class="keyword">class</span>上）</span><br><span class="line"><span class="title class_">ES5</span> 一样，类的所有实例共享一个原型对象</span><br><span class="line"><span class="keyword">var</span> p1 = <span class="keyword">new</span> <span class="title class_">Point</span>(<span class="number">2</span>,<span class="number">3</span>);</span><br><span class="line"><span class="keyword">var</span> p2 = <span class="keyword">new</span> <span class="title class_">Point</span>(<span class="number">3</span>,<span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">p1.<span class="property">__proto__</span> === p2.<span class="property">__proto__</span></span><br><span class="line"><span class="comment">//true</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><h4 id="私有方法和私有属性"><a href="#私有方法和私有属性" class="headerlink" title="私有方法和私有属性"></a>私有方法和私有属性</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">私有方法是常见需求，但 <span class="title class_">ES6</span> 不提供，只能通过变通方法模拟实现</span><br><span class="line">一种做法是在命名上加以区别。</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Widget</span> &#123;</span><br><span class="line">  <span class="comment">// 公有方法</span></span><br><span class="line">  foo (baz) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="title function_">_bar</span>(baz);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 私有方法</span></span><br><span class="line">  <span class="title function_">_bar</span>(<span class="params">baz</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">snaf</span> = baz;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125; <span class="string">`在外部仍然可以访问_bar方法`</span></span><br><span class="line"></span><br><span class="line">私有属性的提案</span><br><span class="line">有一个提案，为<span class="keyword">class</span>加了私有属性。方法是在属性名之前，使用#表示。</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Point</span> &#123;</span><br><span class="line">  #x;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params">x = <span class="number">0</span></span>) &#123;</span><br><span class="line">    #x = +x; <span class="comment">// 写成 this.#x 亦可</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">get</span> <span class="title function_">x</span>() &#123; <span class="keyword">return</span> #x &#125;</span><br><span class="line">  <span class="keyword">set</span> <span class="title function_">x</span>(<span class="params">value</span>) &#123; #x = +value &#125;</span><br><span class="line">&#125;</span><br><span class="line">上面代码中，#x就表示私有属性x，在<span class="title class_">Point</span>类之外是读取不到这个属性的。</span><br><span class="line">还可以看到，私有属性与实例的属性是可以同名的（比如，#x与<span class="keyword">get</span> <span class="title function_">x</span>()）</span><br></pre></td></tr></table></figure>
+</li>
+<li><h4 id="Class-的静态方法"><a href="#Class-的静态方法" class="headerlink" title="Class 的静态方法"></a>Class 的静态方法</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">`如果在一个方法前，加上static关键字，就表示该方法不会被实例继承`</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Foo</span> &#123;</span><br><span class="line">  <span class="keyword">static</span> <span class="title function_">classMethod</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;hello&#x27;</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="title class_">Foo</span>.<span class="title function_">classMethod</span>() <span class="comment">// &#x27;hello&#x27;</span></span><br><span class="line"><span class="keyword">var</span> foo = <span class="keyword">new</span> <span class="title class_">Foo</span>();</span><br><span class="line">foo.<span class="title function_">classMethod</span>()</span><br><span class="line"><span class="comment">// TypeError: foo.classMethod is not a function</span></span><br><span class="line"><span class="string">`如果静态方法包含this关键字，这个this指的是类，而不是实例</span></span><br><span class="line"><span class="string">并且静态方法可以与非静态方法重名`</span></span><br><span class="line"></span><br><span class="line">父类的静态方法，可以被子类继承。</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Foo</span> &#123;</span><br><span class="line">  <span class="keyword">static</span> <span class="title function_">classMethod</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;hello&#x27;</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Bar</span> <span class="keyword">extends</span> <span class="title class_ inherited__">Foo</span> &#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title class_">Bar</span>.<span class="title function_">classMethod</span>() <span class="comment">// &#x27;hello&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="string">`因为 ES6 明确规定，Class 内部只有静态方法，没有静态属性。`</span></span><br><span class="line">所以要添加静态属性需要这样 <span class="title class_">Point</span>.静态属性=xxxxx</span><br><span class="line"></span><br><span class="line"><span class="title class_">ES6</span> 为<span class="keyword">new</span>命令引入了一个<span class="keyword">new</span>.<span class="property">target</span>属性</span><br><span class="line">该属性一般用在构造函数之中，返回<span class="keyword">new</span>命令作用于的那个构造函数</span><br><span class="line">如果构造函数不是通过<span class="keyword">new</span>命令调用的，<span class="keyword">new</span>.<span class="property">target</span>会返回<span class="literal">undefined</span></span><br></pre></td></tr></table></figure>
+
+<p>​</p>
+</li>
+</ol>
+<h3 id="Class-的继承"><a href="#Class-的继承" class="headerlink" title="Class 的继承"></a>Class 的继承</h3><ol>
+<li><h4 id="extends关键字"><a href="#extends关键字" class="headerlink" title="extends关键字"></a><code>extends</code>关键字</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">`Class 可以通过extends关键字实现继承`</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ColorPoint</span> <span class="keyword">extends</span> <span class="title class_ inherited__">Point</span> &#123;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params">x, y, color</span>) &#123;</span><br><span class="line">    <span class="variable language_">super</span>(x, y); <span class="comment">// 调用父类的constructor(x, y)</span></span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">color</span> = color;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">toString</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">color</span> + <span class="string">&#x27; &#x27;</span> + <span class="variable language_">super</span>.<span class="title function_">toString</span>(); <span class="comment">// 调用父类的toString()</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="string">`该类通过extends关键字，继承了Point类的所有属性和方法`</span></span><br><span class="line"></span><br><span class="line"><span class="string">`子类必须在constructor方法中调用super方法`</span>，否则新建实例时会报错。</span><br><span class="line">这是因为子类没有自己的<span class="variable language_">this</span>对象，而是继承父类的<span class="variable language_">this</span>对象，然后对其进行加工。</span><br><span class="line">如果不调用<span class="variable language_">super</span>方法，子类就得不到<span class="variable language_">this</span>对象。</span><br><span class="line"></span><br><span class="line"><span class="string">`ES5 的继承，实质是先创造子类的实例对象this，然后再将父类的方法添加到this上面</span></span><br><span class="line"><span class="string">Parent.apply(this)）。ES6 的继承机制完全不同，实质是先创造父类的实例对象this</span></span><br><span class="line"><span class="string">（所以必须先调用super方法），然后再用子类的构造函数修改this`</span></span><br><span class="line"></span><br><span class="line">父类的静态方法和静态属性，也会被子类继承</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">A</span> &#123;</span><br><span class="line">  <span class="keyword">static</span> <span class="title function_">hello</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;hello world&#x27;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">B</span> <span class="keyword">extends</span> <span class="title class_ inherited__">A</span> &#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">B.<span class="title function_">hello</span>()  <span class="comment">// hello world</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><h4 id="super-关键字"><a href="#super-关键字" class="headerlink" title="super 关键字"></a>super 关键字</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">super</span>这个关键字，既可以当作函数使用，也可以当作对象使用。在这两种情况下，它的用法完全不同</span><br><span class="line">第一种情况，<span class="string">`super作为函数调用时，代表父类的构造函数`</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">A</span> &#123;&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">B</span> <span class="keyword">extends</span> <span class="title class_ inherited__">A</span> &#123;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">super</span>();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">第二种情况，<span class="string">`super作为对象时，在普通方法中，指向父类的原型对象；在静态方法中，指向父类`</span>。</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">A</span> &#123;</span><br><span class="line">  <span class="title function_">p</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">2</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">B</span> <span class="keyword">extends</span> <span class="title class_ inherited__">A</span> &#123;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">super</span>();</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">super</span>.<span class="title function_">p</span>()); <span class="comment">// 2</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> b = <span class="keyword">new</span> <span class="title function_">B</span>();</span><br><span class="line">子类B当中的<span class="variable language_">super</span>.<span class="title function_">p</span>()，就是将<span class="variable language_">super</span>当作一个对象使用。</span><br><span class="line">这时，<span class="variable language_">super</span>在普通方法之中，指向A.<span class="property"><span class="keyword">prototype</span></span>，所以<span class="variable language_">super</span>.<span class="title function_">p</span>()就相当于A.<span class="property"><span class="keyword">prototype</span></span>.<span class="title function_">p</span>()</span><br><span class="line"></span><br><span class="line">如果<span class="variable language_">super</span>作为对象，用在静态方法之中，这时<span class="variable language_">super</span>将指向父类，而不是父类的原型对象</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Parent</span> &#123;</span><br><span class="line">  <span class="keyword">static</span> <span class="title function_">myMethod</span>(<span class="params">msg</span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;static&#x27;</span>, msg);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">myMethod</span>(<span class="params">msg</span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;instance&#x27;</span>, msg);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Child</span> <span class="keyword">extends</span> <span class="title class_ inherited__">Parent</span> &#123;</span><br><span class="line">  <span class="keyword">static</span> <span class="title function_">myMethod</span>(<span class="params">msg</span>) &#123;</span><br><span class="line">    <span class="variable language_">super</span>.<span class="title function_">myMethod</span>(msg);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">myMethod</span>(<span class="params">msg</span>) &#123;</span><br><span class="line">    <span class="variable language_">super</span>.<span class="title function_">myMethod</span>(msg);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title class_">Child</span>.<span class="title function_">myMethod</span>(<span class="number">1</span>); <span class="comment">// static 1</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> child = <span class="keyword">new</span> <span class="title class_">Child</span>();</span><br><span class="line">child.<span class="title function_">myMethod</span>(<span class="number">2</span>); <span class="comment">// instance 2</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><h4 id="ES6继承关系"><a href="#ES6继承关系" class="headerlink" title="ES6继承关系"></a>ES6继承关系</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">`prototype是函数才有的关系，__proto__是每个对象都有的属性`</span></span><br></pre></td></tr></table></figure>
+
+<p>​</p>
+<p><img src= "/img/loading.svg" data-lazy-src="/images/ES6%E7%BB%A7%E6%89%BF%E5%85%B3%E7%B3%BB.png" alt="ES6继承关系"></p>
+</li>
+</ol>
+<h3 id="ES6中的模块"><a href="#ES6中的模块" class="headerlink" title="ES6中的模块"></a>ES6中的模块</h3><ol>
+<li><h4 id="CommonJS-和-AMD-规范"><a href="#CommonJS-和-AMD-规范" class="headerlink" title="CommonJS 和 AMD 规范"></a>CommonJS 和 AMD 规范</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">`在ES6规范出来以前，社区提出了一些模块加载方案，最主要的有 CommonJS 和 AMD 两种。</span></span><br><span class="line"><span class="string">前者用于服务器，后者用于浏览器`</span></span><br><span class="line"><span class="comment">// CommonJS模块</span></span><br><span class="line"><span class="keyword">let</span> &#123; stat, exists, readFile &#125; = <span class="built_in">require</span>(<span class="string">&#x27;fs&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 等同于</span></span><br><span class="line"><span class="keyword">let</span> _fs = <span class="built_in">require</span>(<span class="string">&#x27;fs&#x27;</span>);</span><br><span class="line"><span class="keyword">let</span> stat = _fs.<span class="property">stat</span>;</span><br><span class="line"><span class="keyword">let</span> exists = _fs.<span class="property">exists</span>;</span><br><span class="line"><span class="keyword">let</span> readfile = _fs.<span class="property">readfile</span>;</span><br><span class="line"></span><br><span class="line"><span class="title class_">ES6</span> 模块不是对象，而是通过<span class="keyword">export</span>命令显式指定输出的代码，再通过<span class="keyword">import</span>命令输入。</span><br><span class="line"></span><br><span class="line"><span class="comment">// ES6模块</span></span><br><span class="line"><span class="keyword">import</span> &#123; stat, exists, readFile &#125; <span class="keyword">from</span> <span class="string">&#x27;fs&#x27;</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li><h4 id="export-命令"><a href="#export-命令" class="headerlink" title="export 命令"></a>export 命令</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">`模块功能主要由两个命令构成：export和import。export命令用于规定模块的对外接口，</span></span><br><span class="line"><span class="string">import命令用于输入其他模块提供的功能。`</span></span><br><span class="line">如果你希望外部能够读取模块内部的某个变量，就必须使用<span class="keyword">export</span>关键字输出该变量</span><br><span class="line"><span class="comment">// profile.js</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">var</span> firstName = <span class="string">&#x27;Michael&#x27;</span>;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">var</span> lastName = <span class="string">&#x27;Jackson&#x27;</span>;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">var</span> year = <span class="number">1958</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span>的写法，除了像上面这样，还有另外一种。</span><br><span class="line"></span><br><span class="line"><span class="comment">// profile.js</span></span><br><span class="line"><span class="keyword">var</span> firstName = <span class="string">&#x27;Michael&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> lastName = <span class="string">&#x27;Jackson&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> year = <span class="number">1958</span>;</span><br><span class="line"><span class="keyword">export</span> &#123;firstName, lastName, year&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span>命令除了输出变量，还可以输出函数或类（<span class="keyword">class</span>）。</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">multiply</span>(<span class="params">x, y</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> x * y;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">通常情况下，<span class="keyword">export</span>输出的变量就是本来的名字，但是可以使用<span class="keyword">as</span>关键字重命名。</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">v1</span>(<span class="params"></span>) &#123; ... &#125;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">v2</span>(<span class="params"></span>) &#123; ... &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> &#123;</span><br><span class="line">  v1 <span class="keyword">as</span> streamV1,</span><br><span class="line">  v2 <span class="keyword">as</span> streamV2</span><br><span class="line">&#125;;</span><br><span class="line">               </span><br><span class="line"><span class="keyword">export</span>命令规定的是对外的接口，必须与模块内部的变量建立一一对应关系</span><br><span class="line"><span class="comment">// 报错</span></span><br><span class="line"><span class="keyword">export</span> <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 报错</span></span><br><span class="line"><span class="keyword">var</span> m = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">export</span> m;</span><br><span class="line">               </span><br><span class="line"><span class="string">`正确的写法如下`</span></span><br><span class="line"><span class="comment">// 写法一</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">var</span> m = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 写法二</span></span><br><span class="line"><span class="keyword">var</span> m = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">export</span> &#123;m&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 写法三</span></span><br><span class="line"><span class="keyword">var</span> n = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">export</span> &#123;n <span class="keyword">as</span> m&#125;;</span><br><span class="line"><span class="string">`export命令可以出现在模块的任何位置，只要处于模块顶层就可以。</span></span><br><span class="line"><span class="string">如果处于块级作用域内，就会报错，下一节的import命令也是如此`</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><h4 id="import命令"><a href="#import命令" class="headerlink" title="import命令"></a>import命令</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//export是导出命令，那么自然就有导入命令，它就是import</span></span><br><span class="line"><span class="comment">// main.js</span></span><br><span class="line"><span class="keyword">import</span> &#123;firstName, lastName, year&#125; <span class="keyword">from</span> <span class="string">&#x27;./profile.js&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">setName</span>(<span class="params">element</span>) &#123;</span><br><span class="line">  element.<span class="property">textContent</span> = firstName + <span class="string">&#x27; &#x27;</span> + lastName;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">如果想为输入的变量重新取一个名字，<span class="keyword">import</span>命令要使用<span class="keyword">as</span>关键字，将输入的变量重命名。</span><br><span class="line"><span class="keyword">import</span> &#123; lastName <span class="keyword">as</span> surname &#125; <span class="keyword">from</span> <span class="string">&#x27;./profile.js&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="string">`import语句会执行所加载的模块，因此可以有下面的写法。`</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;lodash&#x27;</span>;</span><br><span class="line"></span><br><span class="line">上面代码仅仅执行lodash模块，但是不输入任何值。</span><br></pre></td></tr></table></figure>
+</li>
+<li><h4 id="模块的整体加载"><a href="#模块的整体加载" class="headerlink" title="模块的整体加载"></a>模块的整体加载</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">`除了指定加载某个输出值，还可以使用整体加载，</span></span><br><span class="line"><span class="string">即用星号（*）指定一个对象，所有输出值都加载在这个对象上面。`</span></span><br><span class="line"></span><br><span class="line">下面是一个circle.<span class="property">js</span>文件，它输出两个方法area和circumference。</span><br><span class="line"></span><br><span class="line"><span class="comment">// circle.js</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">area</span>(<span class="params">radius</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="title class_">Math</span>.<span class="property">PI</span> * radius * radius;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">circumference</span>(<span class="params">radius</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">2</span> * <span class="title class_">Math</span>.<span class="property">PI</span> * radius;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">整体加载的写法如下。</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> circle <span class="keyword">from</span> <span class="string">&#x27;./circle&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;圆面积：&#x27;</span> + circle.<span class="title function_">area</span>(<span class="number">4</span>));</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;圆周长：&#x27;</span> + circle.<span class="title function_">circumference</span>(<span class="number">14</span>));</span><br></pre></td></tr></table></figure>
+</li>
+<li><h4 id="export-default-命令"><a href="#export-default-命令" class="headerlink" title="export default 命令"></a>export default 命令</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">`export default命令，为模块指定默认输出。`</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// export-default.js</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;foo&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//导入模块</span></span><br><span class="line"><span class="keyword">import</span> test <span class="keyword">from</span> <span class="keyword">export</span>-<span class="keyword">default</span>.<span class="property">js</span></span><br><span class="line"><span class="title function_">test</span>()</span><br></pre></td></tr></table></figure>
+</li>
+<li><h4 id="export-default和export的区别"><a href="#export-default和export的区别" class="headerlink" title="export default和export的区别"></a>export default和export的区别</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">`使用export default时，对应的import语句不需要使用大括号；</span></span><br><span class="line"><span class="string">不使用export default时，对应的import语句需要使用大括号`</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span>命令用于指定模块的默认输出。显然，一个模块只能有一个默认输出，</span><br><span class="line">因此<span class="keyword">export</span> <span class="keyword">default</span>命令只能使用一次。所以，<span class="keyword">import</span>命令后面才不用加大括号，</span><br><span class="line">因为只可能唯一对应<span class="keyword">export</span> <span class="keyword">default</span>命令。</span><br><span class="line"></span><br><span class="line">本质上，<span class="keyword">export</span> <span class="keyword">default</span>就是输出一个叫做<span class="keyword">default</span>的变量或方法，然后系统允许你为它取任意名字。</span><br><span class="line"></span><br><span class="line"><span class="comment">// modules.js</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">add</span>(<span class="params">x, y</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> x * y;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">export</span> &#123;add <span class="keyword">as</span> <span class="keyword">default</span>&#125;;</span><br><span class="line"><span class="comment">// 等同于</span></span><br><span class="line"><span class="comment">// export default add;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// app.js</span></span><br><span class="line"><span class="keyword">import</span> &#123; <span class="keyword">default</span> <span class="keyword">as</span> foo &#125; <span class="keyword">from</span> <span class="string">&#x27;modules&#x27;</span>;</span><br><span class="line"><span class="comment">// 等同于</span></span><br><span class="line"><span class="comment">// import foo from &#x27;modules&#x27;;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><h4 id="export-与-import-的复合写法"><a href="#export-与-import-的复合写法" class="headerlink" title="export 与 import 的复合写法"></a>export 与 import 的复合写法</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">`如果在一个模块之中，先输入后输出同一个模块，import语句可以与export语句写在一起。`</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> &#123; foo, bar &#125; <span class="keyword">from</span> <span class="string">&#x27;my_module&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 可以简单理解为</span></span><br><span class="line"><span class="keyword">import</span> &#123; foo, bar &#125; <span class="keyword">from</span> <span class="string">&#x27;my_module&#x27;</span>;</span><br><span class="line"><span class="keyword">export</span> &#123; foo, bar &#125;;</span><br><span class="line"></span><br><span class="line"><span class="string">`上面代码中，export和import语句可以结合在一起，写成一行。但需要注意的是，写成一行以后，</span></span><br><span class="line"><span class="string">foo和bar实际上并没有被导入当前模块，只是相当于对外转发了这两个接口</span></span><br><span class="line"><span class="string">导致当前模块不能直接使用foo和bar。`</span></span><br><span class="line"></span><br><span class="line">模块的接口改名和整体输出，也可以采用这种写法。</span><br><span class="line"></span><br><span class="line"><span class="comment">// 接口改名</span></span><br><span class="line"><span class="keyword">export</span> &#123; foo <span class="keyword">as</span> myFoo &#125; <span class="keyword">from</span> <span class="string">&#x27;my_module&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 整体输出</span></span><br><span class="line"><span class="keyword">export</span> * <span class="keyword">from</span> <span class="string">&#x27;my_module&#x27;</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li><h4 id="ES6的动态加载import"><a href="#ES6的动态加载import" class="headerlink" title="ES6的动态加载import()"></a>ES6的动态加载import()</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">暂时没看</span><br></pre></td></tr></table></figure>
+
+<p>​</p>
+</li>
+</ol>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Sniper</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://zhoujunxiong.gitee.com/2018/02/06/%E5%89%8D%E7%AB%AF/JS%E8%AF%AD%E6%B3%95%E5%AD%A6%E4%B9%A0/ES6%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93%EF%BC%88%E5%85%AD%EF%BC%89/">http://zhoujunxiong.gitee.com/2018/02/06/%E5%89%8D%E7%AB%AF/JS%E8%AF%AD%E6%B3%95%E5%AD%A6%E4%B9%A0/ES6%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93%EF%BC%88%E5%85%AD%EF%BC%89/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://zhoujunxiong.gitee.com" target="_blank">Sniper</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/JavaScript/">JavaScript</a><a class="post-meta__tags" href="/tags/ES6/">ES6</a></div><div class="post_share"><div class="social-share" data-image="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.3524572967598447" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2018/03/08/Python/%E5%BE%AE%E4%BF%A1itchat/"><img class="prev-cover" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.08764357130555522" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">微信itchat</div></div></a></div><div class="next-post pull-right"><a href="/2018/02/05/%E5%89%8D%E7%AB%AF/JS%E8%AF%AD%E6%B3%95%E5%AD%A6%E4%B9%A0/ES6%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93%EF%BC%88%E4%BA%94%EF%BC%89/"><img class="next-cover" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.18565473765279106" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">ES6学习总结（五）</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2018/01/29/前端/JS语法学习/ES6学习总结（一）/" title="ES6学习总结（一）"><img class="cover" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&format=images0.653875985292157" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-01-29</div><div class="title">ES6学习总结（一）</div></div></a></div><div><a href="/2018/02/02/前端/JS语法学习/ES6学习总结（三）/" title="ES6学习总结（三）"><img class="cover" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&format=images0.9049043336666991" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-02-02</div><div class="title">ES6学习总结（三）</div></div></a></div><div><a href="/2018/02/01/前端/JS语法学习/ES6学习总结（二）/" title="ES6学习总结（二）"><img class="cover" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&format=images0.6443741192164669" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-02-01</div><div class="title">ES6学习总结（二）</div></div></a></div><div><a href="/2018/02/05/前端/JS语法学习/ES6学习总结（五）/" title="ES6学习总结（五）"><img class="cover" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&format=images0.18565473765279106" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-02-05</div><div class="title">ES6学习总结（五）</div></div></a></div><div><a href="/2018/02/04/前端/JS语法学习/ES6学习总结（四）/" title="ES6学习总结（四）"><img class="cover" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&format=images0.45157981205411546" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-02-04</div><div class="title">ES6学习总结（四）</div></div></a></div><div><a href="/2019/06/30/nodejs/CLI的编写/" title="CLI的编写"><img class="cover" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&format=images0.6306471122181381" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2019-06-30</div><div class="title">CLI的编写</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-info-avatar is-center"><img class="avatar-img" data-lazy-src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">Sniper</div><div class="author-info__description"></div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">296</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">61</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">47</div></a></div></div><div class="card-info-social-icons is-center"><a class="social-icon" href="/atom.xml" target="_blank" title="rss-atom"><i class="fas fa-rss"></i></a><a class="social-icon" href="/rss2.xml" target="_blank" title="rss-rss2"><i class="fas fa-rss-square"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">这个博客还有点儿意思吧</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Class-%E7%9A%84%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95"><span class="toc-number">1.</span> <span class="toc-text">Class 的基本语法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#class%E5%85%B3%E9%94%AE%E5%AD%97"><span class="toc-number">1.1.</span> <span class="toc-text">class关键字</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%B1%BB%E7%9A%84%E5%AE%9E%E4%BE%8B%E5%AF%B9%E8%B1%A1"><span class="toc-number">1.2.</span> <span class="toc-text">类的实例对象</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A7%81%E6%9C%89%E6%96%B9%E6%B3%95%E5%92%8C%E7%A7%81%E6%9C%89%E5%B1%9E%E6%80%A7"><span class="toc-number">1.3.</span> <span class="toc-text">私有方法和私有属性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Class-%E7%9A%84%E9%9D%99%E6%80%81%E6%96%B9%E6%B3%95"><span class="toc-number">1.4.</span> <span class="toc-text">Class 的静态方法</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Class-%E7%9A%84%E7%BB%A7%E6%89%BF"><span class="toc-number">2.</span> <span class="toc-text">Class 的继承</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#extends%E5%85%B3%E9%94%AE%E5%AD%97"><span class="toc-number">2.1.</span> <span class="toc-text">extends关键字</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#super-%E5%85%B3%E9%94%AE%E5%AD%97"><span class="toc-number">2.2.</span> <span class="toc-text">super 关键字</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ES6%E7%BB%A7%E6%89%BF%E5%85%B3%E7%B3%BB"><span class="toc-number">2.3.</span> <span class="toc-text">ES6继承关系</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ES6%E4%B8%AD%E7%9A%84%E6%A8%A1%E5%9D%97"><span class="toc-number">3.</span> <span class="toc-text">ES6中的模块</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#CommonJS-%E5%92%8C-AMD-%E8%A7%84%E8%8C%83"><span class="toc-number">3.1.</span> <span class="toc-text">CommonJS 和 AMD 规范</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#export-%E5%91%BD%E4%BB%A4"><span class="toc-number">3.2.</span> <span class="toc-text">export 命令</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#import%E5%91%BD%E4%BB%A4"><span class="toc-number">3.3.</span> <span class="toc-text">import命令</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A8%A1%E5%9D%97%E7%9A%84%E6%95%B4%E4%BD%93%E5%8A%A0%E8%BD%BD"><span class="toc-number">3.4.</span> <span class="toc-text">模块的整体加载</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#export-default-%E5%91%BD%E4%BB%A4"><span class="toc-number">3.5.</span> <span class="toc-text">export default 命令</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#export-default%E5%92%8Cexport%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">3.6.</span> <span class="toc-text">export default和export的区别</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#export-%E4%B8%8E-import-%E7%9A%84%E5%A4%8D%E5%90%88%E5%86%99%E6%B3%95"><span class="toc-number">3.7.</span> <span class="toc-text">export 与 import 的复合写法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ES6%E7%9A%84%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BDimport"><span class="toc-number">3.8.</span> <span class="toc-text">ES6的动态加载import()</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/03/26/nodejs/koa%E6%BA%90%E7%A0%81%E5%86%8D%E8%AF%BB/" title="koa源码再读"><img data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.4963417575252631" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="koa源码再读"/></a><div class="content"><a class="title" href="/2022/03/26/nodejs/koa%E6%BA%90%E7%A0%81%E5%86%8D%E8%AF%BB/" title="koa源码再读">koa源码再读</a><time datetime="2022-03-26T01:39:44.000Z" title="发表于 2022-03-26 09:39:44">2022-03-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/03/18/%E5%89%8D%E7%AB%AF/Typescript/Typescript%E4%B9%8B%E5%B8%B8%E8%A7%81%E5%A5%97%E8%B7%AF/" title="Typescript之常见套路"><img data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.9584090414206019" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Typescript之常见套路"/></a><div class="content"><a class="title" href="/2022/03/18/%E5%89%8D%E7%AB%AF/Typescript/Typescript%E4%B9%8B%E5%B8%B8%E8%A7%81%E5%A5%97%E8%B7%AF/" title="Typescript之常见套路">Typescript之常见套路</a><time datetime="2022-03-18T10:53:49.000Z" title="发表于 2022-03-18 18:53:49">2022-03-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/02/13/%E5%89%8D%E7%AB%AF/JS%E5%8E%9F%E7%90%86/V8%E4%B8%AD%E7%9A%84JS%E6%95%B0%E7%BB%84/" title="V8中的JS数组"><img data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.26310617936839553" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="V8中的JS数组"/></a><div class="content"><a class="title" href="/2022/02/13/%E5%89%8D%E7%AB%AF/JS%E5%8E%9F%E7%90%86/V8%E4%B8%AD%E7%9A%84JS%E6%95%B0%E7%BB%84/" title="V8中的JS数组">V8中的JS数组</a><time datetime="2022-02-13T08:12:44.000Z" title="发表于 2022-02-13 16:12:44">2022-02-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/02/06/%E5%89%8D%E7%AB%AF/%E6%A1%86%E6%9E%B6/Nuxt3/" title="Nuxt3"><img data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.3676739232204689" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Nuxt3"/></a><div class="content"><a class="title" href="/2022/02/06/%E5%89%8D%E7%AB%AF/%E6%A1%86%E6%9E%B6/Nuxt3/" title="Nuxt3">Nuxt3</a><time datetime="2022-02-06T14:00:30.000Z" title="发表于 2022-02-06 22:00:30">2022-02-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/02/04/flutter/flutter%E4%B9%8Bkey/" title="flutter之animation"><img data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.9126924101130238" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="flutter之animation"/></a><div class="content"><a class="title" href="/2022/02/04/flutter/flutter%E4%B9%8Bkey/" title="flutter之animation">flutter之animation</a><time datetime="2022-02-04T00:06:27.000Z" title="发表于 2022-02-04 08:06:27">2022-02-04</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2018 - 2022 By Sniper</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="/js/search/local-search.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> {preloader.endLoading()})</script><div class="js-pjax"><script>function loadValine () {
+  function initValine () {
+    let initData = {
+      el: '#vcomment',
+      appId: 'cwRCUoMavhC2YwPVr7FS2gq0-gzGzoHsz',
+      appKey: 'sqKV8HVVmhAbpKiqokLJUDLU',
+      placeholder: '来，谈谈你的梦想',
+      avatar: 'monsterid',
+      meta: 'nick,mail,link'.split(','),
+      pageSize: '10',
+      lang: 'zh-CN',
+      recordIP: false,
+      serverURLs: 'https://cwrcuoma.lc-cn-n1-shared.com',
+      emojiCDN: '',
+      emojiMaps: "",
+      enableQQ: false,
+      path: window.location.pathname,
+    }
+
+    if (true) { 
+      initData.requiredFields= ('nick'.split(','))
+    }
+    
+    if (false) {
+      const otherData = false
+      initData = Object.assign(initData, otherData)
+    }
+    
+    const valine = new Valine(initData)
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !false) {
+  if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.17.0/js/md5.min.js"></script><script>window.addEventListener('load', () => {
+  const changeContent = (content) => {
+    if (content === '') return content
+
+    content = content.replace(/<[^>]+>/g,"") // remove html tag
+    content = content.replace(/(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|jpeg|gif|png|webp)/g, '') // remove image link
+    content = content.replace(/(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi, '') // remove url
+
+    if (content.length > 150) {
+      content = content.substring(0,150) + '...'
+    }
+    return content
+  }
+
+  const getIcon = (icon, mail) => {
+    if (icon) return icon
+    
+    let defaultIcon = '?d=monsterid'
+    let iconUrl = `https://gravatar.loli.net/avatar/${md5(mail.toLowerCase()) + defaultIcon}`
+    return iconUrl
+  }
+
+  const generateHtml = array => {
+    let result = ''
+
+    if (array.length) {
+      for (let i = 0; i < array.length; i++) {
+        result += '<div class=\'aside-list-item\'>'
+
+        if (true) {
+          let name = 'src'
+          if(true) {
+            name = 'data-lazy-src'
+          }
+          result += `<a href='${array[i].url}' class="thumbnail"><img ${name}='${getIcon(array[i].avatar, array[i].mail)}' alt='${array[i].nick}'></a>`
+        }
+
+        result += `<div class='content'>
+        <a class='comment' href='${array[i].url}'>${array[i].content}</a>
+        <div class='name'><span>${array[i].nick}</span><time> / ${btf.diffDate(array[i].date, true)}</time></div>
+        </div></div>`
+      }
+    } else {
+      result += '没有评论'
+    }
+
+    let $dom = document.querySelector('#card-newest-comments .aside-list')
+    $dom.innerHTML= result
+    window.lazyLoadInstance && window.lazyLoadInstance.update()
+    window.pjax && window.pjax.refresh($dom)
+  }
+
+  const getComment = () => {
+      let serverURL = ''
+      if (true) {
+        serverURL = 'https://cwrcuoma.lc-cn-n1-shared.com'
+      } else {
+        serverURL = 'https://cwRCUoMa.api.lncldglobal.com'
+      }
+
+    var settings = {
+      "method": "GET",
+      "headers": {
+        "X-LC-Id": 'cwRCUoMavhC2YwPVr7FS2gq0-gzGzoHsz',
+        "X-LC-Key": 'sqKV8HVVmhAbpKiqokLJUDLU',
+        "Content-Type": "application/json"
+      },
+    }
+
+    fetch(`${serverURL}/1.1/classes/Comment?limit=6&order=-createdAt`,settings)
+      .then(response => response.json())
+      .then(data => {
+        const valineArray = data.results.map(function (e) {
+          return {
+            'avatar': e.QQAvatar,
+            'content': changeContent(e.comment),
+            'mail': e.mail,
+            'nick': e.nick,
+            'url': e.url + '#' + e.objectId,
+            'date': e.createdAt,
+          }
+        })
+        saveToLocal.set('leancloud-newest-comments', JSON.stringify(valineArray), 10/(60*24))
+        generateHtml(valineArray)
+      }).catch(e => {
+        const $dom = document.querySelector('#card-newest-comments .aside-list')
+        $dom.innerHTML= "无法获取评论，请确认相关配置是否正确"
+      }) 
+  }
+
+  const newestCommentInit = () => {
+    if (document.querySelector('#card-newest-comments .aside-list')) {
+      const data = saveToLocal.get('leancloud-newest-comments')
+      if (data) {
+        generateHtml(JSON.parse(data))
+      } else {
+        getComment()
+      }
+    }
+  }
+
+  newestCommentInit()
+  document.addEventListener('pjax:complete', newestCommentInit)
+})</script><div class="aplayer no-destroy" data-id="6587475516" data-server="netease" data-type="playlist" data-fixed="true" data-mini="true" data-listFolded="false" data-order="random" data-preload="none" data-autoplay="false" data-lrctype="1" muted></div><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/gh/metowolf/MetingJS@1.2/dist/Meting.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = [
+  'title',
+  '#config_change',
+  '#body-wrap',
+  '#rightside-config-hide',
+  '#rightside-config-show',
+  '.js-pjax'
+]
+
+if (false) {
+  pjaxSelectors.unshift('meta[property="og:image"]', 'meta[property="og:title"]', 'meta[property="og:url"]')
+}
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  if (typeof gtag === 'function') {
+    gtag('config', '', {'page_path': window.location.pathname});
+  }
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // Analytics
+  if (false) {
+    MtaH5.pgv()
+  }
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+
+document.addEventListener('pjax:send', function () {
+  typeof preloader === 'object' && preloader.initLoading()
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+})</script></div></body></html>
