@@ -1,31 +1,591 @@
-extends includes/layout.pug
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>gitlab-ci入门 | Sniper</title><meta name="keywords" content="工具使用"><meta name="author" content="Sniper"><meta name="copyright" content="Sniper"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="安装 gitlabrpm 方式源地址：https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;gitlab-ce&#x2F;yum&#x2F;el7&#x2F; 123456789101112wget https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;gitlab-ce&#x2F;yum&#x2F;el7&#x2F;gitlab-ce-12.9.0-ce.0.el7.x86_64.rpmrpm -ivh gitla">
+<meta property="og:type" content="article">
+<meta property="og:title" content="gitlab-ci入门">
+<meta property="og:url" content="http://zhoujunxiong.gitee.com/2020/05/13/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/gitlab-ci%E5%85%A5%E9%97%A8/index.html">
+<meta property="og:site_name" content="Sniper">
+<meta property="og:description" content="安装 gitlabrpm 方式源地址：https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;gitlab-ce&#x2F;yum&#x2F;el7&#x2F; 123456789101112wget https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;gitlab-ce&#x2F;yum&#x2F;el7&#x2F;gitlab-ce-12.9.0-ce.0.el7.x86_64.rpmrpm -ivh gitla">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://api.btstu.cn/sjbz/api.php?lx=dongman&format=images0.9810557698990658">
+<meta property="article:published_time" content="2020-05-12T19:00:35.000Z">
+<meta property="article:modified_time" content="2022-04-12T16:02:16.828Z">
+<meta property="article:author" content="Sniper">
+<meta property="article:tag" content="工具使用">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://api.btstu.cn/sjbz/api.php?lx=dongman&format=images0.9810557698990658"><link rel="shortcut icon" href="https://gitee.com/zhoujunxiong/zhoujunxiong.back/raw/master/favicon.ico"><link rel="canonical" href="http://zhoujunxiong.gitee.com/2020/05/13/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/gitlab-ci%E5%85%A5%E9%97%A8/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isanchor: false
+};
 
-block content
-  #post
-    if top_img === false
-      include includes/header/post-info.pug
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
 
-    article#article-container.post-content!=page.content
-    include includes/post/post-copyright.pug
-    .tag_share
-      if (theme.post_meta.post.tags)
-        .post-meta__tag-list
-          each item, index in page.tags.data
-            a(href=url_for(item.path)).post-meta__tags #[=item.name]
-      include includes/third-party/share/index.pug
-        
-    if theme.reward.enable
-      !=partial('includes/post/reward', {}, {cache:theme.fragment_cache})
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
 
-    //- ad
-    if theme.ad && theme.ad.post
-      .ads-wrap!=theme.ad.post
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
 
-    include includes/pagination.pug
-    if theme.related_post && theme.related_post.enable
-      != related_posts(page,site.posts)
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}
 
-    if page.comments !== false && theme.comments && theme.comments.use
-      - var commentsJsLoad = true
-      !=partial('includes/third-party/comments/index', {}, {cache:theme.fragment_cache})
-      
+// https://stackoverflow.com/questions/16839698/jquery-getscript-alternative-in-native-javascript
+const getScript = url => new Promise((resolve, reject) => {
+  const script = document.createElement('script')
+  script.src = url
+  script.async = true
+  script.onerror = reject
+  script.onload = script.onreadystatechange = function() {
+    const loadState = this.readyState
+    if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+    script.onload = script.onreadystatechange = null
+    resolve()
+  }
+  document.head.appendChild(script)
+})</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-04-13 00:02:16'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><link rel="stylesheet" href="/css/custom.css"<meta name="generator" content="Hexo 5.4.1"><link rel="alternate" href="/atom.xml" title="Sniper" type="application/atom+xml">
+<link rel="alternate" href="/rss2.xml" title="Sniper" type="application/rss+xml">
+</head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div id="loader-wrapper"><div id="loader"></div></div><div class="loader"><div class="inner one"></div><div class="inner two"></div><div class="inner three"></div></div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" data-lazy-src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">298</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">61</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">47</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标籤</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.9810557698990658)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Sniper</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标籤</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">gitlab-ci入门</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-05-12T19:00:35.000Z" title="发表于 2020-05-13 03:00:35">2020-05-13</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-04-12T16:02:16.828Z" title="更新于 2022-04-13 00:02:16">2022-04-13</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-commentcount"><i class="far fa-comments fa-fw post-meta-icon"></i><span class="post-meta-label">评论数:</span><a href="/2020/05/13/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/gitlab-ci%E5%85%A5%E9%97%A8/#post-comment" itemprop="discussionUrl"><span class="valine-comment-count" data-xid="/2020/05/13/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/gitlab-ci%E5%85%A5%E9%97%A8/" itemprop="commentCount"></span></a></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="安装-gitlab"><a href="#安装-gitlab" class="headerlink" title="安装 gitlab"></a>安装 gitlab</h2><h5 id="rpm-方式"><a href="#rpm-方式" class="headerlink" title="rpm 方式"></a>rpm 方式</h5><p>源地址：<a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/gitlab-ce/yum/el7/">https://mirrors.tuna.tsinghua.edu.cn/gitlab-ce/yum/el7/</a></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">wget https://mirrors.tuna.tsinghua.edu.cn/gitlab-ce/yum/el7/gitlab-ce-12.9.0-ce.0.el7.x86_64.rpm</span><br><span class="line"></span><br><span class="line">rpm -ivh gitlab-ce-12.9.0-ce.0.el7.x86_64.rpm</span><br><span class="line"></span><br><span class="line">// 编辑站点地址</span><br><span class="line">vim /etc/gitlab.rb</span><br><span class="line">// 配置</span><br><span class="line">gitlab-ctl reconfigure</span><br><span class="line">// 服务控制</span><br><span class="line">gitlab-ctl start</span><br><span class="line">gitlab-ctl status</span><br><span class="line">gitlab-ctl stop</span><br></pre></td></tr></table></figure>
+
+<h5 id="Docker"><a href="#Docker" class="headerlink" title="Docker"></a>Docker</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p ~/data/gitlab/config ~/data/gitlab/logs ~/data/gitlab/data</span><br><span class="line">docker pull gitlab/gitlab-ce:12.9.0-ce.0</span><br><span class="line">docker run -d  -p 443:443 -p 80:80 -p 222:22 --name gitlab --restart always -v /Users/zeyang/data/gitlab/config:/etc/gitlab -v /Users/zeyang/data/gitlab/logs:/var/log/gitlab -v /Users/zeyang/data/gitlab/data:/var/opt/gitlab gitlab/gitlab-ce:12.9.0-ce.0</span><br><span class="line">docker exec -it gitlab   bash</span><br><span class="line">vim /etc/gitlab.rb   // 编辑站点地址</span><br><span class="line">gitlab-ctl reconfigure  // 配置</span><br><span class="line">docker restart gitlab</span><br><span class="line">//服务控制</span><br><span class="line">docker start gitlab</span><br><span class="line">docker stop gitlab</span><br><span class="line">docker rm gitlab</span><br></pre></td></tr></table></figure>
+
+<h2 id="Kubernetes-部署"><a href="#Kubernetes-部署" class="headerlink" title="Kubernetes 部署"></a>Kubernetes 部署</h2><p>文件地址： <a target="_blank" rel="noopener" href="https://github.com/zeyangli/devops-on-k8s/blob/master/devops/gitlab.yaml">https://github.com/zeyangli/devops-on-k8s/blob/master/devops/gitlab.yaml</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br></pre></td><td class="code"><pre><span class="line">kind: Deployment</span><br><span class="line">apiVersion: apps/v1</span><br><span class="line">metadata:</span><br><span class="line">  labels:</span><br><span class="line">    k8s-app: gitlab</span><br><span class="line">  name: gitlab</span><br><span class="line">  namespace: devops</span><br><span class="line">spec:</span><br><span class="line">  replicas: 1</span><br><span class="line">  revisionHistoryLimit: 10</span><br><span class="line">  selector:</span><br><span class="line">    matchLabels:</span><br><span class="line">      k8s-app: gitlab</span><br><span class="line">  template:</span><br><span class="line">    metadata:</span><br><span class="line">      labels:</span><br><span class="line">        k8s-app: gitlab</span><br><span class="line">      namespace: devops</span><br><span class="line">      name: gitlab</span><br><span class="line">    spec:</span><br><span class="line">      containers:</span><br><span class="line">        - name: gitlab</span><br><span class="line">          image: gitlab/gitlab-ce:12.6.0-ce.0</span><br><span class="line">          imagePullPolicy: Always</span><br><span class="line">          ports:</span><br><span class="line">            - containerPort: 30088</span><br><span class="line">              name: web</span><br><span class="line">              protocol: TCP</span><br><span class="line">            - containerPort: 22</span><br><span class="line">              name: agent</span><br><span class="line">              protocol: TCP</span><br><span class="line">          resources:</span><br><span class="line">            limits:</span><br><span class="line">              cpu: 1000m</span><br><span class="line">              memory: 4Gi</span><br><span class="line">            requests:</span><br><span class="line">              cpu: 500m</span><br><span class="line">              memory: 512Mi</span><br><span class="line">          livenessProbe:</span><br><span class="line">            httpGet:</span><br><span class="line">              path: /users/sign_in</span><br><span class="line">              port: 30088</span><br><span class="line">            initialDelaySeconds: 60</span><br><span class="line">            timeoutSeconds: 5</span><br><span class="line">            failureThreshold: 12</span><br><span class="line">          readinessProbe:</span><br><span class="line">            httpGet:</span><br><span class="line">              path: /users/sign_in</span><br><span class="line">              port: 30088</span><br><span class="line">            initialDelaySeconds: 60</span><br><span class="line">            timeoutSeconds: 5</span><br><span class="line">            failureThreshold: 12</span><br><span class="line">          volumeMounts:</span><br><span class="line">            - name: gitlab-conf</span><br><span class="line">              mountPath: /etc/gitlab</span><br><span class="line">            - name: gitlab-log</span><br><span class="line">              mountPath: /var/log/gitlab</span><br><span class="line">            - name: gitlab-data</span><br><span class="line">              mountPath: /var/opt/gitlab</span><br><span class="line">          env:</span><br><span class="line">            - name: gitlab_HOME</span><br><span class="line">              value: /var/lib/gitlab</span><br><span class="line">      volumes:</span><br><span class="line">        - name: gitlab-conf</span><br><span class="line">          hostPath:</span><br><span class="line">            path: /data/devops/gitlab/config</span><br><span class="line">            type: Directory</span><br><span class="line">        - name: gitlab-log</span><br><span class="line">          hostPath:</span><br><span class="line">            path: /data/devops/gitlab/logs</span><br><span class="line">            type: Directory</span><br><span class="line">        - name: gitlab-data</span><br><span class="line">          hostPath:</span><br><span class="line">            path: /data/devops/gitlab/data</span><br><span class="line">            type: Directory</span><br><span class="line">      serviceAccountName: gitlab</span><br><span class="line"></span><br><span class="line">apiVersion: v1</span><br><span class="line">kind: ServiceAccount</span><br><span class="line">metadata:</span><br><span class="line">  labels:</span><br><span class="line">    k8s-app: gitlab</span><br><span class="line">  name: gitlab</span><br><span class="line">  namespace: devops</span><br><span class="line"></span><br><span class="line">kind: Service</span><br><span class="line">apiVersion: v1</span><br><span class="line">metadata:</span><br><span class="line">  labels:</span><br><span class="line">    k8s-app: gitlab</span><br><span class="line">  name: gitlab</span><br><span class="line">  namespace: devops</span><br><span class="line">spec:</span><br><span class="line">  type: NodePort</span><br><span class="line">  ports:</span><br><span class="line">    - name: web</span><br><span class="line">      port: 30088</span><br><span class="line">      targetPort: 30088</span><br><span class="line">      nodePort: 30088</span><br><span class="line">    - name: slave</span><br><span class="line">      port: 22</span><br><span class="line">      targetPort: 22</span><br><span class="line">      nodePort: 30022</span><br><span class="line">  selector:</span><br><span class="line">    k8s-app: gitlab</span><br><span class="line"></span><br><span class="line">kind: Role</span><br><span class="line">apiVersion: rbac.authorization.k8s.io/v1beta1</span><br><span class="line">metadata:</span><br><span class="line"> name: gitlab</span><br><span class="line"> namespace: devops</span><br><span class="line">rules:</span><br><span class="line"> - apiGroups: [&quot;&quot;]</span><br><span class="line">   resources: [&quot;pods&quot;]</span><br><span class="line">   verbs: [&quot;create&quot;,&quot;delete&quot;,&quot;get&quot;,&quot;list&quot;,&quot;patch&quot;,&quot;update&quot;,&quot;watch&quot;]</span><br><span class="line"> - apiGroups: [&quot;&quot;]</span><br><span class="line">   resources: [&quot;pods/exec&quot;]</span><br><span class="line">   verbs: [&quot;create&quot;,&quot;delete&quot;,&quot;get&quot;,&quot;list&quot;,&quot;patch&quot;,&quot;update&quot;,&quot;watch&quot;]</span><br><span class="line"> - apiGroups: [&quot;&quot;]</span><br><span class="line">   resources: [&quot;pods/log&quot;]</span><br><span class="line">   verbs: [&quot;get&quot;,&quot;list&quot;,&quot;watch&quot;]</span><br><span class="line"> - apiGroups: [&quot;&quot;]</span><br><span class="line">   resources: [&quot;secrets&quot;]</span><br><span class="line">   verbs: [&quot;get&quot;]</span><br><span class="line"></span><br><span class="line">apiVersion: rbac.authorization.k8s.io/v1beta1</span><br><span class="line">kind: RoleBinding</span><br><span class="line">metadata:</span><br><span class="line"> name: gitlab</span><br><span class="line"> namespace: devops</span><br><span class="line">roleRef:</span><br><span class="line"> apiGroup: rbac.authorization.k8s.io</span><br><span class="line"> kind: Role</span><br><span class="line"> name: gitlab</span><br><span class="line">subjects:</span><br><span class="line"> - kind: ServiceAccount</span><br><span class="line">   name: gitlab</span><br><span class="line">   namespace: devops</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kubectl create -f gitlab.yaml</span><br><span class="line">kubectl delete -f gitlab.yaml</span><br></pre></td></tr></table></figure>
+
+<h4 id="怎么运行"><a href="#怎么运行" class="headerlink" title="怎么运行"></a>怎么运行</h4><p>gitlab-ci 通过源码目录中的<code>.gitlab-ci.yml</code>文件执行脚本</p>
+<h4 id="入门"><a href="#入门" class="headerlink" title="入门"></a>入门</h4><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">//</span> <span class="string">执行脚本之前运行的命令</span></span><br><span class="line"><span class="attr">before_script:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">touch</span> <span class="string">./.env</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">cat</span> <span class="string">/dev/null</span> <span class="string">&gt;|</span> <span class="string">.env</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">|</span></span><br><span class="line"><span class="string">    echo &quot;ME=Laravel</span></span><br><span class="line"><span class="string">      APP_ENV=local</span></span><br><span class="line"><span class="string">      APP_KEY=ooxx</span></span><br><span class="line"><span class="string">      APP_DEBUG=true</span></span><br><span class="line"><span class="string">      APP_LOG_LEVEL=debug</span></span><br><span class="line"><span class="string">    &quot;&gt;&gt;.env</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">//</span> <span class="string">然后运行下面的脚本</span> <span class="string">phpunit</span> <span class="string">--coverage-text</span> <span class="string">--colors=never</span></span><br><span class="line"><span class="attr">phpunit:</span></span><br><span class="line">  <span class="attr">script:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">phpunit</span> <span class="string">--coverage-text</span> <span class="string">--colors=never</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="job"><a href="#job" class="headerlink" title="job"></a>job</h4><p><code>gitlab-ci</code>可以指定多个<code>job</code>，每个<code>job</code>都必须有唯一的名称，每个作业是独立执行的，每个作业 最少要有一个<code>script</code></p>
+<ul>
+<li>可以定义一个或多个作业(job)。</li>
+<li>每个作业必须具有唯一的名称（不能使用关键字）。</li>
+<li>每个作业是独立执行的。</li>
+<li>每个作业至少要包含一个 script。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">job1:</span><br><span class="line">    script: &quot;echo hello&quot;</span><br><span class="line">job2:</span><br><span class="line">    script: &quot;echo hello&quot;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">job:</span><br><span class="line">  script:</span><br><span class="line">    - uname -a</span><br><span class="line">    - bundle exec rspec</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意：</strong>有时， <code>script</code>命令将需要用单引号或双引号引起来. 例如，包含冒号命令（ <code>:</code> ）需要加引号，以便被包裹的 YAML 解析器知道来解释整个事情作为一个字符串，而不是一个”键：值”对. 使用特殊字符时要小心： <code>:</code> ， <code>&#123;</code> ， <code>&#125;</code> ， <code>[</code> ， <code>]</code> ， <code>,</code> ， <code>&amp;</code> ， <code>*</code> ， <code>#</code> ， <code>?</code> ， <code>|</code> ， <code>-</code> ， <code>&lt;</code> ， <code>&gt;</code> ， <code>=</code> <code>!</code> ， <code>%</code> ， <code>@</code> ， ``` .</p>
+<h4 id="before-script"><a href="#before-script" class="headerlink" title="before_script"></a>before_script</h4><p>用于定义一个命令，该命令在每个作业之前运行。必须是一个数组。与主脚本中指定的任何脚本串联在一起，并在单个 shell 中一起执行。</p>
+<h4 id="after-script"><a href="#after-script" class="headerlink" title="after_script"></a>after_script</h4><p>用于定义将在每个作业（包括失败的作业）之后运行的命令。这必须是一个数组。指定的脚本在新的 shell 中执行，与任何<code>before_script</code>或<code>script</code>脚本分开。</p>
+<p>可以在全局定义，也可以在 job 中定义。在 job 中定义会覆盖全局。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">before_script:</span><br><span class="line">  - echo &quot;before-script!!&quot;</span><br><span class="line"></span><br><span class="line">variables:</span><br><span class="line">  DOMAIN: example.com</span><br><span class="line"></span><br><span class="line">stages:</span><br><span class="line">  - build</span><br><span class="line">  - deploy</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">build:</span><br><span class="line">  before_script:</span><br><span class="line">    - echo &quot;before-script in job&quot;</span><br><span class="line">  stage: build</span><br><span class="line">  script:</span><br><span class="line">    - echo &quot;mvn clean &quot;</span><br><span class="line">    - echo &quot;mvn install&quot;</span><br><span class="line">  after_script:</span><br><span class="line">    - echo &quot;after script in job&quot;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">deploy:</span><br><span class="line">  stage: deploy</span><br><span class="line">  script:</span><br><span class="line">    - echo &quot;hello deploy&quot;</span><br><span class="line"></span><br><span class="line">after_script:</span><br><span class="line">  - echo &quot;after-script&quot;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>after_script 失败不会影响作业失败。</p>
+</blockquote>
+<blockquote>
+<p>before_script 失败导致整个作业失败，其他作业将不再执行。作业失败不会影响 after_script 运行。</p>
+</blockquote>
+<h4 id="stages"><a href="#stages" class="headerlink" title="stages"></a>stages</h4><p>用于定义作业可以使用的阶段，并且是全局定义的。同一阶段的作业并行运行，不同阶段按顺序执行。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">stages：</span><br><span class="line">  - build</span><br><span class="line">  - test</span><br><span class="line">  - deploy</span><br></pre></td></tr></table></figure>
+
+<p>这里定义了三个阶段，首先 build 阶段并行运行，然后 test 阶段并行运行，最后 deploy 阶段并行运行。deploy 阶段运行成功后将提交状态标记为 passed 状态。如果任何一个阶段运行失败，最后提交状态为 failed。</p>
+<p><strong>未定义 stages</strong></p>
+<p>全局定义的 stages 是来自于每个 job。如果 job 没有定义 stage 则默认是 test 阶段。如果全局未定义 stages,则按顺序运行 build,test,deploy。</p>
+<p>如果作业中定义了其他阶段，例如”codescan”则会出现错误。原因是因为除了 build test deploy 阶段外的其他阶段作为.pre 运行（也就是作为第一个阶段运行，需要将此作业的 stage 指定为.pre）。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">codescan:</span><br><span class="line">  stage: .pre</span><br><span class="line">  script:</span><br><span class="line">    - echo &quot;codescan&quot;</span><br></pre></td></tr></table></figure>
+
+<p><strong>定义 stages 控制 stage 运行顺序</strong></p>
+<p>一个标准的 yaml 文件中是需要定义 stages，可以帮助我们对每个 stage 进行排序。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">stages:</span><br><span class="line">  - build</span><br><span class="line">  - test</span><br><span class="line">  - codescan</span><br><span class="line">  - deploy</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>.pre 始终是整个管道的第一个运行阶段，.post 始终是整个管道的最后一个运行阶段。 用户定义的阶段都在两者之间运行。<code>.pre</code>和<code>.post</code>的顺序无法更改。如果管道仅包含<code>.pre</code>或<code>.post</code>阶段的作业，则不会创建管道。</p>
+</blockquote>
+<h4 id="variables"><a href="#variables" class="headerlink" title="variables"></a>variables</h4><p>定义变量，pipeline 变量、job 变量、Runner 变量。job 变量优先级最大。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">before_script:</span><br><span class="line">  - echo &quot;before-script!!&quot;</span><br><span class="line"></span><br><span class="line">variables:</span><br><span class="line">  DOMAIN: example.com</span><br><span class="line"></span><br><span class="line">stages:</span><br><span class="line">  - build</span><br><span class="line">  - test</span><br><span class="line">  - codescan</span><br><span class="line">  - deploy</span><br><span class="line"></span><br><span class="line">build:</span><br><span class="line">  before_script:</span><br><span class="line">    - echo &quot;before-script in job&quot;</span><br><span class="line">  stage: build</span><br><span class="line">  script:</span><br><span class="line">    - echo &quot;mvn clean &quot;</span><br><span class="line">    - echo &quot;mvn install&quot;</span><br><span class="line">    - echo &quot;$DOMAIN&quot;</span><br><span class="line">  after_script:</span><br><span class="line">    - echo &quot;after script in buildjob&quot;</span><br><span class="line"></span><br><span class="line">unittest:</span><br><span class="line">  stage: test</span><br><span class="line">  script:</span><br><span class="line">    - echo &quot;run test&quot;</span><br><span class="line"></span><br><span class="line">deploy:</span><br><span class="line">  stage: deploy</span><br><span class="line">  script:</span><br><span class="line">    - echo &quot;hello deploy&quot;</span><br><span class="line">    - sleep 2;</span><br><span class="line"></span><br><span class="line">codescan:</span><br><span class="line">  stage: codescan</span><br><span class="line">  script:</span><br><span class="line">    - echo &quot;codescan&quot;</span><br><span class="line">    - sleep 5;</span><br><span class="line"></span><br><span class="line">after_script:</span><br><span class="line">  - echo &quot;after-script&quot;</span><br><span class="line">  - ech</span><br></pre></td></tr></table></figure>
+
+<h3 id="tags"><a href="#tags" class="headerlink" title="tags"></a>tags</h3><p><code>tags</code>可以指定该 job 使用哪一个<code>runner</code>运行</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">job:</span><br><span class="line">  tags:</span><br><span class="line">    - ruby</span><br><span class="line">    - postgres</span><br></pre></td></tr></table></figure>
+
+<h4 id="allow-failure"><a href="#allow-failure" class="headerlink" title="allow_failure"></a>allow_failure</h4><p><code>allow_failure</code>允许作业失败，默认值为<code>false</code> ,不会阻塞后面的<code>job</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">job1:</span><br><span class="line">  stage: test</span><br><span class="line">  script:</span><br><span class="line">    - execute_script_that_will_fail</span><br><span class="line">  allow_failure: true</span><br></pre></td></tr></table></figure>
+
+<h4 id="when"><a href="#when" class="headerlink" title="when"></a>when</h4><p><code>on_success</code>前面阶段中的所有作业都成功（或由于标记为<code>allow_failure</code>而被视为成功）时才执行作业。 这是默认值。</p>
+<p><code>on_failure</code>当前面阶段出现失败则执行。</p>
+<p><code>always</code> -执行作业，而不管先前阶段的作业状态如何，放到最后执行。总是执行。</p>
+<h5 id="manual-手动"><a href="#manual-手动" class="headerlink" title="manual 手动"></a>manual 手动</h5><p><code>manual</code> -手动执行作业,不会自动执行，需要由用户显式启动. 手动操作的示例用法是部署到生产环境. 可以从管道，作业，环境和部署视图开始手动操作。</p>
+<p>此时在 deploy 阶段添加 manual，则流水线运行到 deploy 阶段为锁定状态，需要手动点击按钮才能运行 deploy 阶段。</p>
+<h5 id="delayed-延迟"><a href="#delayed-延迟" class="headerlink" title="delayed 延迟"></a>delayed 延迟</h5><p><code>delayed</code> 延迟一定时间后执行作业（在 GitLab 11.14 中已添加）。</p>
+<p>有效值<code>&#39;5&#39;,10 seconds,30 minutes, 1 day, 1 week</code> 。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">unittest:</span><br><span class="line">  stage: test</span><br><span class="line">  script:</span><br><span class="line">    - ech &quot;run test&quot;</span><br><span class="line">  when: delayed</span><br><span class="line">  start_in: &#x27;5&#x27;</span><br><span class="line">  allow_failure: true</span><br><span class="line">  retry:</span><br><span class="line">    max: 1</span><br><span class="line">    when:</span><br><span class="line">      - script_failure</span><br><span class="line">  timeout: 1 hours 10 minutes</span><br></pre></td></tr></table></figure>
+
+<h3 id="only-amp-except"><a href="#only-amp-except" class="headerlink" title="only &amp; except"></a>only &amp; except</h3><p>only`和 except 是两个参数用分支策略来限制 jobs 构建：</p>
+<ol>
+<li><code>only</code>定义哪些分支和标签的 git 项目将会被 job 执行。</li>
+<li><code>except</code>定义哪些分支和标签的 git 项目将不会被 job 执行。</li>
+</ol>
+<blockquote>
+<p>可以使用正则匹配</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">job:</span><br><span class="line">  # use regexp</span><br><span class="line">  only:</span><br><span class="line">    - /^issue-.*$/</span><br><span class="line">  # use special keyword</span><br><span class="line">  except:</span><br><span class="line">    - branches</span><br></pre></td></tr></table></figure>
+
+<h4 id="rules-if"><a href="#rules-if" class="headerlink" title="rules:if"></a>rules:if</h4><p>如果<code>DOMAIN</code>的值匹配，则需要手动运行。不匹配<code>on_success</code>。 条件判断从上到下，匹配即停止。多条件匹配可以使用<code>&amp;&amp; ||</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">variables:</span><br><span class="line">  DOMAIN: example.com</span><br><span class="line"></span><br><span class="line">codescan:</span><br><span class="line">  stage: codescan</span><br><span class="line">  tags:</span><br><span class="line">    - build</span><br><span class="line">  script:</span><br><span class="line">    - echo &quot;codescan&quot;</span><br><span class="line">    - sleep 5;</span><br><span class="line">  #parallel: 5</span><br><span class="line">  rules:</span><br><span class="line">    - if: &#x27;$DOMAIN == &quot;example.com&quot;&#x27;</span><br><span class="line">      when: manual</span><br><span class="line">    - when: on_success</span><br></pre></td></tr></table></figure>
+
+<h4 id="rules-changes"><a href="#rules-changes" class="headerlink" title="rules:changes"></a>rules:changes</h4><p>接受文件路径数组。 如果提交中<code>Jenkinsfile</code>文件发生的变化则为 true。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">codescan:</span><br><span class="line">  stage: codescan</span><br><span class="line">  tags:</span><br><span class="line">    - build</span><br><span class="line">  script:</span><br><span class="line">    - echo &quot;codescan&quot;</span><br><span class="line">    - sleep 5;</span><br><span class="line">  #parallel: 5</span><br><span class="line">  rules:</span><br><span class="line">    - changes:</span><br><span class="line">      - Jenkinsfile</span><br><span class="line">      when: manual</span><br><span class="line">    - if: &#x27;$DOMAIN == &quot;example.com&quot;&#x27;</span><br><span class="line">      when: on_success</span><br><span class="line">    - when: on_success</span><br></pre></td></tr></table></figure>
+
+<h4 id="rules-exists"><a href="#rules-exists" class="headerlink" title="rules:exists"></a>rules:exists</h4><p>接受文件路径数组。当仓库中存在指定的文件时操作。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">codescan:</span><br><span class="line">  stage: codescan</span><br><span class="line">  tags:</span><br><span class="line">    - build</span><br><span class="line">  script:</span><br><span class="line">    - echo &quot;codescan&quot;</span><br><span class="line">    - sleep 5;</span><br><span class="line">  #parallel: 5</span><br><span class="line">  rules:</span><br><span class="line">    - exists:</span><br><span class="line">      - Jenkinsfile</span><br><span class="line">      when: manual</span><br><span class="line">    - changes:</span><br><span class="line">      - Jenkinsfile</span><br><span class="line">      when: on_success</span><br><span class="line">    - if: &#x27;$DOMAIN == &quot;example.com&quot;&#x27;</span><br><span class="line">      when: on_success</span><br><span class="line">    - when: on_success</span><br></pre></td></tr></table></figure>
+
+<h4 id="rules-allow-failure"><a href="#rules-allow-failure" class="headerlink" title="rules:allow_failure"></a>rules:allow_failure</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">job:</span><br><span class="line">  script: &quot;echo Hello, Rules!&quot;</span><br><span class="line">  rules:</span><br><span class="line">    - if: &#x27;$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == &quot;master&quot;&#x27;</span><br><span class="line">      when: manual</span><br><span class="line">      allow_failure: true</span><br></pre></td></tr></table></figure>
+
+<h3 id="workflow-rules"><a href="#workflow-rules" class="headerlink" title="workflow:rules"></a>workflow:rules</h3><p>顶级<code>workflow:</code>关键字适用于整个管道，并将确定是否创建管道。<code>when</code>可以设置为<code>always</code>或<code>never</code> . 如果未提供，则默认值<code>always</code>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">variables:</span><br><span class="line">  DOMAIN: example.com</span><br><span class="line"></span><br><span class="line">workflow:</span><br><span class="line">  rules:</span><br><span class="line">    - if: &#x27;$DOMAIN == &quot;example.com&quot;&#x27;</span><br><span class="line">    - when: always</span><br></pre></td></tr></table></figure>
+
+<h4 id="cache-paths"><a href="#cache-paths" class="headerlink" title="cache:paths"></a>cache:paths</h4><p>使用<code>paths</code>指令选择要缓存的文件或目录，路径是相对于项目目录，不能直接链接到项目目录之外。</p>
+<p><code>$CI_PROJECT_DIR</code> 项目目录</p>
+<p>在 job build 中定义缓存，将会缓存 target 目录下的所有.jar 文件。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">build:</span><br><span class="line">  script: test</span><br><span class="line">  cache:</span><br><span class="line">    paths:</span><br><span class="line">      - target/*.jar</span><br></pre></td></tr></table></figure>
+
+<p>当在全局定义了 cache:paths 会被 job 中覆盖。以下实例将缓存 binaries 目录。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">cache:</span><br><span class="line">  paths:</span><br><span class="line">    - my/files</span><br><span class="line"></span><br><span class="line">build:</span><br><span class="line">  script: echo &quot;hello&quot;</span><br><span class="line">  cache:</span><br><span class="line">    key: build</span><br><span class="line">    paths:</span><br><span class="line">      - target/</span><br></pre></td></tr></table></figure>
+
+<h4 id="cache-key-缓存标记"><a href="#cache-key-缓存标记" class="headerlink" title="cache:key 缓存标记"></a>cache:key 缓存标记</h4><p>为缓存做个标记，可以配置 job、分支为 key 来实现分支、作业特定的缓存。为不同 job 定义了不同的 <code>cache:key</code> 时， 会为每个 job 分配一个独立的 cache。cache:key<code>变量可以使用任何预定义变量，默认</code>default ，从 GitLab 9.0 开始，默认情况下所有内容都在管道和作业之间共享。</p>
+<p>按照分支设置缓存</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cache:</span><br><span class="line">  key: $&#123;CI_COMMIT_REF_SLUG&#125;</span><br></pre></td></tr></table></figure>
+
+<p>files： 文件发生变化自动重新生成缓存(files 最多指定两个文件)，提交的时候检查指定的文件。</p>
+<p>根据指定的文件生成密钥计算 SHA 校验和，如果文件未改变值为 default。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">cache:</span><br><span class="line">  key:</span><br><span class="line">    files:</span><br><span class="line">      - Gemfile.lock</span><br><span class="line">      - package.json</span><br><span class="line">  paths:</span><br><span class="line">    - vendor/ruby</span><br><span class="line">    - node_modules</span><br></pre></td></tr></table></figure>
+
+<p>prefix: 允许给定 prefix 的值与指定文件生成的秘钥组合。</p>
+<p>在这里定义了全局的 cache，如果文件发生变化则值为 rspec-xxx111111111222222 ，未发生变化为 rspec-default。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">cache:</span><br><span class="line">  key:</span><br><span class="line">    files:</span><br><span class="line">      - Gemfile.lock</span><br><span class="line">    prefix: $&#123;CI_JOB_NAME&#125;</span><br><span class="line">  paths:</span><br><span class="line">    - vendor/ruby</span><br><span class="line"></span><br><span class="line">rspec:</span><br><span class="line">  script:</span><br><span class="line">    - bundle exec rspec</span><br></pre></td></tr></table></figure>
+
+<h4 id="cache-policy-策略"><a href="#cache-policy-策略" class="headerlink" title="cache:policy 策略"></a>cache:policy 策略</h4><p>默认：在执行开始时下载文件，并在结束时重新上传文件。称为” <code>pull-push</code>缓存策略.</p>
+<p><code>policy: pull</code> 跳过下载步骤</p>
+<p><code>policy: push</code> 跳过上传步骤</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">stages:</span><br><span class="line">  - setup</span><br><span class="line">  - test</span><br><span class="line"></span><br><span class="line">prepare:</span><br><span class="line">  stage: setup</span><br><span class="line">  cache:</span><br><span class="line">    key: gems</span><br><span class="line">    paths:</span><br><span class="line">      - vendor/bundle</span><br><span class="line">  script:</span><br><span class="line">    - bundle install --deployment</span><br><span class="line"></span><br><span class="line">rspec:</span><br><span class="line">  stage: test</span><br><span class="line">  cache:</span><br><span class="line">    key: gems</span><br><span class="line">    paths:</span><br><span class="line">      - vendor/bundle</span><br><span class="line">    policy: pull</span><br><span class="line">  script:</span><br><span class="line">    - bundle exec rspec ...</span><br></pre></td></tr></table></figure>
+
+<h4 id="cache-继承"><a href="#cache-继承" class="headerlink" title="cache 继承"></a>cache 继承</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">cache: &amp;Global-Cache</span><br><span class="line">  key: micro-kylin</span><br><span class="line">  paths:</span><br><span class="line">    - demo.txt</span><br><span class="line"></span><br><span class="line">test-a:</span><br><span class="line">  stage: test</span><br><span class="line">  script:</span><br><span class="line">    - echo test-a</span><br><span class="line">    - ls -al</span><br><span class="line">    - cat demo.txt</span><br><span class="line">  cache:</span><br><span class="line">    &lt;&lt;: *Global-Cache</span><br><span class="line">    policy: pull</span><br><span class="line">  needs:</span><br><span class="line">    - &#x27;demo-a&#x27;</span><br></pre></td></tr></table></figure>
+
+<h4 id="artifacts-paths"><a href="#artifacts-paths" class="headerlink" title="artifacts:paths"></a>artifacts:paths</h4><p>路径是相对于项目目录的，不能直接链接到项目目录之外。</p>
+<p>将制品设置为 target 目录</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">artifacts:</span><br><span class="line">  paths:</span><br><span class="line">    - target/</span><br></pre></td></tr></table></figure>
+
+<p>禁用工件传递</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">job:</span><br><span class="line">  stage: build</span><br><span class="line">  script: make build</span><br><span class="line">  dependencies: []</span><br></pre></td></tr></table></figure>
+
+<p>您可能只想为标记发行版的创建构件，以避免用临时构建构件填充构建服务器存储。仅为标签创建工件（ <code>default-job</code>不会创建工件）：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">default-job:</span><br><span class="line">  script:</span><br><span class="line">    - mvn test -U</span><br><span class="line">  except:</span><br><span class="line">    - tags</span><br><span class="line"></span><br><span class="line">release-job:</span><br><span class="line">  script:</span><br><span class="line">    - mvn package -U</span><br><span class="line">  artifacts:</span><br><span class="line">    paths:</span><br><span class="line">      - target/*.war</span><br><span class="line">  only:</span><br><span class="line">    - tags</span><br></pre></td></tr></table></figure>
+
+<h4 id="artifacts-expose-as"><a href="#artifacts-expose-as" class="headerlink" title="artifacts:expose_as"></a>artifacts:expose_as</h4><p>关键字<code>expose_as</code>可用于在合并请求 UI 中公开作业工件。</p>
+<p>例如，要匹配单个文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">test:</span><br><span class="line">  script:</span><br><span class="line">    - echo 1</span><br><span class="line">  artifacts:</span><br><span class="line">    expose_as: &#x27;artifact 1&#x27;</span><br><span class="line">    paths:</span><br><span class="line">      - path/to/file.txt</span><br></pre></td></tr></table></figure>
+
+<p>使用此配置，GitLab 将在指向的相关合并请求中添加链接<code>file1.txt</code>。</p>
+<h4 id="artifacts-name"><a href="#artifacts-name" class="headerlink" title="artifacts:name"></a>artifacts:name</h4><p>使用当前作业的名称创建存档</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">job:</span><br><span class="line">  artifacts:</span><br><span class="line">    name: &quot;$CI_JOB_NAME&quot;</span><br><span class="line">    paths:</span><br><span class="line">      - binaries/</span><br></pre></td></tr></table></figure>
+
+<p>使用内部分支或标记的名称（仅包括 binaries 目录）创建存档，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">job:</span><br><span class="line">  artifacts:</span><br><span class="line">    name: &quot;$CI_COMMIT_REF_NAME&quot;</span><br><span class="line">    paths:</span><br><span class="line">      - binaries/</span><br></pre></td></tr></table></figure>
+
+<p>使用当前作业的名称和当前分支或标记（仅包括二进制文件目录）创建存档</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">job:</span><br><span class="line">  artifacts:</span><br><span class="line">    name: &quot;$CI_JOB_NAME-$CI_COMMIT_REF_NAME&quot;</span><br><span class="line">    paths:</span><br><span class="line">      - binaries/</span><br></pre></td></tr></table></figure>
+
+<h4 id="artifacts-when"><a href="#artifacts-when" class="headerlink" title="artifacts:when"></a>artifacts:when</h4><p>用于在作业失败时或尽管失败而上传工件。on_success 仅在作业成功时上载工件。这是默认值。on_failure 仅在作业失败时上载工件。always 上载工件，无论作业状态如何。</p>
+<p>要仅在作业失败时上传工件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">job:</span><br><span class="line">  artifacts:</span><br><span class="line">    when: on_failure</span><br></pre></td></tr></table></figure>
+
+<h4 id="artifacts-expire-in"><a href="#artifacts-expire-in" class="headerlink" title="artifacts:expire_in"></a>artifacts:expire_in</h4><p>制品的有效期，从上传和存储到 GitLab 的时间开始算起。如果未定义过期时间，则默认为 30 天。</p>
+<p><code>expire_in</code>的值以秒为单位的经过时间，除非提供了单位。可解析值的示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">‘42’</span><br><span class="line">‘3 mins 4 sec’</span><br><span class="line">‘2 hrs 20 min’</span><br><span class="line">‘2h20min’</span><br><span class="line">‘6 mos 1 day’</span><br><span class="line">‘47 yrs 6 mos and 4d’</span><br><span class="line">‘3 weeks and 2 days’</span><br></pre></td></tr></table></figure>
+
+<p>一周后过期</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">job:</span><br><span class="line">  artifacts:</span><br><span class="line">    expire_in: 1 week</span><br></pre></td></tr></table></figure>
+
+<h4 id="dependencies"><a href="#dependencies" class="headerlink" title="dependencies"></a>dependencies</h4><p>定义要获取工件的作业列表，只能从当前阶段之前执行的阶段定义作业。定义一个空数组将跳过下载该作业的任何工件不会考虑先前作业的状态，因此，如果它失败或是未运行的手动作业，则不会发生错误。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line">before_script:</span><br><span class="line">  - echo &quot;before-script!!&quot;</span><br><span class="line"></span><br><span class="line">variables:</span><br><span class="line">  DOMAIN: example.com</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">cache:</span><br><span class="line">  paths:</span><br><span class="line">   - target/</span><br><span class="line"></span><br><span class="line">stages:</span><br><span class="line">  - build</span><br><span class="line">  - test</span><br><span class="line">  - deploy</span><br><span class="line"></span><br><span class="line">build:</span><br><span class="line">  before_script:</span><br><span class="line">    - echo &quot;before-script in job&quot;</span><br><span class="line">  stage: build</span><br><span class="line">  tags:</span><br><span class="line">    - build</span><br><span class="line">  only:</span><br><span class="line">    - master</span><br><span class="line">  script:</span><br><span class="line">    - ls</span><br><span class="line">    - id</span><br><span class="line">    - mvn test</span><br><span class="line">    - mvn cobertura:cobertura</span><br><span class="line">    - ls target</span><br><span class="line">    - echo &quot;$DOMAIN&quot;</span><br><span class="line">    - false &amp;&amp; true ; exit_code=$?</span><br><span class="line">    - if [ $exit_code -ne 0 ]; then echo &quot;Previous command failed&quot;; fi;</span><br><span class="line">    - sleep 2;</span><br><span class="line">  after_script:</span><br><span class="line">    - echo &quot;after script in job&quot;</span><br><span class="line">  artifacts:</span><br><span class="line">    name: &quot;$CI_JOB_NAME-$CI_COMMIT_REF_NAME&quot;</span><br><span class="line">    when: on_success</span><br><span class="line">    #expose_as: &#x27;artifact 1&#x27;</span><br><span class="line">    paths:</span><br><span class="line">      - target/*.jar</span><br><span class="line">      #- target/surefire-reports/TEST*.xml</span><br><span class="line">    reports:</span><br><span class="line">      junit: target/surefire-reports/TEST-*.xml</span><br><span class="line">      cobertura: target/site/cobertura/coverage.xml</span><br><span class="line">  coverage: &#x27;/Code coverage: \d+\.\d+/&#x27;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">unittest:</span><br><span class="line">  dependencies:</span><br><span class="line">    - build</span><br><span class="line">  stage: test</span><br><span class="line">  tags:</span><br><span class="line">    - build</span><br><span class="line">  only:</span><br><span class="line">    - master</span><br><span class="line">  script:</span><br><span class="line">    - echo &quot;run test&quot;</span><br><span class="line">    - echo &#x27;test&#x27; &gt;&gt; target/a.txt</span><br><span class="line">    - ls target</span><br><span class="line">  retry:</span><br><span class="line">    max: 2</span><br><span class="line">    when:</span><br><span class="line">      - script_failure</span><br><span class="line"></span><br><span class="line">deploy:</span><br><span class="line">  stage: deploy</span><br><span class="line">  tags:</span><br><span class="line">    - build</span><br><span class="line">  only:</span><br><span class="line">    - master</span><br><span class="line">  script:</span><br><span class="line">    - echo &quot;run deploy&quot;</span><br><span class="line">    - ls target</span><br><span class="line">  retry:</span><br><span class="line">    max: 2</span><br><span class="line">    when:</span><br><span class="line">      - script_failure</span><br><span class="line"></span><br><span class="line">after_script:</span><br><span class="line">  - echo &quot;after-script&quot;</span><br></pre></td></tr></table></figure>
+
+<h4 id="needs-并行阶段"><a href="#needs-并行阶段" class="headerlink" title="needs 并行阶段"></a>needs 并行阶段</h4><p>可无序执行作业，无需按照阶段顺序运行某些作业，可以让多个阶段同时运行。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">stages:</span><br><span class="line">  - build</span><br><span class="line">  - test</span><br><span class="line">  - deploy</span><br><span class="line"></span><br><span class="line">module-a-build:</span><br><span class="line">  stage: build</span><br><span class="line">  script:</span><br><span class="line">    - echo &quot;hello3a&quot;</span><br><span class="line">    - sleep 10</span><br><span class="line"></span><br><span class="line">module-b-build:</span><br><span class="line">  stage: build</span><br><span class="line">  script:</span><br><span class="line">    - echo &quot;hello3b&quot;</span><br><span class="line">    - sleep 10</span><br><span class="line"></span><br><span class="line">module-a-test:</span><br><span class="line">  stage: test</span><br><span class="line">  script:</span><br><span class="line">    - echo &quot;hello3a&quot;</span><br><span class="line">    - sleep 10</span><br><span class="line">  needs: [&quot;module-a-build&quot;]</span><br><span class="line"></span><br><span class="line">module-b-test:</span><br><span class="line">  stage: test</span><br><span class="line">  script:</span><br><span class="line">    - echo &quot;hello3b&quot;</span><br><span class="line">    - sleep 10</span><br><span class="line">  needs: [&quot;module-b-build&quot;]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>如果<code>needs:</code>设置为指向因<code>only/except</code>规则而未实例化的作业，或者不存在，则创建管道时会出现 YAML 错误。</p>
+<p>暂时限制了作业在<code>needs:</code>可能需要的最大作业数分配,<code>ci_dag_limit_needs</code>功能标志已启用（默认）分配 10 个，如果功能被禁用为 50。</p>
+<h3 id="制品下载"><a href="#制品下载" class="headerlink" title="制品下载"></a>制品下载</h3><p>在使用<code>needs</code>，可通过<code>artifacts: true</code>或<code>artifacts: false</code>来控制工件下载。 默认不指定为 true。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">module-a-test:</span><br><span class="line">  stage: test</span><br><span class="line">  script:</span><br><span class="line">    - echo &quot;hello3a&quot;</span><br><span class="line">    - sleep 10</span><br><span class="line">  needs:</span><br><span class="line">    - job: &quot;module-a-build&quot;</span><br><span class="line">      artifacts: true</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>相同项目中的管道制品下载,通过将<code>project</code>关键字设置为当前项目的名称，并指定引用，可以使用<code>needs</code>从当前项目的不同管道中下载工件。在下面的示例中，<code>build_job</code>将使用<code>other-ref</code>ref 下载最新成功的<code>build-1</code>作业的工件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">build_job:</span><br><span class="line">  stage: build</span><br><span class="line">  script:</span><br><span class="line">    - ls -lhR</span><br><span class="line">  needs:</span><br><span class="line">    - project: group/same-project-name</span><br><span class="line">      job: build-1</span><br><span class="line">      ref: other-ref</span><br><span class="line">      artifacts: true</span><br></pre></td></tr></table></figure>
+
+<h3 id="include"><a href="#include" class="headerlink" title="include"></a>include</h3><p><a target="_blank" rel="noopener" href="https://gitlab.com/gitlab-org/gitlab/-/tree/master/lib/gitlab/ci/templates">https://gitlab.com/gitlab-org/gitlab/-/tree/master/lib/gitlab/ci/templates</a></p>
+<p>可以允许引入外部 YAML 文件，文件具有扩展名<code>.yml</code>或<code>.yaml</code> 。使用合并功能可以自定义和覆盖包含本地定义的 CI / CD 配置。相同的 job 会合并，参数值以源文件为准。</p>
+<h4 id="local"><a href="#local" class="headerlink" title="local"></a>local</h4><p>引入同一存储库中的文件，使用相对于根目录的完整路径进行引用，与配置文件在同一分支上使用。</p>
+<p>ci/localci.yml: 定义一个作业用于发布。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">stages:</span><br><span class="line">  - deploy</span><br><span class="line"></span><br><span class="line">deployjob:</span><br><span class="line">  stage: deploy</span><br><span class="line">  script:</span><br><span class="line">    - echo &#x27;deploy&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>.gitlab-ci.yml 引入本地的 CI 文件’ci/localci.yml’。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">include:</span><br><span class="line">  local: &#x27;ci/localci.yml&#x27;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">stages:</span><br><span class="line">  - build</span><br><span class="line">  - test</span><br><span class="line">  - deploy</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">buildjob:</span><br><span class="line">  stage: build</span><br><span class="line">  script: ls</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">testjob:</span><br><span class="line">  stage: test</span><br><span class="line">  script: ls</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="file"><a href="#file" class="headerlink" title="file"></a>file</h4><p>包含来自另一个项目的文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">include:</span><br><span class="line">  - project: demo/demo-java-service</span><br><span class="line">    ref: master</span><br><span class="line">    file: &#x27;.gitlab-ci.yml&#x27;</span><br></pre></td></tr></table></figure>
+
+<h4 id="template"><a href="#template" class="headerlink" title="template"></a>template</h4><p>只能使用官方提供的模板 <a target="_blank" rel="noopener" href="https://gitlab.com/gitlab-org/gitlab/tree/master/lib/gitlab/ci/templates">https://gitlab.com/gitlab-org/gitlab/tree/master/lib/gitlab/ci/templates</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">include:</span><br><span class="line">  - template: Auto-DevOps.gitlab-ci.yml</span><br></pre></td></tr></table></figure>
+
+<h4 id="remote"><a href="#remote" class="headerlink" title="remote"></a>remote</h4><p>用于通过 HTTP / HTTPS 包含来自其他位置的文件，并使用完整 URL 进行引用. 远程文件必须可以通过简单的 GET 请求公开访问，因为不支持远程 URL 中的身份验证架构。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">include:</span><br><span class="line">  - remote: &#x27;https://gitlab.com/awesome-project/raw/master/.gitlab-ci-template.yml&#x27;</span><br></pre></td></tr></table></figure>
+
+<h3 id="extends"><a href="#extends" class="headerlink" title="extends"></a>extends</h3><p>继承模板作业</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">stages:</span><br><span class="line">  - test</span><br><span class="line">variables:</span><br><span class="line">  RSPEC: &#x27;test&#x27;</span><br><span class="line"></span><br><span class="line">.tests:</span><br><span class="line">  script: echo &quot;mvn test&quot;</span><br><span class="line">  stage: test</span><br><span class="line">  only:</span><br><span class="line">    refs:</span><br><span class="line">      - branches</span><br><span class="line"></span><br><span class="line">testjob:</span><br><span class="line">  extends: .tests</span><br><span class="line">  script: echo &quot;mvn clean test&quot;</span><br><span class="line">  only:</span><br><span class="line">    variables:</span><br><span class="line">      - $RSPEC</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>合并后</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">testjob:</span><br><span class="line">  stage: test</span><br><span class="line">  script: mvn clean test</span><br><span class="line">  only:</span><br><span class="line">    variables:</span><br><span class="line">      - $RSPEC</span><br><span class="line">    refs:</span><br><span class="line">      - branches</span><br></pre></td></tr></table></figure>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Sniper</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://zhoujunxiong.gitee.com/2020/05/13/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/gitlab-ci%E5%85%A5%E9%97%A8/">http://zhoujunxiong.gitee.com/2020/05/13/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/gitlab-ci%E5%85%A5%E9%97%A8/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://zhoujunxiong.gitee.com" target="_blank">Sniper</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a></div><div class="post_share"><div class="social-share" data-image="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.9810557698990658" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2020/05/14/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/webpack/webpack/"><img class="prev-cover" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.9073773661863731" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">webpack</div></div></a></div><div class="next-post pull-right"><a href="/2020/04/24/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/docker/docker%E4%B9%8B%E8%BF%9B%E9%98%B6%E4%B9%8B%E6%95%B0%E6%8D%AE%E5%8D%B7%E4%B8%8E%E5%AE%B9%E5%99%A8%E4%BA%92%E8%81%94/"><img class="next-cover" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.7387486402982455" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">docker进阶之数据卷与容器互联</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2020/04/04/工具使用/GraphQl/" title="GraphQl"><img class="cover" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&format=images0.8349298561809169" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-04-04</div><div class="title">GraphQl</div></div></a></div><div><a href="/2019/11/28/工具使用/Mockjs/" title="Mockjs"><img class="cover" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&format=images0.9357084546953209" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2019-11-28</div><div class="title">Mockjs</div></div></a></div><div><a href="/2020/04/14/工具使用/axios配置/" title="axios配置"><img class="cover" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&format=images0.16224635566964674" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-04-14</div><div class="title">axios配置</div></div></a></div><div><a href="/2020/03/09/工具使用/ffmpeg/" title="ffmpeg"><img class="cover" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&format=images0.3682326549438084" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-03-09</div><div class="title">ffmpeg</div></div></a></div><div><a href="/2021/07/04/工具使用/rollup/" title="rollup"><img class="cover" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&format=images0.6395948152717925" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-07-04</div><div class="title">rollup</div></div></a></div><div><a href="/2018/07/25/工具使用/puppeteer/" title="puppeteer"><img class="cover" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&format=images0.809126018736535" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-07-25</div><div class="title">puppeteer</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-info-avatar is-center"><img class="avatar-img" data-lazy-src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">Sniper</div><div class="author-info__description"></div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">298</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">61</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">47</div></a></div></div><div class="card-info-social-icons is-center"><a class="social-icon" href="/atom.xml" target="_blank" title="rss-atom"><i class="fas fa-rss"></i></a><a class="social-icon" href="/rss2.xml" target="_blank" title="rss-rss2"><i class="fas fa-rss-square"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">这个博客还有点儿意思吧</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85-gitlab"><span class="toc-number">1.</span> <span class="toc-text">安装 gitlab</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#rpm-%E6%96%B9%E5%BC%8F"><span class="toc-number">1.0.0.1.</span> <span class="toc-text">rpm 方式</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Docker"><span class="toc-number">1.0.0.2.</span> <span class="toc-text">Docker</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Kubernetes-%E9%83%A8%E7%BD%B2"><span class="toc-number">2.</span> <span class="toc-text">Kubernetes 部署</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E8%BF%90%E8%A1%8C"><span class="toc-number">2.0.1.</span> <span class="toc-text">怎么运行</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%A5%E9%97%A8"><span class="toc-number">2.0.2.</span> <span class="toc-text">入门</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#job"><span class="toc-number">2.0.3.</span> <span class="toc-text">job</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#before-script"><span class="toc-number">2.0.4.</span> <span class="toc-text">before_script</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#after-script"><span class="toc-number">2.0.5.</span> <span class="toc-text">after_script</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#stages"><span class="toc-number">2.0.6.</span> <span class="toc-text">stages</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#variables"><span class="toc-number">2.0.7.</span> <span class="toc-text">variables</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#tags"><span class="toc-number">2.1.</span> <span class="toc-text">tags</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#allow-failure"><span class="toc-number">2.1.1.</span> <span class="toc-text">allow_failure</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#when"><span class="toc-number">2.1.2.</span> <span class="toc-text">when</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#manual-%E6%89%8B%E5%8A%A8"><span class="toc-number">2.1.2.1.</span> <span class="toc-text">manual 手动</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#delayed-%E5%BB%B6%E8%BF%9F"><span class="toc-number">2.1.2.2.</span> <span class="toc-text">delayed 延迟</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#only-amp-except"><span class="toc-number">2.2.</span> <span class="toc-text">only &amp; except</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#rules-if"><span class="toc-number">2.2.1.</span> <span class="toc-text">rules:if</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#rules-changes"><span class="toc-number">2.2.2.</span> <span class="toc-text">rules:changes</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#rules-exists"><span class="toc-number">2.2.3.</span> <span class="toc-text">rules:exists</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#rules-allow-failure"><span class="toc-number">2.2.4.</span> <span class="toc-text">rules:allow_failure</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#workflow-rules"><span class="toc-number">2.3.</span> <span class="toc-text">workflow:rules</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#cache-paths"><span class="toc-number">2.3.1.</span> <span class="toc-text">cache:paths</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#cache-key-%E7%BC%93%E5%AD%98%E6%A0%87%E8%AE%B0"><span class="toc-number">2.3.2.</span> <span class="toc-text">cache:key 缓存标记</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#cache-policy-%E7%AD%96%E7%95%A5"><span class="toc-number">2.3.3.</span> <span class="toc-text">cache:policy 策略</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#cache-%E7%BB%A7%E6%89%BF"><span class="toc-number">2.3.4.</span> <span class="toc-text">cache 继承</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#artifacts-paths"><span class="toc-number">2.3.5.</span> <span class="toc-text">artifacts:paths</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#artifacts-expose-as"><span class="toc-number">2.3.6.</span> <span class="toc-text">artifacts:expose_as</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#artifacts-name"><span class="toc-number">2.3.7.</span> <span class="toc-text">artifacts:name</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#artifacts-when"><span class="toc-number">2.3.8.</span> <span class="toc-text">artifacts:when</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#artifacts-expire-in"><span class="toc-number">2.3.9.</span> <span class="toc-text">artifacts:expire_in</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#dependencies"><span class="toc-number">2.3.10.</span> <span class="toc-text">dependencies</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#needs-%E5%B9%B6%E8%A1%8C%E9%98%B6%E6%AE%B5"><span class="toc-number">2.3.11.</span> <span class="toc-text">needs 并行阶段</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%B6%E5%93%81%E4%B8%8B%E8%BD%BD"><span class="toc-number">2.4.</span> <span class="toc-text">制品下载</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#include"><span class="toc-number">2.5.</span> <span class="toc-text">include</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#local"><span class="toc-number">2.5.1.</span> <span class="toc-text">local</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#file"><span class="toc-number">2.5.2.</span> <span class="toc-text">file</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#template"><span class="toc-number">2.5.3.</span> <span class="toc-text">template</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#remote"><span class="toc-number">2.5.4.</span> <span class="toc-text">remote</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#extends"><span class="toc-number">2.6.</span> <span class="toc-text">extends</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/04/17/GO/go%E4%B9%8B%E7%B1%BB%E5%9E%8B%E7%B3%BB%E7%BB%9F/" title="go学习笔记"><img data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.284578500789443" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="go学习笔记"/></a><div class="content"><a class="title" href="/2022/04/17/GO/go%E4%B9%8B%E7%B1%BB%E5%9E%8B%E7%B3%BB%E7%BB%9F/" title="go学习笔记">go学习笔记</a><time datetime="2022-04-17T12:27:24.000Z" title="发表于 2022-04-17 20:27:24">2022-04-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/03/26/nodejs/koa%E6%BA%90%E7%A0%81%E5%86%8D%E8%AF%BB/" title="koa源码再读"><img data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.4963417575252631" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="koa源码再读"/></a><div class="content"><a class="title" href="/2022/03/26/nodejs/koa%E6%BA%90%E7%A0%81%E5%86%8D%E8%AF%BB/" title="koa源码再读">koa源码再读</a><time datetime="2022-03-26T01:39:44.000Z" title="发表于 2022-03-26 09:39:44">2022-03-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/03/18/%E5%89%8D%E7%AB%AF/Typescript/Typescript%E4%B9%8B%E5%B8%B8%E8%A7%81%E5%A5%97%E8%B7%AF/" title="Typescript之常见套路"><img data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.9584090414206019" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Typescript之常见套路"/></a><div class="content"><a class="title" href="/2022/03/18/%E5%89%8D%E7%AB%AF/Typescript/Typescript%E4%B9%8B%E5%B8%B8%E8%A7%81%E5%A5%97%E8%B7%AF/" title="Typescript之常见套路">Typescript之常见套路</a><time datetime="2022-03-18T10:53:49.000Z" title="发表于 2022-03-18 18:53:49">2022-03-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/02/13/%E5%89%8D%E7%AB%AF/JS%E5%8E%9F%E7%90%86/V8%E4%B8%AD%E7%9A%84JS%E6%95%B0%E7%BB%84/" title="V8中的JS数组"><img data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.26310617936839553" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="V8中的JS数组"/></a><div class="content"><a class="title" href="/2022/02/13/%E5%89%8D%E7%AB%AF/JS%E5%8E%9F%E7%90%86/V8%E4%B8%AD%E7%9A%84JS%E6%95%B0%E7%BB%84/" title="V8中的JS数组">V8中的JS数组</a><time datetime="2022-02-13T08:12:44.000Z" title="发表于 2022-02-13 16:12:44">2022-02-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/02/06/%E5%89%8D%E7%AB%AF/%E6%A1%86%E6%9E%B6/Nuxt3/" title="Nuxt3"><img data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.3676739232204689" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Nuxt3"/></a><div class="content"><a class="title" href="/2022/02/06/%E5%89%8D%E7%AB%AF/%E6%A1%86%E6%9E%B6/Nuxt3/" title="Nuxt3">Nuxt3</a><time datetime="2022-02-06T14:00:30.000Z" title="发表于 2022-02-06 22:00:30">2022-02-06</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2018 - 2022 By Sniper</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="/js/search/local-search.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> {preloader.endLoading()})</script><div class="js-pjax"><script>function loadValine () {
+  function initValine () {
+    let initData = {
+      el: '#vcomment',
+      appId: 'cwRCUoMavhC2YwPVr7FS2gq0-gzGzoHsz',
+      appKey: 'sqKV8HVVmhAbpKiqokLJUDLU',
+      placeholder: '来，谈谈你的梦想',
+      avatar: 'monsterid',
+      meta: 'nick,mail,link'.split(','),
+      pageSize: '10',
+      lang: 'zh-CN',
+      recordIP: false,
+      serverURLs: 'https://cwrcuoma.lc-cn-n1-shared.com',
+      emojiCDN: '',
+      emojiMaps: "",
+      enableQQ: false,
+      path: window.location.pathname,
+    }
+
+    if (true) { 
+      initData.requiredFields= ('nick'.split(','))
+    }
+    
+    if (false) {
+      const otherData = false
+      initData = Object.assign(initData, otherData)
+    }
+    
+    const valine = new Valine(initData)
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !false) {
+  if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.17.0/js/md5.min.js"></script><script>window.addEventListener('load', () => {
+  const changeContent = (content) => {
+    if (content === '') return content
+
+    content = content.replace(/<[^>]+>/g,"") // remove html tag
+    content = content.replace(/(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|jpeg|gif|png|webp)/g, '') // remove image link
+    content = content.replace(/(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi, '') // remove url
+
+    if (content.length > 150) {
+      content = content.substring(0,150) + '...'
+    }
+    return content
+  }
+
+  const getIcon = (icon, mail) => {
+    if (icon) return icon
+    
+    let defaultIcon = '?d=monsterid'
+    let iconUrl = `https://gravatar.loli.net/avatar/${md5(mail.toLowerCase()) + defaultIcon}`
+    return iconUrl
+  }
+
+  const generateHtml = array => {
+    let result = ''
+
+    if (array.length) {
+      for (let i = 0; i < array.length; i++) {
+        result += '<div class=\'aside-list-item\'>'
+
+        if (true) {
+          let name = 'src'
+          if(true) {
+            name = 'data-lazy-src'
+          }
+          result += `<a href='${array[i].url}' class="thumbnail"><img ${name}='${getIcon(array[i].avatar, array[i].mail)}' alt='${array[i].nick}'></a>`
+        }
+
+        result += `<div class='content'>
+        <a class='comment' href='${array[i].url}'>${array[i].content}</a>
+        <div class='name'><span>${array[i].nick}</span><time> / ${btf.diffDate(array[i].date, true)}</time></div>
+        </div></div>`
+      }
+    } else {
+      result += '没有评论'
+    }
+
+    let $dom = document.querySelector('#card-newest-comments .aside-list')
+    $dom.innerHTML= result
+    window.lazyLoadInstance && window.lazyLoadInstance.update()
+    window.pjax && window.pjax.refresh($dom)
+  }
+
+  const getComment = () => {
+      let serverURL = ''
+      if (true) {
+        serverURL = 'https://cwrcuoma.lc-cn-n1-shared.com'
+      } else {
+        serverURL = 'https://cwRCUoMa.api.lncldglobal.com'
+      }
+
+    var settings = {
+      "method": "GET",
+      "headers": {
+        "X-LC-Id": 'cwRCUoMavhC2YwPVr7FS2gq0-gzGzoHsz',
+        "X-LC-Key": 'sqKV8HVVmhAbpKiqokLJUDLU',
+        "Content-Type": "application/json"
+      },
+    }
+
+    fetch(`${serverURL}/1.1/classes/Comment?limit=6&order=-createdAt`,settings)
+      .then(response => response.json())
+      .then(data => {
+        const valineArray = data.results.map(function (e) {
+          return {
+            'avatar': e.QQAvatar,
+            'content': changeContent(e.comment),
+            'mail': e.mail,
+            'nick': e.nick,
+            'url': e.url + '#' + e.objectId,
+            'date': e.createdAt,
+          }
+        })
+        saveToLocal.set('leancloud-newest-comments', JSON.stringify(valineArray), 10/(60*24))
+        generateHtml(valineArray)
+      }).catch(e => {
+        const $dom = document.querySelector('#card-newest-comments .aside-list')
+        $dom.innerHTML= "无法获取评论，请确认相关配置是否正确"
+      }) 
+  }
+
+  const newestCommentInit = () => {
+    if (document.querySelector('#card-newest-comments .aside-list')) {
+      const data = saveToLocal.get('leancloud-newest-comments')
+      if (data) {
+        generateHtml(JSON.parse(data))
+      } else {
+        getComment()
+      }
+    }
+  }
+
+  newestCommentInit()
+  document.addEventListener('pjax:complete', newestCommentInit)
+})</script><div class="aplayer no-destroy" data-id="6587475516" data-server="netease" data-type="playlist" data-fixed="true" data-mini="true" data-listFolded="false" data-order="random" data-preload="none" data-autoplay="false" data-lrctype="1" muted></div><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/gh/metowolf/MetingJS@1.2/dist/Meting.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = [
+  'title',
+  '#config_change',
+  '#body-wrap',
+  '#rightside-config-hide',
+  '#rightside-config-show',
+  '.js-pjax'
+]
+
+if (false) {
+  pjaxSelectors.unshift('meta[property="og:image"]', 'meta[property="og:title"]', 'meta[property="og:url"]')
+}
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  if (typeof gtag === 'function') {
+    gtag('config', '', {'page_path': window.location.pathname});
+  }
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // Analytics
+  if (false) {
+    MtaH5.pgv()
+  }
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+
+document.addEventListener('pjax:send', function () {
+  typeof preloader === 'object' && preloader.initLoading()
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+})</script></div></body></html>

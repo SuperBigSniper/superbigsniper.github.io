@@ -1,31 +1,433 @@
-extends includes/layout.pug
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>webpack之动态加载原理 | Sniper</title><meta name="keywords" content="工具使用,webpack"><meta name="author" content="Sniper"><meta name="copyright" content="Sniper"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="webpack动态加载不管是react还是vue，都可以实现组件的懒加载，其中都是依赖webpack的懒加载 123const Foo &#x3D; () &#x3D;&gt; import(&#x2F;* webpackChunkName: &quot;group-foo&quot; *&#x2F; &amp;#x27;.&#x2F;Foo.vue&amp;#x27;)const Bar &#x3D; () &#x3D;&gt; import(&#x2F;* webpackChunkNam">
+<meta property="og:type" content="article">
+<meta property="og:title" content="webpack之动态加载原理">
+<meta property="og:url" content="http://zhoujunxiong.gitee.com/2021/02/21/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/webpack/webpack%E4%B9%8B%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD%E5%8E%9F%E7%90%86/index.html">
+<meta property="og:site_name" content="Sniper">
+<meta property="og:description" content="webpack动态加载不管是react还是vue，都可以实现组件的懒加载，其中都是依赖webpack的懒加载 123const Foo &#x3D; () &#x3D;&gt; import(&#x2F;* webpackChunkName: &quot;group-foo&quot; *&#x2F; &amp;#x27;.&#x2F;Foo.vue&amp;#x27;)const Bar &#x3D; () &#x3D;&gt; import(&#x2F;* webpackChunkNam">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://api.btstu.cn/sjbz/api.php?lx=dongman&format=images0.5003549208610119">
+<meta property="article:published_time" content="2021-02-21T02:23:48.000Z">
+<meta property="article:modified_time" content="2022-04-06T14:27:38.606Z">
+<meta property="article:author" content="Sniper">
+<meta property="article:tag" content="工具使用">
+<meta property="article:tag" content="webpack">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://api.btstu.cn/sjbz/api.php?lx=dongman&format=images0.5003549208610119"><link rel="shortcut icon" href="https://gitee.com/zhoujunxiong/zhoujunxiong.back/raw/master/favicon.ico"><link rel="canonical" href="http://zhoujunxiong.gitee.com/2021/02/21/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/webpack/webpack%E4%B9%8B%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD%E5%8E%9F%E7%90%86/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isanchor: false
+};
 
-block content
-  #post
-    if top_img === false
-      include includes/header/post-info.pug
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
 
-    article#article-container.post-content!=page.content
-    include includes/post/post-copyright.pug
-    .tag_share
-      if (theme.post_meta.post.tags)
-        .post-meta__tag-list
-          each item, index in page.tags.data
-            a(href=url_for(item.path)).post-meta__tags #[=item.name]
-      include includes/third-party/share/index.pug
-        
-    if theme.reward.enable
-      !=partial('includes/post/reward', {}, {cache:theme.fragment_cache})
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
 
-    //- ad
-    if theme.ad && theme.ad.post
-      .ads-wrap!=theme.ad.post
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
 
-    include includes/pagination.pug
-    if theme.related_post && theme.related_post.enable
-      != related_posts(page,site.posts)
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}
 
-    if page.comments !== false && theme.comments && theme.comments.use
-      - var commentsJsLoad = true
-      !=partial('includes/third-party/comments/index', {}, {cache:theme.fragment_cache})
-      
+// https://stackoverflow.com/questions/16839698/jquery-getscript-alternative-in-native-javascript
+const getScript = url => new Promise((resolve, reject) => {
+  const script = document.createElement('script')
+  script.src = url
+  script.async = true
+  script.onerror = reject
+  script.onload = script.onreadystatechange = function() {
+    const loadState = this.readyState
+    if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+    script.onload = script.onreadystatechange = null
+    resolve()
+  }
+  document.head.appendChild(script)
+})</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-04-06 22:27:38'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><link rel="stylesheet" href="/css/custom.css"<meta name="generator" content="Hexo 5.4.1"><link rel="alternate" href="/atom.xml" title="Sniper" type="application/atom+xml">
+<link rel="alternate" href="/rss2.xml" title="Sniper" type="application/rss+xml">
+</head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div id="loader-wrapper"><div id="loader"></div></div><div class="loader"><div class="inner one"></div><div class="inner two"></div><div class="inner three"></div></div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" data-lazy-src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">298</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">61</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">47</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标籤</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.5003549208610119)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Sniper</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标籤</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">webpack之动态加载原理</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-02-21T02:23:48.000Z" title="发表于 2021-02-21 10:23:48">2021-02-21</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-04-06T14:27:38.606Z" title="更新于 2022-04-06 22:27:38">2022-04-06</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/webpack/">webpack</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-commentcount"><i class="far fa-comments fa-fw post-meta-icon"></i><span class="post-meta-label">评论数:</span><a href="/2021/02/21/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/webpack/webpack%E4%B9%8B%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD%E5%8E%9F%E7%90%86/#post-comment" itemprop="discussionUrl"><span class="valine-comment-count" data-xid="/2021/02/21/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/webpack/webpack%E4%B9%8B%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD%E5%8E%9F%E7%90%86/" itemprop="commentCount"></span></a></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h4 id="webpack动态加载"><a href="#webpack动态加载" class="headerlink" title="webpack动态加载"></a>webpack动态加载</h4><p>不管是<code>react</code>还是<code>vue</code>，都可以实现组件的懒加载，其中都是依赖<code>webpack</code>的懒加载</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title function_">Foo</span> = (<span class="params"></span>) =&gt; <span class="title function_">import</span>(<span class="comment">/* webpackChunkName: &quot;group-foo&quot; */</span> <span class="string">&#x27;./Foo.vue&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> <span class="title function_">Bar</span> = (<span class="params"></span>) =&gt; <span class="title function_">import</span>(<span class="comment">/* webpackChunkName: &quot;group-foo&quot; */</span> <span class="string">&#x27;./Bar.vue&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> <span class="title function_">Baz</span> = (<span class="params"></span>) =&gt; <span class="title function_">import</span>(<span class="comment">/* webpackChunkName: &quot;group-foo&quot; */</span> <span class="string">&#x27;./Baz.vue&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>使用<code>import()</code>或者<code>require.ensure()</code>都可以对代码进行懒加载，<code>webpackChunkName</code>可以对打包后的模块进行命名，否则默认是数字命名</p>
+<h4 id="webpack懒加载原理"><a href="#webpack懒加载原理" class="headerlink" title="webpack懒加载原理"></a>webpack懒加载原理</h4><p>从最简单的代码，不包含<code>react</code>与<code>vue</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// d.js</span></span><br><span class="line"><span class="variable language_">document</span>.<span class="title function_">addEventListener</span>(<span class="string">&#x27;click&#x27;</span>,<span class="function">()=&gt;</span>&#123;</span><br><span class="line">  <span class="title function_">import</span>(<span class="string">&#x27;./x.js&#x27;</span>).<span class="title function_">then</span>(<span class="function"><span class="params">data</span>=&gt;</span><span class="variable language_">console</span>.<span class="title function_">log</span>(data))</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// x.js</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="number">123</span>)</span><br></pre></td></tr></table></figure>
+
+<p>再看看<code>d.js</code>被编译成什么样了</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line"><span class="comment">/***/</span> <span class="string">&quot;./d.js&quot;</span>:</span><br><span class="line"><span class="comment">/*!**************!*\</span></span><br><span class="line"><span class="comment">  !*** ./d.js ***!</span></span><br><span class="line"><span class="comment">  \**************/</span></span><br><span class="line"><span class="comment">/*! no static exports found */</span></span><br><span class="line"><span class="comment">/***/</span> (<span class="keyword">function</span>(<span class="params"><span class="variable language_">module</span>, <span class="built_in">exports</span>, __webpack_require__</span>) &#123;</span><br><span class="line"></span><br><span class="line"><span class="variable language_">document</span>.<span class="title function_">addEventListener</span>(<span class="string">&#x27;click&#x27;</span>,<span class="function">()=&gt;</span>&#123;</span><br><span class="line">  __webpack_require__.<span class="title function_">e</span>(<span class="comment">/*! import() */</span> <span class="number">0</span>).<span class="title function_">then</span>(__webpack_require__.<span class="property">t</span>.<span class="title function_">bind</span>(<span class="literal">null</span>, <span class="comment">/*! ./x.js */</span> <span class="string">&quot;./x.js&quot;</span>, <span class="number">7</span>)).<span class="title function_">then</span>(<span class="function"><span class="params">data</span>=&gt;</span><span class="variable language_">console</span>.<span class="title function_">log</span>(data))</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">/***/</span> &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="webpack-require-e"><a href="#webpack-require-e" class="headerlink" title="__webpack_require__.e"></a>__webpack_require__.e</h5><p>可以看到将<code>import()</code>编译成了<code>__webpack_require__.e</code>函数，并且使用了<code>__webpack_require__.t</code></p>
+<p><code>__webpack_require__.e</code>长下面这个样子</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// This file contains only the entry chunk.</span></span><br><span class="line"><span class="comment">// The chunk loading function for additional chunks</span></span><br><span class="line">__webpack_require__.<span class="property">e</span> = <span class="keyword">function</span> <span class="title function_">requireEnsure</span>(<span class="params">chunkId</span>) &#123;</span><br><span class="line">	<span class="keyword">var</span> promises = [];</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="comment">// JSONP chunk loading for javascript</span></span><br><span class="line">  <span class="comment">// 使用jsonp加载js文件</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">var</span> installedChunkData = installedChunks[chunkId]; <span class="comment">// 先尝试从缓存中取得文件</span></span><br><span class="line">	<span class="keyword">if</span>(installedChunkData !== <span class="number">0</span>) &#123; <span class="comment">// 0 means &quot;already installed&quot;. 如果为0则表示已经加载过了</span></span><br><span class="line"></span><br><span class="line">		<span class="comment">// a Promise means &quot;currently loading&quot;.</span></span><br><span class="line">		<span class="keyword">if</span>(installedChunkData) &#123; <span class="comment">// 如果有值，说明正在加载</span></span><br><span class="line">			promises.<span class="title function_">push</span>(installedChunkData[<span class="number">2</span>]);</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="comment">// setup Promise in chunk cache 生成一个promise缓存</span></span><br><span class="line">			<span class="keyword">var</span> promise = <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="keyword">function</span>(<span class="params">resolve, reject</span>) &#123;</span><br><span class="line">				installedChunkData = installedChunks[chunkId] = [resolve, reject];</span><br><span class="line">			&#125;);</span><br><span class="line">			promises.<span class="title function_">push</span>(installedChunkData[<span class="number">2</span>] = promise);</span><br><span class="line"></span><br><span class="line">			<span class="comment">// start chunk loading 创建一个script标签加载脚本</span></span><br><span class="line">			<span class="keyword">var</span> script = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&#x27;script&#x27;</span>);</span><br><span class="line">			<span class="keyword">var</span> onScriptComplete;</span><br><span class="line"></span><br><span class="line">			script.<span class="property">charset</span> = <span class="string">&#x27;utf-8&#x27;</span>;</span><br><span class="line">			script.<span class="property">timeout</span> = <span class="number">120</span>;</span><br><span class="line">			<span class="keyword">if</span> (__webpack_require__.<span class="property">nc</span>) &#123; <span class="comment">// 防攻击</span></span><br><span class="line">				script.<span class="title function_">setAttribute</span>(<span class="string">&quot;nonce&quot;</span>, __webpack_require__.<span class="property">nc</span>);</span><br><span class="line">			&#125;</span><br><span class="line">			script.<span class="property">src</span> = <span class="title function_">jsonpScriptSrc</span>(chunkId); <span class="comment">// 这里调用了jsonpScriptSrc方法获取文件的路径</span></span><br><span class="line"></span><br><span class="line">			<span class="comment">// create error before stack unwound to get useful stacktrace later</span></span><br><span class="line">			<span class="keyword">var</span> error = <span class="keyword">new</span> <span class="title class_">Error</span>();</span><br><span class="line">			onScriptComplete = <span class="keyword">function</span> (<span class="params">event</span>) &#123;</span><br><span class="line">				<span class="comment">// avoid mem leaks in IE. 防止ie内存泄漏</span></span><br><span class="line">				script.<span class="property">onerror</span> = script.<span class="property">onload</span> = <span class="literal">null</span>;</span><br><span class="line">				<span class="built_in">clearTimeout</span>(timeout);</span><br><span class="line">				<span class="keyword">var</span> chunk = installedChunks[chunkId];</span><br><span class="line">				<span class="keyword">if</span>(chunk !== <span class="number">0</span>) &#123; <span class="comment">// 看chunk是不是被加载过了</span></span><br><span class="line">					<span class="keyword">if</span>(chunk) &#123;  <span class="comment">// 没被加载，并且有一个promise</span></span><br><span class="line">						<span class="keyword">var</span> errorType = event &amp;&amp; (event.<span class="property">type</span> === <span class="string">&#x27;load&#x27;</span> ? <span class="string">&#x27;missing&#x27;</span> : event.<span class="property">type</span>);</span><br><span class="line">						<span class="keyword">var</span> realSrc = event &amp;&amp; event.<span class="property">target</span> &amp;&amp; event.<span class="property">target</span>.<span class="property">src</span>;</span><br><span class="line">						error.<span class="property">message</span> = <span class="string">&#x27;Loading chunk &#x27;</span> + chunkId + <span class="string">&#x27; failed.\n(&#x27;</span> + errorType + <span class="string">&#x27;: &#x27;</span> + realSrc + <span class="string">&#x27;)&#x27;</span>;</span><br><span class="line">						error.<span class="property">name</span> = <span class="string">&#x27;ChunkLoadError&#x27;</span>;</span><br><span class="line">						error.<span class="property">type</span> = errorType;</span><br><span class="line">						error.<span class="property">request</span> = realSrc;</span><br><span class="line">						chunk[<span class="number">1</span>](error);</span><br><span class="line">					&#125;</span><br><span class="line">					installedChunks [chunkId] = <span class="literal">undefined</span>;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;;</span><br><span class="line">			<span class="keyword">var</span> timeout = <span class="built_in">setTimeout</span>(<span class="keyword">function</span>(<span class="params"></span>)&#123;</span><br><span class="line">				<span class="title function_">onScriptComplete</span>(&#123; <span class="attr">type</span>: <span class="string">&#x27;timeout&#x27;</span>, <span class="attr">target</span>: script &#125;);</span><br><span class="line">			&#125;, <span class="number">120000</span>);</span><br><span class="line">			script.<span class="property">onerror</span> = script.<span class="property">onload</span> = onScriptComplete;</span><br><span class="line">			<span class="variable language_">document</span>.<span class="property">head</span>.<span class="title function_">appendChild</span>(script);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="title class_">Promise</span>.<span class="title function_">all</span>(promises);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h5 id="webpack-require-p"><a href="#webpack-require-p" class="headerlink" title="__webpack_require__.p"></a>__webpack_require__.p</h5><p><code>jsonpScriptSrc</code>就是将对应的js文件路径返回</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">jsonpScriptSrc</span>(<span class="params">chunkId</span>) &#123;</span><br><span class="line">	<span class="keyword">return</span> __webpack_require__.<span class="property">p</span> + <span class="string">&quot;&quot;</span> + (&#123;<span class="string">&quot;test&quot;</span>:<span class="string">&quot;test&quot;</span>&#125;[chunkId]||chunkId) + <span class="string">&quot;.js&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// __webpack_public_path__</span></span><br><span class="line">__webpack_require__.<span class="property">p</span> = <span class="string">&quot;&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>所以<code>__webpack_require__.e</code>主要做了下面的事，创建<code>script</code>标签引入对应的<code>js</code>文件并对文件做缓存标记和错误处理（包含超时和加载错误）</p>
+</blockquote>
+<p>而且我们发现<code>__webpack_require__.e</code>函数并没有做对模块注册的事情（这个操作写在了chunk文件中）</p>
+<h5 id="webpackJsonp"><a href="#webpackJsonp" class="headerlink" title="webpackJsonp"></a>webpackJsonp</h5><p>再看看<code>x.js</code>，通过<code>webpack</code>编译后，可以发现多了一个文件，这个文件就是<code>x.js</code>懒加载编译后的结果</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">(<span class="variable language_">window</span>[<span class="string">&quot;webpackJsonp&quot;</span>] = <span class="variable language_">window</span>[<span class="string">&quot;webpackJsonp&quot;</span>] || []).<span class="title function_">push</span>([[<span class="number">0</span>],&#123;</span><br><span class="line"></span><br><span class="line"><span class="comment">/***/</span> <span class="string">&quot;./x.js&quot;</span>:</span><br><span class="line"><span class="comment">/*!**************!*\</span></span><br><span class="line"><span class="comment">  !*** ./x.js ***!</span></span><br><span class="line"><span class="comment">  \**************/</span></span><br><span class="line"><span class="comment">/*! no static exports found */</span></span><br><span class="line"><span class="comment">/***/</span> (<span class="keyword">function</span>(<span class="params"><span class="variable language_">module</span>, <span class="built_in">exports</span></span>) &#123;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="number">123</span>)</span><br><span class="line"><span class="comment">/***/</span> &#125;)</span><br><span class="line">&#125;]);</span><br></pre></td></tr></table></figure>
+
+<p>这里用到了一个<code>webpackJsonp</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> jsonpArray = <span class="variable language_">window</span>[<span class="string">&quot;webpackJsonp&quot;</span>] = <span class="variable language_">window</span>[<span class="string">&quot;webpackJsonp&quot;</span>] || []; <span class="comment">// window[&quot;webpackJsonp&quot;]就是jsonArray</span></span><br><span class="line"><span class="keyword">var</span> oldJsonpFunction = jsonpArray.<span class="property">push</span>.<span class="title function_">bind</span>(jsonpArray);</span><br><span class="line">jsonpArray.<span class="property">push</span> = webpackJsonpCallback; <span class="comment">// 重写push方法，push方法就是webpackJsonpCallback</span></span><br><span class="line">jsonpArray = jsonpArray.<span class="title function_">slice</span>();</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; jsonpArray.<span class="property">length</span>; i++) <span class="title function_">webpackJsonpCallback</span>(jsonpArray[i]); <span class="comment">// 最开始是个空数组</span></span><br><span class="line"><span class="keyword">var</span> parentJsonpFunction = oldJsonpFunction;</span><br><span class="line"></span><br><span class="line"><span class="comment">// install a JSONP callback for chunk loading  用来加载chunk的回调函数</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">webpackJsonpCallback</span>(<span class="params">data</span>) &#123; <span class="comment">// 所以这个data就是`[[0],x.js]`</span></span><br><span class="line">	<span class="keyword">var</span> chunkIds = data[<span class="number">0</span>]; <span class="comment">// chunk的id（一个chunk可能有多个模块）</span></span><br><span class="line">	<span class="keyword">var</span> moreModules = data[<span class="number">1</span>]; <span class="comment">// chunk的内容</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// add &quot;moreModules&quot; to the modules object,</span></span><br><span class="line">	<span class="comment">// then flag all &quot;chunkIds&quot; as loaded and fire callback</span></span><br><span class="line">	<span class="keyword">var</span> moduleId, chunkId, i = <span class="number">0</span>, resolves = [];</span><br><span class="line">	<span class="keyword">for</span>(;i &lt; chunkIds.<span class="property">length</span>; i++) &#123;</span><br><span class="line">		chunkId = chunkIds[i];</span><br><span class="line">		<span class="keyword">if</span>(<span class="title class_">Object</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">hasOwnProperty</span>.<span class="title function_">call</span>(installedChunks, chunkId) &amp;&amp; installedChunks[chunkId]) &#123;</span><br><span class="line">			resolves.<span class="title function_">push</span>(installedChunks[chunkId][<span class="number">0</span>]); <span class="comment">// 将对应chunk的resolve函数存入resolves，最后全部resolve</span></span><br><span class="line">		&#125;</span><br><span class="line">		installedChunks[chunkId] = <span class="number">0</span>; <span class="comment">// 加载完成，在缓存中标记一下</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span>(moduleId <span class="keyword">in</span> moreModules) &#123; <span class="comment">// 把chunk中的模块注册到全局的模块缓存中</span></span><br><span class="line">		<span class="keyword">if</span>(<span class="title class_">Object</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">hasOwnProperty</span>.<span class="title function_">call</span>(moreModules, moduleId)) &#123;</span><br><span class="line">      <span class="comment">// 这里说一下modules变量，它就是webpack最外层闭包里的modules，也就是全局的模块缓存（这里找不到，但是源代码是可以访问的）</span></span><br><span class="line">			modules[moduleId] = moreModules[moduleId]; </span><br><span class="line">		&#125; </span><br><span class="line">	&#125;</span><br><span class="line">  <span class="comment">// 将内容添加到jsonpArray中，也就是window[&quot;webpackJsonp&quot;]</span></span><br><span class="line">	<span class="keyword">if</span>(parentJsonpFunction) <span class="title function_">parentJsonpFunction</span>(data); </span><br><span class="line"></span><br><span class="line">  <span class="comment">// 将全部模块的resolve，否则会执行错误函数</span></span><br><span class="line">	<span class="keyword">while</span>(resolves.<span class="property">length</span>) &#123;</span><br><span class="line">    resolves.<span class="title function_">shift</span>()();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>总结一下<code>webpackJsonp</code>的作用，就是将<code>chunk</code>中的模块注册到全局的<code>modules</code>中，并存入全局的<code>window[&quot;webpackJsonp&quot;]</code>，并把所有的模块<code>resolve</code></p>
+<h5 id="webpack-require-t"><a href="#webpack-require-t" class="headerlink" title="__webpack_require__.t"></a>__webpack_require__.t</h5><p>在<code>d.js</code>中多了一个<code>then</code>,其中使用了<code>__webpack_require__.t</code>，它的作用是什么呢</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">document</span>.<span class="title function_">addEventListener</span>(<span class="string">&#x27;click&#x27;</span>,<span class="function">()=&gt;</span>&#123;</span><br><span class="line">  __webpack_require__.<span class="title function_">e</span>(<span class="comment">/*! import() */</span> <span class="number">0</span>).<span class="title function_">then</span>(__webpack_require__.<span class="property">t</span>.<span class="title function_">bind</span>(<span class="literal">null</span>, <span class="comment">/*! ./x.js */</span> <span class="string">&quot;./x.js&quot;</span>, <span class="number">7</span>)).<span class="title function_">then</span>(<span class="function"><span class="params">data</span>=&gt;</span><span class="variable language_">console</span>.<span class="title function_">log</span>(data))</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// create a fake namespace object</span></span><br><span class="line"><span class="comment">// mode &amp; 1: value is a module id, require it   // value是模块id，使用require导入</span></span><br><span class="line"><span class="comment">// mode &amp; 2: merge all properties of value into the ns // 也是esm用，如果key定义在一个对象中返回</span></span><br><span class="line"><span class="comment">// mode &amp; 4: return value when already ns object // 是__esModule,直接返回value</span></span><br><span class="line"><span class="comment">// mode &amp; 8|1: behave like require // 直接返回value</span></span><br><span class="line">__webpack_require__.<span class="property">t</span> = <span class="keyword">function</span>(<span class="params">value, mode</span>) &#123;</span><br><span class="line">		<span class="keyword">if</span>(mode &amp; <span class="number">1</span>) value = <span class="title function_">__webpack_require__</span>(value);</span><br><span class="line">	<span class="keyword">if</span>(mode &amp; <span class="number">8</span>) <span class="keyword">return</span> value;</span><br><span class="line">	<span class="keyword">if</span>((mode &amp; <span class="number">4</span>) &amp;&amp; <span class="keyword">typeof</span> value === <span class="string">&#x27;object&#x27;</span> &amp;&amp; value &amp;&amp; value.<span class="property">__esModule</span>) <span class="keyword">return</span> value;</span><br><span class="line">	<span class="keyword">var</span> ns = <span class="title class_">Object</span>.<span class="title function_">create</span>(<span class="literal">null</span>);</span><br><span class="line">	__webpack_require__.<span class="title function_">r</span>(ns);</span><br><span class="line">	<span class="title class_">Object</span>.<span class="title function_">defineProperty</span>(ns, <span class="string">&#x27;default&#x27;</span>, &#123; <span class="attr">enumerable</span>: <span class="literal">true</span>, <span class="attr">value</span>: value &#125;);</span><br><span class="line">	<span class="keyword">if</span>(mode &amp; <span class="number">2</span> &amp;&amp; <span class="keyword">typeof</span> value != <span class="string">&#x27;string&#x27;</span>) <span class="keyword">for</span>(<span class="keyword">var</span> key <span class="keyword">in</span> value) __webpack_require__.<span class="title function_">d</span>(ns, key, <span class="keyword">function</span>(<span class="params">key</span>) &#123; <span class="keyword">return</span> value[key]; &#125;.<span class="title function_">bind</span>(<span class="literal">null</span>, key));</span><br><span class="line">	<span class="keyword">return</span> ns;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>所以它的作用是<code>require</code>模块，<code>__webpack_require__.e(/*! import() */ 0)</code>只是加载<code>chunk</code>到<code>modules</code>中，并没有导入</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Sniper</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://zhoujunxiong.gitee.com/2021/02/21/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/webpack/webpack%E4%B9%8B%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD%E5%8E%9F%E7%90%86/">http://zhoujunxiong.gitee.com/2021/02/21/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/webpack/webpack%E4%B9%8B%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD%E5%8E%9F%E7%90%86/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://zhoujunxiong.gitee.com" target="_blank">Sniper</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a><a class="post-meta__tags" href="/tags/webpack/">webpack</a></div><div class="post_share"><div class="social-share" data-image="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.5003549208610119" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/02/27/%E5%89%8D%E7%AB%AF/%E6%A1%86%E6%9E%B6/REACT/react%E4%B9%8Bfiber/"><img class="prev-cover" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.708240440070699" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">react之fiber</div></div></a></div><div class="next-post pull-right"><a href="/2021/02/11/%E5%89%8D%E7%AB%AF/JS%E5%8E%9F%E7%90%86/%E4%BB%8Ewebpack%E5%8E%9F%E7%90%86%E7%9C%8Bcommonjs%E4%B8%8Eesm%E5%8C%BA%E5%88%AB/"><img class="next-cover" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.93363783620072" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">从webpack原理看commonjs与esm区别</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2019/10/07/工具使用/webpack/webpack之cssModule/" title="webpack之cssModule"><img class="cover" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&format=images0.38474079973375663" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2019-10-07</div><div class="title">webpack之cssModule</div></div></a></div><div><a href="/2020/07/27/工具使用/webpack/webpack之chainwebpack/" title="webpack之chainwebpack"><img class="cover" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&format=images0.5088593532977221" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-07-27</div><div class="title">webpack之chainwebpack</div></div></a></div><div><a href="/2020/05/14/工具使用/webpack/webpack/" title="webpack"><img class="cover" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&format=images0.9073773661863731" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-05-14</div><div class="title">webpack</div></div></a></div><div><a href="/2019/12/06/工具使用/webpack/webpack之page-skeleton-webpack-plugin/" title="webpack之page-skeleton-webpack-plugin"><img class="cover" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&format=images0.37911284482247565" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2019-12-06</div><div class="title">webpack之page-skeleton-webpack-plugin</div></div></a></div><div><a href="/2020/05/26/工具使用/webpack/webpack之webpack-bundle-analyzer/" title="webpack之webpack-bundle-analyzer"><img class="cover" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&format=images0.6704770489019365" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-05-26</div><div class="title">webpack之webpack-bundle-analyzer</div></div></a></div><div><a href="/2020/01/26/工具使用/webpack/webpack之使用dll动态链接库/" title="webpack之使用dll动态链接库"><img class="cover" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&format=images0.07345333392529585" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-01-26</div><div class="title">webpack之使用dll动态链接库</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-info-avatar is-center"><img class="avatar-img" data-lazy-src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">Sniper</div><div class="author-info__description"></div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">298</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">61</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">47</div></a></div></div><div class="card-info-social-icons is-center"><a class="social-icon" href="/atom.xml" target="_blank" title="rss-atom"><i class="fas fa-rss"></i></a><a class="social-icon" href="/rss2.xml" target="_blank" title="rss-rss2"><i class="fas fa-rss-square"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">这个博客还有点儿意思吧</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#webpack%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD"><span class="toc-number">1.</span> <span class="toc-text">webpack动态加载</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#webpack%E6%87%92%E5%8A%A0%E8%BD%BD%E5%8E%9F%E7%90%86"><span class="toc-number">2.</span> <span class="toc-text">webpack懒加载原理</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#webpack-require-e"><span class="toc-number">2.1.</span> <span class="toc-text">__webpack_require__.e</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#webpack-require-p"><span class="toc-number">2.2.</span> <span class="toc-text">__webpack_require__.p</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#webpackJsonp"><span class="toc-number">2.3.</span> <span class="toc-text">webpackJsonp</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#webpack-require-t"><span class="toc-number">2.4.</span> <span class="toc-text">__webpack_require__.t</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/04/17/GO/go%E4%B9%8B%E7%B1%BB%E5%9E%8B%E7%B3%BB%E7%BB%9F/" title="go学习笔记"><img data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.284578500789443" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="go学习笔记"/></a><div class="content"><a class="title" href="/2022/04/17/GO/go%E4%B9%8B%E7%B1%BB%E5%9E%8B%E7%B3%BB%E7%BB%9F/" title="go学习笔记">go学习笔记</a><time datetime="2022-04-17T12:27:24.000Z" title="发表于 2022-04-17 20:27:24">2022-04-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/03/26/nodejs/koa%E6%BA%90%E7%A0%81%E5%86%8D%E8%AF%BB/" title="koa源码再读"><img data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.4963417575252631" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="koa源码再读"/></a><div class="content"><a class="title" href="/2022/03/26/nodejs/koa%E6%BA%90%E7%A0%81%E5%86%8D%E8%AF%BB/" title="koa源码再读">koa源码再读</a><time datetime="2022-03-26T01:39:44.000Z" title="发表于 2022-03-26 09:39:44">2022-03-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/03/18/%E5%89%8D%E7%AB%AF/Typescript/Typescript%E4%B9%8B%E5%B8%B8%E8%A7%81%E5%A5%97%E8%B7%AF/" title="Typescript之常见套路"><img data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.9584090414206019" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Typescript之常见套路"/></a><div class="content"><a class="title" href="/2022/03/18/%E5%89%8D%E7%AB%AF/Typescript/Typescript%E4%B9%8B%E5%B8%B8%E8%A7%81%E5%A5%97%E8%B7%AF/" title="Typescript之常见套路">Typescript之常见套路</a><time datetime="2022-03-18T10:53:49.000Z" title="发表于 2022-03-18 18:53:49">2022-03-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/02/13/%E5%89%8D%E7%AB%AF/JS%E5%8E%9F%E7%90%86/V8%E4%B8%AD%E7%9A%84JS%E6%95%B0%E7%BB%84/" title="V8中的JS数组"><img data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.26310617936839553" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="V8中的JS数组"/></a><div class="content"><a class="title" href="/2022/02/13/%E5%89%8D%E7%AB%AF/JS%E5%8E%9F%E7%90%86/V8%E4%B8%AD%E7%9A%84JS%E6%95%B0%E7%BB%84/" title="V8中的JS数组">V8中的JS数组</a><time datetime="2022-02-13T08:12:44.000Z" title="发表于 2022-02-13 16:12:44">2022-02-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/02/06/%E5%89%8D%E7%AB%AF/%E6%A1%86%E6%9E%B6/Nuxt3/" title="Nuxt3"><img data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.3676739232204689" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Nuxt3"/></a><div class="content"><a class="title" href="/2022/02/06/%E5%89%8D%E7%AB%AF/%E6%A1%86%E6%9E%B6/Nuxt3/" title="Nuxt3">Nuxt3</a><time datetime="2022-02-06T14:00:30.000Z" title="发表于 2022-02-06 22:00:30">2022-02-06</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2018 - 2022 By Sniper</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="/js/search/local-search.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> {preloader.endLoading()})</script><div class="js-pjax"><script>function loadValine () {
+  function initValine () {
+    let initData = {
+      el: '#vcomment',
+      appId: 'cwRCUoMavhC2YwPVr7FS2gq0-gzGzoHsz',
+      appKey: 'sqKV8HVVmhAbpKiqokLJUDLU',
+      placeholder: '来，谈谈你的梦想',
+      avatar: 'monsterid',
+      meta: 'nick,mail,link'.split(','),
+      pageSize: '10',
+      lang: 'zh-CN',
+      recordIP: false,
+      serverURLs: 'https://cwrcuoma.lc-cn-n1-shared.com',
+      emojiCDN: '',
+      emojiMaps: "",
+      enableQQ: false,
+      path: window.location.pathname,
+    }
+
+    if (true) { 
+      initData.requiredFields= ('nick'.split(','))
+    }
+    
+    if (false) {
+      const otherData = false
+      initData = Object.assign(initData, otherData)
+    }
+    
+    const valine = new Valine(initData)
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !false) {
+  if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.17.0/js/md5.min.js"></script><script>window.addEventListener('load', () => {
+  const changeContent = (content) => {
+    if (content === '') return content
+
+    content = content.replace(/<[^>]+>/g,"") // remove html tag
+    content = content.replace(/(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|jpeg|gif|png|webp)/g, '') // remove image link
+    content = content.replace(/(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi, '') // remove url
+
+    if (content.length > 150) {
+      content = content.substring(0,150) + '...'
+    }
+    return content
+  }
+
+  const getIcon = (icon, mail) => {
+    if (icon) return icon
+    
+    let defaultIcon = '?d=monsterid'
+    let iconUrl = `https://gravatar.loli.net/avatar/${md5(mail.toLowerCase()) + defaultIcon}`
+    return iconUrl
+  }
+
+  const generateHtml = array => {
+    let result = ''
+
+    if (array.length) {
+      for (let i = 0; i < array.length; i++) {
+        result += '<div class=\'aside-list-item\'>'
+
+        if (true) {
+          let name = 'src'
+          if(true) {
+            name = 'data-lazy-src'
+          }
+          result += `<a href='${array[i].url}' class="thumbnail"><img ${name}='${getIcon(array[i].avatar, array[i].mail)}' alt='${array[i].nick}'></a>`
+        }
+
+        result += `<div class='content'>
+        <a class='comment' href='${array[i].url}'>${array[i].content}</a>
+        <div class='name'><span>${array[i].nick}</span><time> / ${btf.diffDate(array[i].date, true)}</time></div>
+        </div></div>`
+      }
+    } else {
+      result += '没有评论'
+    }
+
+    let $dom = document.querySelector('#card-newest-comments .aside-list')
+    $dom.innerHTML= result
+    window.lazyLoadInstance && window.lazyLoadInstance.update()
+    window.pjax && window.pjax.refresh($dom)
+  }
+
+  const getComment = () => {
+      let serverURL = ''
+      if (true) {
+        serverURL = 'https://cwrcuoma.lc-cn-n1-shared.com'
+      } else {
+        serverURL = 'https://cwRCUoMa.api.lncldglobal.com'
+      }
+
+    var settings = {
+      "method": "GET",
+      "headers": {
+        "X-LC-Id": 'cwRCUoMavhC2YwPVr7FS2gq0-gzGzoHsz',
+        "X-LC-Key": 'sqKV8HVVmhAbpKiqokLJUDLU',
+        "Content-Type": "application/json"
+      },
+    }
+
+    fetch(`${serverURL}/1.1/classes/Comment?limit=6&order=-createdAt`,settings)
+      .then(response => response.json())
+      .then(data => {
+        const valineArray = data.results.map(function (e) {
+          return {
+            'avatar': e.QQAvatar,
+            'content': changeContent(e.comment),
+            'mail': e.mail,
+            'nick': e.nick,
+            'url': e.url + '#' + e.objectId,
+            'date': e.createdAt,
+          }
+        })
+        saveToLocal.set('leancloud-newest-comments', JSON.stringify(valineArray), 10/(60*24))
+        generateHtml(valineArray)
+      }).catch(e => {
+        const $dom = document.querySelector('#card-newest-comments .aside-list')
+        $dom.innerHTML= "无法获取评论，请确认相关配置是否正确"
+      }) 
+  }
+
+  const newestCommentInit = () => {
+    if (document.querySelector('#card-newest-comments .aside-list')) {
+      const data = saveToLocal.get('leancloud-newest-comments')
+      if (data) {
+        generateHtml(JSON.parse(data))
+      } else {
+        getComment()
+      }
+    }
+  }
+
+  newestCommentInit()
+  document.addEventListener('pjax:complete', newestCommentInit)
+})</script><div class="aplayer no-destroy" data-id="6587475516" data-server="netease" data-type="playlist" data-fixed="true" data-mini="true" data-listFolded="false" data-order="random" data-preload="none" data-autoplay="false" data-lrctype="1" muted></div><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/gh/metowolf/MetingJS@1.2/dist/Meting.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = [
+  'title',
+  '#config_change',
+  '#body-wrap',
+  '#rightside-config-hide',
+  '#rightside-config-show',
+  '.js-pjax'
+]
+
+if (false) {
+  pjaxSelectors.unshift('meta[property="og:image"]', 'meta[property="og:title"]', 'meta[property="og:url"]')
+}
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  if (typeof gtag === 'function') {
+    gtag('config', '', {'page_path': window.location.pathname});
+  }
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // Analytics
+  if (false) {
+    MtaH5.pgv()
+  }
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+
+document.addEventListener('pjax:send', function () {
+  typeof preloader === 'object' && preloader.initLoading()
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+})</script></div></body></html>

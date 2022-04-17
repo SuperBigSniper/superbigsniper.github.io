@@ -1,7 +1,504 @@
-extends includes/layout.pug
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Sniper</title><meta name="author" content="Sniper"><meta name="copyright" content="Sniper"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta property="og:type" content="website">
+<meta property="og:title" content="Sniper">
+<meta property="og:url" content="http://zhoujunxiong.gitee.com/page/26/index.html">
+<meta property="og:site_name" content="Sniper">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://zhoujunxiong.gitee.com/img/avatar.jpg">
+<meta property="article:author" content="Sniper">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://zhoujunxiong.gitee.com/img/avatar.jpg"><link rel="shortcut icon" href="https://gitee.com/zhoujunxiong/zhoujunxiong.back/raw/master/favicon.ico"><link rel="canonical" href="http://zhoujunxiong.gitee.com/page/26/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isanchor: false
+};
 
-block content
-  include ./includes/mixins/post-ui.pug
-  #recent-posts.recent-posts
-    +postUI
-    include includes/pagination.pug
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}
+
+// https://stackoverflow.com/questions/16839698/jquery-getscript-alternative-in-native-javascript
+const getScript = url => new Promise((resolve, reject) => {
+  const script = document.createElement('script')
+  script.src = url
+  script.async = true
+  script.onerror = reject
+  script.onload = script.onreadystatechange = function() {
+    const loadState = this.readyState
+    if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+    script.onload = script.onreadystatechange = null
+    resolve()
+  }
+  document.head.appendChild(script)
+})</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: false,
+  isHome: true,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2022-04-17 20:25:01'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><link rel="stylesheet" href="/css/custom.css"<meta name="generator" content="Hexo 5.4.1"><link rel="alternate" href="/atom.xml" title="Sniper" type="application/atom+xml">
+<link rel="alternate" href="/rss2.xml" title="Sniper" type="application/rss+xml">
+</head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div id="loader-wrapper"><div id="loader"></div></div><div class="loader"><div class="inner one"></div><div class="inner two"></div><div class="inner three"></div></div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" data-lazy-src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">298</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">61</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">47</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标籤</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="full_page" id="page-header" style="background-image: url(https://tva4.sinaimg.cn/large/9bd9b167gy1g4lhdqrho2j21hc0xcq9a.jpg)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Sniper</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标籤</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="site-info"><h1 id="site-title">Sniper</h1><div id="site-subtitle"><span id="subtitle"></span></div><div id="site_social_icons"><a class="social-icon" href="/atom.xml" target="_blank" title="rss-atom"><i class="fas fa-rss"></i></a><a class="social-icon" href="/rss2.xml" target="_blank" title="rss-rss2"><i class="fas fa-rss-square"></i></a></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div class="recent-posts" id="recent-posts"><div class="recent-post-item"><div class="post_cover left_radius"><a href="/2019/01/08/flutter/flutter%E4%B9%8BInheritWidget/" title="flutter之InheritWidget">     <img class="post_bg" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.9024666292591299" src="/img/loading.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="flutter之InheritWidget"></a></div><div class="recent-post-info"><a class="article-title" href="/2019/01/08/flutter/flutter%E4%B9%8BInheritWidget/" title="flutter之InheritWidget">flutter之InheritWidget</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2019-01-08T04:02:53.000Z" title="发表于 2019-01-08 12:02:53">2019-01-08</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/flutter/">flutter</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fas fa-tag article-meta__icon"></i><a class="article-meta__tags" href="/tags/flutter/">flutter</a><span class="article-meta__link">•</span><a class="article-meta__tags" href="/tags/dart/">dart</a></span></div><div class="content">InheritWidgetInheritWidget类似react中的context与vue中的provider，可以方便的跨级传递数据
+使用方法就是定义一个类继承自InheritWidget, 这个类是不可变的，所以你的状态修改应该在一个sttateful widget中完成，然后在这个widget中使用InheritedWidget.of来获取状态
+
+注意当前组件是无法获取的，只有子组件可以获取，例如下面的InheritedDemo就无法获取
+
+import &#x27;package:flutter/material.dart&#x27;;class InheritedDemo extends StatefulWidget &#123;  InheritedDemo(&#123;Key? key&#125;) : super(key: key);  @override  State&lt;InheritedDemo&gt; createState() =&gt; _InheritedDemoState();&#125;class _InheritedDemoState exten ...</div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/2019/01/07/JAVA/Spring/spring%E4%BC%A0%E5%8F%82%E6%9E%84%E9%80%A0%EF%BC%88%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5%EF%BC%89/" title="spring传参构造（依赖注入）">     <img class="post_bg" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.45774671642883646" src="/img/loading.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="spring传参构造（依赖注入）"></a></div><div class="recent-post-info"><a class="article-title" href="/2019/01/07/JAVA/Spring/spring%E4%BC%A0%E5%8F%82%E6%9E%84%E9%80%A0%EF%BC%88%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5%EF%BC%89/" title="spring传参构造（依赖注入）">spring传参构造（依赖注入）</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2019-01-07T10:17:52.000Z" title="发表于 2019-01-07 18:17:52">2019-01-07</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/Spring/">Spring</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fas fa-tag article-meta__icon"></i><a class="article-meta__tags" href="/tags/JAVA/">JAVA</a><span class="article-meta__link">•</span><a class="article-meta__tags" href="/tags/Spring/">Spring</a></span></div><div class="content">概述注入的方式：有三种
+
+第一种：使用构造函数提供
+第二种：使用set方法提供
+第三种：使用注解提供（明天的内容）
+
+构造函数注入使用的标签:constructor-arg
+标签出现的位置：bean标签的内部
+标签中的属性
+
+type：用于指定要注入的数据的数据类型，该数据类型也是构造函数中某个或某些参数的类型
+index：用于指定要注入的数据给构造函数中指定索引位置的参数赋值。索引的位置是从0开始
+name：用于指定给构造函数中指定名称的参数赋值常用的
+
+=============以上三个用于指定给构造函数中哪个参数赋值===================
+
+value：用于提供基本类型和String类型的数据
+ref：用于指定其他的bean类型数据。它指的就是在spring的Ioc核心容器中出现过的bean对象
+
+优势：
+
+在获取bean对象时，注入数据是必须的操作，否则对象无法创建成功。弊端：
+改变了bean对象的实例化方式，使我们在创建对象时，如果用不到这些数据，也必须提供。
+
+12345678&lt;bean id=&quot;accountService&quot; cl ...</div></div></div><div class="recent-post-item"><div class="post_cover left_radius"><a href="/2019/01/05/flutter/flutter%E4%B9%8B%E8%A1%A8%E5%8D%95%E7%BB%84%E4%BB%B6/" title="flutter之表单组件">     <img class="post_bg" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.2402082302148223" src="/img/loading.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="flutter之表单组件"></a></div><div class="recent-post-info"><a class="article-title" href="/2019/01/05/flutter/flutter%E4%B9%8B%E8%A1%A8%E5%8D%95%E7%BB%84%E4%BB%B6/" title="flutter之表单组件">flutter之表单组件</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2019-01-05T04:02:53.000Z" title="发表于 2019-01-05 12:02:53">2019-01-05</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/flutter/">flutter</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fas fa-tag article-meta__icon"></i><a class="article-meta__tags" href="/tags/flutter/">flutter</a><span class="article-meta__link">•</span><a class="article-meta__tags" href="/tags/dart/">dart</a></span></div><div class="content">flutter 之表单组件CheckBox(复选框)
+value : true/false 表示是否选中
+onChange ：(value){}
+activeColor : 激活状态的颜色
+
+CheckboxListTile
+value ：true/false 复选框状态
+onChanged ： (){}
+title: Text(‘Checkbox Item A’) 标题
+subtitle：Text(‘Description’) 副标题
+secondary ：Icon(Icons.bookmark) 左边的图标
+selected ：true/false 左边标题选中的状态
+
+Radio 单选按钮
+value : 0 表示是否选中
+groupValue : 0 群组值(value 和 groupValue 相同显示为 true，否则为 false)
+onChanged : (){}
+activeColor : 激活状态的颜色
+
+RadioListTile
+value ：0 表示是否选中
+
+groupValue : 0 群组值(value 和 groupValue 相同显示为 true，否 ...</div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/2019/01/04/flutter/flutter%E4%B9%8Bclip/" title="flutter之Clip">     <img class="post_bg" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.28761792543892684" src="/img/loading.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="flutter之Clip"></a></div><div class="recent-post-info"><a class="article-title" href="/2019/01/04/flutter/flutter%E4%B9%8Bclip/" title="flutter之Clip">flutter之Clip</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2019-01-04T01:01:04.000Z" title="发表于 2019-01-04 09:01:04">2019-01-04</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/flutter/">flutter</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fas fa-tag article-meta__icon"></i><a class="article-meta__tags" href="/tags/flutter/">flutter</a><span class="article-meta__link">•</span><a class="article-meta__tags" href="/tags/dart/">dart</a></span></div><div class="content">ClipCircleAvatarCircleAvatar可以实现圆角头像，也可以添加一个子Widget：const CircleAvatar(&#123;  Key key,  this.child, // 子Widget  this.backgroundColor, // 背景颜色  this.backgroundImage, // 背景图像  this.foregroundColor, // 前景颜色  this.radius, // 半径  this.minRadius, // 最小半径  this.maxRadius, // 最大半径&#125;)
+
+我们来实现一个圆形头像：
+注意一：这里我们使用的是NetworkImage，因为backgroundImage要求我们传入一个ImageProvider；
+ImageProvider是一个抽象类，事实上所有我们前面创建的Image对象都有包含image属性，该属性就是一个ImageProvider
+注意二：这里我还在里面添加了一个文字，但是我在文字外层包裹了一个Container；
+这里Container的作用是为了可以控制文字在 ...</div></div></div><div class="recent-post-item"><div class="post_cover left_radius"><a href="/2019/01/03/flutter/flutter%E4%B9%8Bimage/" title="flutter之Image">     <img class="post_bg" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.4779118098935964" src="/img/loading.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="flutter之Image"></a></div><div class="recent-post-info"><a class="article-title" href="/2019/01/03/flutter/flutter%E4%B9%8Bimage/" title="flutter之Image">flutter之Image</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2019-01-03T01:01:04.000Z" title="发表于 2019-01-03 09:01:04">2019-01-03</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/flutter/">flutter</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fas fa-tag article-meta__icon"></i><a class="article-meta__tags" href="/tags/flutter/">flutter</a><span class="article-meta__link">•</span><a class="article-meta__tags" href="/tags/dart/">dart</a></span></div><div class="content">flutter 之 Image网络图片相对来讲，Flutter中加载网络图片会更加简单，直接传入URL并不需要什么配置，所以我们先来看一下Flutter中如何加载网络图片。
+我们先来看看Image有哪些属性可以设置：
+const Image(&#123;  ...  this.width, //图片的宽  this.height, //图片高度  this.color, //图片的混合色值  this.colorBlendMode, //混合模式  this.fit,//缩放模式  this.alignment = Alignment.center, //对齐方式  this.repeat = ImageRepeat.noRepeat, //重复方式  ...&#125;)
+
+width、height：用于设置图片的宽、高，当不指定宽高时，图片会根据当前父容器的限制，尽可能的显示其原始大小，如果只设置width、height的其中一个，那么另一个属性默认会按比例缩放，但可以通过下面介绍的fit属性来指定适应规则。
+
+fit：该属性用于在图片的显示空间和图片本身大小不同时指定图片的适应模 ...</div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/2019/01/03/flutter/flutter%E4%B9%8BSliver/" title="flutter之Sliver">     <img class="post_bg" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.8381222234614438" src="/img/loading.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="flutter之Sliver"></a></div><div class="recent-post-info"><a class="article-title" href="/2019/01/03/flutter/flutter%E4%B9%8BSliver/" title="flutter之Sliver">flutter之Sliver</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2019-01-02T18:39:13.000Z" title="发表于 2019-01-03 02:39:13">2019-01-03</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/flutter/">flutter</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fas fa-tag article-meta__icon"></i><a class="article-meta__tags" href="/tags/flutter/">flutter</a><span class="article-meta__link">•</span><a class="article-meta__tags" href="/tags/dart/">dart</a></span></div><div class="content">flutter 之 SliverSliver 类的组件，都是一些很小的组件，可以通过自己组合添加更加灵活的组件
+CustomScrollView自定义的 ScrollView,一般来说 sliver 组件都放在这个组件内
+
+slivers: [] sliver 类型的组件
+reverse 是否反转
+scrollDirection ：Axis.vertical/Axis.horizontal
+
+sliverGrid
+gridDelegate : SliverGridDelegateWithFixedCrossAxisCount() 整体布局
+crossAxisCount: 2,
+crossAxisSpacing: 16,
+mainAxisSpacing: 16,
+childAspectRatio: 1.0, 定义子组件的比例
+
+
+delegate ：SliverChildBuilderDelegate((context, index){}) 每一项的内容
+
+SliverAppBar
+pinned : true/false 是否固定住
+title: Text(‘Sliver’) appBa ...</div></div></div><div class="recent-post-item"><div class="post_cover left_radius"><a href="/2019/01/02/flutter/flutter%E4%B9%8Bbuttion/" title="flutter之Button">     <img class="post_bg" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.6619694667716691" src="/img/loading.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="flutter之Button"></a></div><div class="recent-post-info"><a class="article-title" href="/2019/01/02/flutter/flutter%E4%B9%8Bbuttion/" title="flutter之Button">flutter之Button</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2019-01-02T01:01:04.000Z" title="发表于 2019-01-02 09:01:04">2019-01-02</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/flutter/">flutter</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fas fa-tag article-meta__icon"></i><a class="article-meta__tags" href="/tags/flutter/">flutter</a><span class="article-meta__link">•</span><a class="article-meta__tags" href="/tags/dart/">dart</a></span></div><div class="content">Button
+// 圆形buttonFloatingActionButton(  child: Text(&quot;FloatingActionButton&quot;),  onPressed: () &#123;    print(&quot;FloatingActionButton Click&quot;);  &#125;,),// 普通buttonElevatedButton(  child: Text(&quot;RaisedButton&quot;, style: TextStyle(color: Colors.purple)),  color: Colors.orange, // 按钮的颜色  highlightColor: Colors.orange[700], // 按下去高亮颜色  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)), // 圆角的实现  onPressed: () &#123;    print(&quot;同意协议&quot;);  &#125;,),T ...</div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/2019/01/01/flutter/flutter%E4%B9%8BTheme/" title="flutter之Theme">     <img class="post_bg" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.8445056838244098" src="/img/loading.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="flutter之Theme"></a></div><div class="recent-post-info"><a class="article-title" href="/2019/01/01/flutter/flutter%E4%B9%8BTheme/" title="flutter之Theme">flutter之Theme</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2019-01-01T09:13:45.000Z" title="发表于 2019-01-01 17:13:45">2019-01-01</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/flutter/">flutter</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fas fa-tag article-meta__icon"></i><a class="article-meta__tags" href="/tags/flutter/">flutter</a><span class="article-meta__link">•</span><a class="article-meta__tags" href="/tags/dart/">dart</a></span></div><div class="content">flutter 之 Theme
+重写主题 使用 ThemeData
+
+12345678910class FormDemo extends StatelessWidget &#123;  @override  Widget build(BuildContext context) &#123;    return Theme(      data: ThemeData(        primaryColor: Colors.deepPurple,      ),      child: ThemeDemo(),    );
+
+
+覆盖主题 使用 Theme.of(context).copyWith
+
+class FormDemo extends StatelessWidget &#123;  @override  Widget build(BuildContext context) &#123;    return Theme(      data: Theme.of(context).copyWith(        primaryColor: Colors.green,      ), ...</div></div></div><div class="recent-post-item"><div class="post_cover left_radius"><a href="/2019/01/01/flutter/flutter%E4%B9%8BText/" title="flutter之Text">     <img class="post_bg" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.1722598448995949" src="/img/loading.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="flutter之Text"></a></div><div class="recent-post-info"><a class="article-title" href="/2019/01/01/flutter/flutter%E4%B9%8BText/" title="flutter之Text">flutter之Text</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2019-01-01T01:01:04.000Z" title="发表于 2019-01-01 09:01:04">2019-01-01</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/flutter/">flutter</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fas fa-tag article-meta__icon"></i><a class="article-meta__tags" href="/tags/flutter/">flutter</a><span class="article-meta__link">•</span><a class="article-meta__tags" href="/tags/dart/">dart</a></span></div><div class="content">flutter 之 Text
+maxLines 最大的行数
+overflow 溢出怎么显示
+textScaleFactor 控制文本缩放
+textAlign 文本对齐方式
+style:TextStyle
+color 颜色
+fontSize 大小
+height 高度
+fontFamily 字体
+background 背景
+decoration 描述
+decorationStyle 上面对应的样式
+fontStyle 文本为斜体之类的
+
+
+
+Text(&quot;Hello world! I&#x27;m Jack. &quot;*4,  maxLines: 1,  overflow: TextOverflow.ellipsis,  textScaleFactor: 1.5,  textAlign: TextAlign.center,  style: TextStyle(    color: Colors.blue,    fontSize: 18.0,    fontStyle: FontStyle.itaic    height: 1.2,    fontFamily: &quot;C ...</div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/2018/12/31/%E6%95%B0%E6%8D%AE%E5%BA%93/sequelize/" title="sequelize">     <img class="post_bg" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.2872304077628476" src="/img/loading.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="sequelize"></a></div><div class="recent-post-info"><a class="article-title" href="/2018/12/31/%E6%95%B0%E6%8D%AE%E5%BA%93/sequelize/" title="sequelize">sequelize</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2018-12-30T23:31:23.000Z" title="发表于 2018-12-31 07:31:23">2018-12-31</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fas fa-tag article-meta__icon"></i><a class="article-meta__tags" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></span></div><div class="content">安装
+首先安装 sequelize
+之后还需要安装 mysql2（因为sequelize依赖mysql2）
+yarn add sequelizeyarn add mysql2
+
+
+
+连接mysqlconst Sequelize = require(&#x27;sequelize&#x27;)let sequelize = new Sequelize(&#x27;cate&#x27;, &#x27;root&#x27;, &#x27;123456&#x27;, &#123;  host: &#x27;127.0.0.1&#x27;,  dialect: &#x27;mysql&#x27;&#125;)sequelize  .authenticate() // 连接mysql测试  .then(() =&gt; &#123;    console.log(&#x27;连接成功&#x27;)  &#125;)  .catch(() =&gt; &#123;    console.log(&#x27;连接失败&#x27;)  &#125;)
+
+定义模型字段值描述：
+
+type：字段类型，Str ...</div></div></div><nav id="pagination"><div class="pagination"><a class="extend prev" rel="prev" href="/page/25/"><i class="fas fa-chevron-left fa-fw"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/25/">25</a><span class="page-number current">26</span><a class="page-number" href="/page/27/">27</a><span class="space">&hellip;</span><a class="page-number" href="/page/30/">30</a><a class="extend next" rel="next" href="/page/27/"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-info-avatar is-center"><img class="avatar-img" data-lazy-src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">Sniper</div><div class="author-info__description"></div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">298</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">61</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">47</div></a></div></div><div class="card-info-social-icons is-center"><a class="social-icon" href="/atom.xml" target="_blank" title="rss-atom"><i class="fas fa-rss"></i></a><a class="social-icon" href="/rss2.xml" target="_blank" title="rss-rss2"><i class="fas fa-rss-square"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">这个博客还有点儿意思吧</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/04/17/GO/go%E4%B9%8B%E7%B1%BB%E5%9E%8B%E7%B3%BB%E7%BB%9F/" title="go学习笔记"><img data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.284578500789443" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="go学习笔记"/></a><div class="content"><a class="title" href="/2022/04/17/GO/go%E4%B9%8B%E7%B1%BB%E5%9E%8B%E7%B3%BB%E7%BB%9F/" title="go学习笔记">go学习笔记</a><time datetime="2022-04-17T12:27:24.000Z" title="发表于 2022-04-17 20:27:24">2022-04-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/03/26/nodejs/koa%E6%BA%90%E7%A0%81%E5%86%8D%E8%AF%BB/" title="koa源码再读"><img data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.4963417575252631" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="koa源码再读"/></a><div class="content"><a class="title" href="/2022/03/26/nodejs/koa%E6%BA%90%E7%A0%81%E5%86%8D%E8%AF%BB/" title="koa源码再读">koa源码再读</a><time datetime="2022-03-26T01:39:44.000Z" title="发表于 2022-03-26 09:39:44">2022-03-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/03/18/%E5%89%8D%E7%AB%AF/Typescript/Typescript%E4%B9%8B%E5%B8%B8%E8%A7%81%E5%A5%97%E8%B7%AF/" title="Typescript之常见套路"><img data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.9584090414206019" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Typescript之常见套路"/></a><div class="content"><a class="title" href="/2022/03/18/%E5%89%8D%E7%AB%AF/Typescript/Typescript%E4%B9%8B%E5%B8%B8%E8%A7%81%E5%A5%97%E8%B7%AF/" title="Typescript之常见套路">Typescript之常见套路</a><time datetime="2022-03-18T10:53:49.000Z" title="发表于 2022-03-18 18:53:49">2022-03-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/02/13/%E5%89%8D%E7%AB%AF/JS%E5%8E%9F%E7%90%86/V8%E4%B8%AD%E7%9A%84JS%E6%95%B0%E7%BB%84/" title="V8中的JS数组"><img data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.26310617936839553" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="V8中的JS数组"/></a><div class="content"><a class="title" href="/2022/02/13/%E5%89%8D%E7%AB%AF/JS%E5%8E%9F%E7%90%86/V8%E4%B8%AD%E7%9A%84JS%E6%95%B0%E7%BB%84/" title="V8中的JS数组">V8中的JS数组</a><time datetime="2022-02-13T08:12:44.000Z" title="发表于 2022-02-13 16:12:44">2022-02-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/02/06/%E5%89%8D%E7%AB%AF/%E6%A1%86%E6%9E%B6/Nuxt3/" title="Nuxt3"><img data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.3676739232204689" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Nuxt3"/></a><div class="content"><a class="title" href="/2022/02/06/%E5%89%8D%E7%AB%AF/%E6%A1%86%E6%9E%B6/Nuxt3/" title="Nuxt3">Nuxt3</a><time datetime="2022-02-06T14:00:30.000Z" title="发表于 2022-02-06 22:00:30">2022-02-06</time></div></div></div></div><div class="card-widget" id="card-newest-comments"><div class="item-headline"><i class="fas fa-bolt"></i><span>最新评论</span></div><div class="aside-list"><span>正在加载中...</span></div></div><div class="card-widget card-categories"><div class="item-headline"><i class="fas fa-folder-open"></i><span>分类</span></div><ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/CSS/"><span class="card-category-list-name">CSS</span><span class="card-category-list-count">10</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Chrome%E6%8F%92%E4%BB%B6/"><span class="card-category-list-name">Chrome插件</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/ES6/"><span class="card-category-list-name">ES6</span><span class="card-category-list-count">6</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Eectron/"><span class="card-category-list-name">Eectron</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Go/"><span class="card-category-list-name">Go</span><span class="card-category-list-count">19</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/HEXO/"><span class="card-category-list-name">HEXO</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/JAVA/"><span class="card-category-list-name">JAVA</span><span class="card-category-list-count">10</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/JS%E5%8E%9F%E7%90%86/"><span class="card-category-list-name">JS原理</span><span class="card-category-list-count">15</span></a></li>
+            <li class="card-category-list-item more is-center"><a class="card-category-list-link-more" href="/categories/">
+                <span>查看更多</span><i class="fas fa-angle-right"></i></a></li>
+            </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/Go/" style="font-size: 1.34em; color: rgb(109, 125, 163)">Go</a><a href="/tags/Linux/" style="font-size: 1.15em; color: rgb(53, 193, 90)">Linux</a><a href="/tags/JAVA/" style="font-size: 1.45em; color: rgb(86, 105, 104)">JAVA</a><a href="/tags/PHP/" style="font-size: 1.18em; color: rgb(5, 80, 157)">PHP</a><a href="/tags/Python/" style="font-size: 1.29em; color: rgb(187, 103, 47)">Python</a><a href="/tags/%E5%BE%AE%E4%BF%A1/" style="font-size: 1.1em; color: rgb(119, 32, 41)">微信</a><a href="/tags/flutter/" style="font-size: 1.37em; color: rgb(144, 56, 42)">flutter</a><a href="/tags/dart/" style="font-size: 1.37em; color: rgb(11, 100, 183)">dart</a><a href="/tags/GetX/" style="font-size: 1.1em; color: rgb(176, 13, 34)">GetX</a><a href="/tags/nodejs/" style="font-size: 1.39em; color: rgb(38, 6, 145)">nodejs</a><a href="/tags/JavaScript/" style="font-size: 1.47em; color: rgb(165, 25, 172)">JavaScript</a><a href="/tags/koa/" style="font-size: 1.1em; color: rgb(153, 16, 46)">koa</a><a href="/tags/Chrome/" style="font-size: 1.1em; color: rgb(76, 40, 188)">Chrome</a><a href="/tags/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/" style="font-size: 1.42em; color: rgb(63, 130, 89)">工具使用</a><a href="/tags/%E7%88%AC%E8%99%AB/" style="font-size: 1.1em; color: rgb(140, 20, 85)">爬虫</a><a href="/tags/Solidity/" style="font-size: 1.1em; color: rgb(15, 135, 142)">Solidity</a><a href="/tags/%E5%8C%BA%E5%9D%97%E9%93%BE/" style="font-size: 1.13em; color: rgb(36, 143, 173)">区块链</a><a href="/tags/%E5%8C%BA%E5%9D%97%E9%93%BE%E6%A6%82%E5%BF%B5/" style="font-size: 1.1em; color: rgb(98, 80, 172)">区块链概念</a><a href="/tags/MongoDB/" style="font-size: 1.1em; color: rgb(9, 177, 147)">MongoDB</a><a href="/tags/NoSql/" style="font-size: 1.1em; color: rgb(19, 189, 184)">NoSql</a><a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" style="font-size: 1.21em; color: rgb(200, 150, 177)">数据库</a><a href="/tags/web3js/" style="font-size: 1.1em; color: rgb(137, 169, 141)">web3js</a><a href="/tags/Mysql/" style="font-size: 1.1em; color: rgb(16, 26, 53)">Mysql</a><a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%BA%95%E5%B1%82%E5%AD%A6%E4%B9%A0/" style="font-size: 1.13em; color: rgb(113, 171, 200)">计算机底层学习</a><a href="/tags/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" style="font-size: 1.1em; color: rgb(136, 6, 92)">基础知识</a><a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" style="font-size: 1.1em; color: rgb(105, 144, 79)">操作系统</a><a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 1.1em; color: rgb(132, 175, 54)">数据结构</a><a href="/tags/Mybatis/" style="font-size: 1.1em; color: rgb(46, 129, 177)">Mybatis</a><a href="/tags/Spring/" style="font-size: 1.18em; color: rgb(61, 111, 63)">Spring</a><a href="/tags/Python-Go-JavaScript/" style="font-size: 1.1em; color: rgb(107, 137, 5)">Python - Go - JavaScript</a><a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 1.1em; color: rgb(110, 118, 162)">算法</a><a href="/tags/Spring-Boot/" style="font-size: 1.18em; color: rgb(173, 146, 139)">Spring Boot</a><a href="/tags/Spring-mvc/" style="font-size: 1.18em; color: rgb(80, 20, 68)">Spring mvc</a><a href="/tags/%E5%B8%B8%E7%94%A8API/" style="font-size: 1.15em; color: rgb(4, 31, 50)">常用API</a><a href="/tags/CSS/" style="font-size: 1.26em; color: rgb(200, 156, 181)">CSS</a><a href="/tags/%E5%89%8D%E7%AB%AF/" style="font-size: 1.5em; color: rgb(190, 85, 183)">前端</a><a href="/tags/JS%E5%8E%9F%E7%90%86/" style="font-size: 1.31em; color: rgb(139, 139, 42)">JS原理</a><a href="/tags/webpack/" style="font-size: 1.26em; color: rgb(57, 162, 24)">webpack</a><a href="/tags/JS%E8%AF%AD%E6%B3%95%E5%AD%A6%E4%B9%A0/" style="font-size: 1.23em; color: rgb(113, 2, 191)">JS语法学习</a><a href="/tags/ES6/" style="font-size: 1.18em; color: rgb(155, 65, 90)">ES6</a></div></div><div class="card-widget card-archives"><div class="item-headline"><i class="fas fa-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/04/"><span class="card-archive-list-date">四月 2022</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/03/"><span class="card-archive-list-date">三月 2022</span><span class="card-archive-list-count">2</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/02/"><span class="card-archive-list-date">二月 2022</span><span class="card-archive-list-count">4</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/01/"><span class="card-archive-list-date">一月 2022</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2021/12/"><span class="card-archive-list-date">十二月 2021</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2021/11/"><span class="card-archive-list-date">十一月 2021</span><span class="card-archive-list-count">2</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2021/10/"><span class="card-archive-list-date">十月 2021</span><span class="card-archive-list-count">2</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2021/09/"><span class="card-archive-list-date">九月 2021</span><span class="card-archive-list-count">2</span></a></li><li class="card-archive-list-item more is-center"><a class="card-archive-list-link-more" href="/archives/">
+              <span>查看更多</span><i class="fas fa-angle-right"  ></i></a></li></ul></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站资讯</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">298</div></div><div class="webinfo-item"><div class="item-name">已运行时间 :</div><div class="item-count" id="runtimeshow" data-publishDate="2018-06-06T16:00:00.000Z"></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2022-04-17T12:25:00.695Z"></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2018 - 2022 By Sniper</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="/js/search/local-search.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> {preloader.endLoading()})</script><div class="js-pjax"><script>function subtitleType () {
+  fetch('https://api.btstu.cn/yan/api.php?charset=utf-8&encode=json')
+    .then(response => response.json())
+    .then(data => {
+      if (true) {
+        var sub = "你好，世界,穷且益坚，不坠青云之志".length == 0 ? new Array() : "你好，世界,穷且益坚，不坠青云之志".split(',')
+        var both = sub.unshift(data.text)
+        typed = new Typed('#subtitle', {
+          strings: sub,
+          startDelay: 300,
+          typeSpeed: 150,
+          loop: true,
+          backSpeed: 50,
+        })
+      } else {
+        document.getElementById('subtitle').innerHTML = data.text
+      }
+    })
+}
+
+if (true) {
+  if (typeof Typed === 'function') {
+    subtitleType()
+  } else {
+    getScript('https://cdn.jsdelivr.net/npm/typed.js/lib/typed.min.js').then(subtitleType)
+  }
+} else {
+  subtitleType()
+}
+</script></div><script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.17.0/js/md5.min.js"></script><script>window.addEventListener('load', () => {
+  const changeContent = (content) => {
+    if (content === '') return content
+
+    content = content.replace(/<[^>]+>/g,"") // remove html tag
+    content = content.replace(/(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|jpeg|gif|png|webp)/g, '') // remove image link
+    content = content.replace(/(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi, '') // remove url
+
+    if (content.length > 150) {
+      content = content.substring(0,150) + '...'
+    }
+    return content
+  }
+
+  const getIcon = (icon, mail) => {
+    if (icon) return icon
+    
+    let defaultIcon = '?d=monsterid'
+    let iconUrl = `https://gravatar.loli.net/avatar/${md5(mail.toLowerCase()) + defaultIcon}`
+    return iconUrl
+  }
+
+  const generateHtml = array => {
+    let result = ''
+
+    if (array.length) {
+      for (let i = 0; i < array.length; i++) {
+        result += '<div class=\'aside-list-item\'>'
+
+        if (true) {
+          let name = 'src'
+          if(true) {
+            name = 'data-lazy-src'
+          }
+          result += `<a href='${array[i].url}' class="thumbnail"><img ${name}='${getIcon(array[i].avatar, array[i].mail)}' alt='${array[i].nick}'></a>`
+        }
+
+        result += `<div class='content'>
+        <a class='comment' href='${array[i].url}'>${array[i].content}</a>
+        <div class='name'><span>${array[i].nick}</span><time> / ${btf.diffDate(array[i].date, true)}</time></div>
+        </div></div>`
+      }
+    } else {
+      result += '没有评论'
+    }
+
+    let $dom = document.querySelector('#card-newest-comments .aside-list')
+    $dom.innerHTML= result
+    window.lazyLoadInstance && window.lazyLoadInstance.update()
+    window.pjax && window.pjax.refresh($dom)
+  }
+
+  const getComment = () => {
+      let serverURL = ''
+      if (true) {
+        serverURL = 'https://cwrcuoma.lc-cn-n1-shared.com'
+      } else {
+        serverURL = 'https://cwRCUoMa.api.lncldglobal.com'
+      }
+
+    var settings = {
+      "method": "GET",
+      "headers": {
+        "X-LC-Id": 'cwRCUoMavhC2YwPVr7FS2gq0-gzGzoHsz',
+        "X-LC-Key": 'sqKV8HVVmhAbpKiqokLJUDLU',
+        "Content-Type": "application/json"
+      },
+    }
+
+    fetch(`${serverURL}/1.1/classes/Comment?limit=6&order=-createdAt`,settings)
+      .then(response => response.json())
+      .then(data => {
+        const valineArray = data.results.map(function (e) {
+          return {
+            'avatar': e.QQAvatar,
+            'content': changeContent(e.comment),
+            'mail': e.mail,
+            'nick': e.nick,
+            'url': e.url + '#' + e.objectId,
+            'date': e.createdAt,
+          }
+        })
+        saveToLocal.set('leancloud-newest-comments', JSON.stringify(valineArray), 10/(60*24))
+        generateHtml(valineArray)
+      }).catch(e => {
+        const $dom = document.querySelector('#card-newest-comments .aside-list')
+        $dom.innerHTML= "无法获取评论，请确认相关配置是否正确"
+      }) 
+  }
+
+  const newestCommentInit = () => {
+    if (document.querySelector('#card-newest-comments .aside-list')) {
+      const data = saveToLocal.get('leancloud-newest-comments')
+      if (data) {
+        generateHtml(JSON.parse(data))
+      } else {
+        getComment()
+      }
+    }
+  }
+
+  newestCommentInit()
+  document.addEventListener('pjax:complete', newestCommentInit)
+})</script><div class="aplayer no-destroy" data-id="6587475516" data-server="netease" data-type="playlist" data-fixed="true" data-mini="true" data-listFolded="false" data-order="random" data-preload="none" data-autoplay="false" data-lrctype="1" muted></div><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/gh/metowolf/MetingJS@1.2/dist/Meting.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = [
+  'title',
+  '#config_change',
+  '#body-wrap',
+  '#rightside-config-hide',
+  '#rightside-config-show',
+  '.js-pjax'
+]
+
+if (false) {
+  pjaxSelectors.unshift('meta[property="og:image"]', 'meta[property="og:title"]', 'meta[property="og:url"]')
+}
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  if (typeof gtag === 'function') {
+    gtag('config', '', {'page_path': window.location.pathname});
+  }
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // Analytics
+  if (false) {
+    MtaH5.pgv()
+  }
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+
+document.addEventListener('pjax:send', function () {
+  typeof preloader === 'object' && preloader.initLoading()
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+})</script></div></body></html>
