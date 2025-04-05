@@ -1,0 +1,458 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Sniper</title><meta name="author" content="Sniper"><meta name="copyright" content="Sniper"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta property="og:type" content="website">
+<meta property="og:title" content="Sniper">
+<meta property="og:url" content="http://zhoujunxiong.gitee.com/page/32/index.html">
+<meta property="og:site_name" content="Sniper">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://zhoujunxiong.gitee.com/img/avatar.jpg">
+<meta property="article:author" content="Sniper">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://zhoujunxiong.gitee.com/img/avatar.jpg"><link rel="shortcut icon" href="https://gitee.com/zhoujunxiong/zhoujunxiong.back/raw/master/favicon.ico"><link rel="canonical" href="http://zhoujunxiong.gitee.com/page/32/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}
+
+// https://stackoverflow.com/questions/16839698/jquery-getscript-alternative-in-native-javascript
+const getScript = url => new Promise((resolve, reject) => {
+  const script = document.createElement('script')
+  script.src = url
+  script.async = true
+  script.onerror = reject
+  script.onload = script.onreadystatechange = function() {
+    const loadState = this.readyState
+    if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+    script.onload = script.onreadystatechange = null
+    resolve()
+  }
+  document.head.appendChild(script)
+})</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: false,
+  isHome: true,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2025-04-05 22:19:13'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><link rel="stylesheet" href="/css/custom.css"<meta name="generator" content="Hexo 5.4.1"><link rel="alternate" href="/atom.xml" title="Sniper" type="application/atom+xml">
+<link rel="alternate" href="/rss2.xml" title="Sniper" type="application/rss+xml">
+</head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div id="loader-wrapper"><div id="loader"></div></div><div class="loader"><div class="inner one"></div><div class="inner two"></div><div class="inner three"></div></div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" data-lazy-src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">321</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">67</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">48</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标籤</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="full_page" id="page-header" style="background-image: url(https://source.unsplash.com/random/?nature)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Sniper</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标籤</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="site-info"><h1 id="site-title">Sniper</h1><div id="site-subtitle"><span id="subtitle"></span></div><div id="site_social_icons"><a class="social-icon" href="/atom.xml" target="_blank" title="rss-atom"><i class="fas fa-rss"></i></a><a class="social-icon" href="/rss2.xml" target="_blank" title="rss-rss2"><i class="fas fa-rss-square"></i></a></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div class="recent-posts" id="recent-posts"><div class="recent-post-item"><div class="post_cover left_radius"><a href="/2018/04/18/PHP/PHP%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/" title="PHP面向对象">     <img class="post_bg" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.058659646471895366" src="/img/loading.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="PHP面向对象"></a></div><div class="recent-post-info"><a class="article-title" href="/2018/04/18/PHP/PHP%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/" title="PHP面向对象">PHP面向对象</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2018-04-18T01:21:00.000Z" title="发表于 2018-04-18 09:21:00">2018-04-18</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/PHP/">PHP</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fas fa-tag article-meta__icon"></i><a class="article-meta__tags" href="/tags/PHP/">PHP</a></span></div><div class="content">类//public或者var(var是历史遗留问题)用来声明变量  实例使用-&gt;来调用成员方法或者变量//双冒号调用类常量//构造方法__construct,  析构方法__destruct//常量使用 &#x27;类名::&#x27; 形式调用class Person&#123;    const PI = 3.14;    var $name = &#x27;小明&#x27;;    function __construct()&#123;        echo &#x27;我艹创建了一个实例&#x27;;    &#125;    function __destruct()&#123;        echo &#x27;我艹销毁了一个实例&#x27;;    &#125;    function sayName()&#123;        echo $this-&gt;name;    &#125;&#125;$a1 = new Person();echo $a1-&gt;name;echo $a1::PI;PHP 对属性或方法的访问控制，是通过三个关键字public ...</div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/2018/04/13/Python/FTP%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA(python)/" title="FTP服务器的搭建（python）">     <img class="post_bg" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.2728891639530293" src="/img/loading.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="FTP服务器的搭建（python）"></a></div><div class="recent-post-info"><a class="article-title" href="/2018/04/13/Python/FTP%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA(python)/" title="FTP服务器的搭建（python）">FTP服务器的搭建（python）</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2018-04-13T09:33:00.000Z" title="发表于 2018-04-13 17:33:00">2018-04-13</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/Python/">Python</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fas fa-tag article-meta__icon"></i><a class="article-meta__tags" href="/tags/Python/">Python</a></span></div><div class="content">FTP服务器的搭建（python）
+因为买了个路由器，就没用360WIFI了，电脑和手机传文件麻烦，就去搞了个FTP
+
+首先是下载 pyftpdlib 这个模块
+pip install pyftpdlib
+
+接下来就是自定义啦from pyftpdlib.authorizers import DummyAuthorizerfrom pyftpdlib.handlers import FTPHandlerfrom pyftpdlib.servers import FTPServer# 新建一个用户组authorizer = DummyAuthorizer()# 将用户名，密码，指定目录，权限 添加到里面authorizer.add_user(&quot;root&quot;, &quot;root&quot;, &quot;H:/&quot;, perm=&quot;elradfmwMT&quot;)  # adfmw# 这个是添加匿名用户,任何人都可以访问，如果去掉的话，需要输入用户名和密码，可以自己尝试authorizer.add_anonymous(&quot;I:\电影&quot ...</div></div></div><div class="recent-post-item"><div class="post_cover left_radius"><a href="/2018/03/08/Python/%E5%BE%AE%E4%BF%A1itchat/" title="微信itchat">     <img class="post_bg" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.08764357130555522" src="/img/loading.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="微信itchat"></a></div><div class="recent-post-info"><a class="article-title" href="/2018/03/08/Python/%E5%BE%AE%E4%BF%A1itchat/" title="微信itchat">微信itchat</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2018-03-08T01:30:00.000Z" title="发表于 2018-03-08 09:30:00">2018-03-08</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/Python/">Python</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fas fa-tag article-meta__icon"></i><a class="article-meta__tags" href="/tags/Python/">Python</a><span class="article-meta__link">•</span><a class="article-meta__tags" href="/tags/%E5%BE%AE%E4%BF%A1/">微信</a></span></div><div class="content">
+python中有一个模块叫itchat ，它是一个专门操作网页版微信的库
+
+我做了一个每天签到的小程序配合电脑的开机计划任务import itchatimport time# time.sleep(5)# hotReload是不需要每次扫码，enableCmdQR是在命令行中显示二维码itchat.auto_login(hotReload=True,enableCmdQR=True)# itchat.get_mps获取所有的公众号allmps = itchat.get_mps()for i in allmps:    if (i.NickName == &#x27;SOTX索牌&#x27;):        itchat.send(&#x27;签到&#x27;, toUserName=i.UserName)        breakprint(&quot;任务完成&quot;)time.sleep(3)
+
+下面是一些api</div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/2018/02/06/%E5%89%8D%E7%AB%AF/JS%E8%AF%AD%E6%B3%95%E5%AD%A6%E4%B9%A0/ES6%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93%EF%BC%88%E5%85%AD%EF%BC%89/" title="ES6学习总结（六）">     <img class="post_bg" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.3524572967598447" src="/img/loading.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="ES6学习总结（六）"></a></div><div class="recent-post-info"><a class="article-title" href="/2018/02/06/%E5%89%8D%E7%AB%AF/JS%E8%AF%AD%E6%B3%95%E5%AD%A6%E4%B9%A0/ES6%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93%EF%BC%88%E5%85%AD%EF%BC%89/" title="ES6学习总结（六）">ES6学习总结（六）</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2018-02-06T07:10:00.000Z" title="发表于 2018-02-06 15:10:00">2018-02-06</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/ES6/">ES6</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fas fa-tag article-meta__icon"></i><a class="article-meta__tags" href="/tags/JavaScript/">JavaScript</a><span class="article-meta__link">•</span><a class="article-meta__tags" href="/tags/ES6/">ES6</a></span></div><div class="content">
+Class 的基本语法，extends关键字，ES6继承关系  （参考书籍《ECMAScript 6 入门》）
+
+Class 的基本语法
+class关键字`ES6 提供了更接近传统语言的写法，引入了 Class（类）这个概念，作为对象的模板。通过class关键字，可以定义类`//定义类class Point &#123;  constructor(x, y) &#123;    this.x = x;    this.y = y;  &#125;  toString() &#123;    return &#x27;(&#x27; + this.x + &#x27;, &#x27; + this.y + &#x27;)&#x27;;  &#125;&#125;ES6 的类，完全可以看作构造函数的另一种写法。另外，类的内部所有定义的方法，都是不可枚举的（non-enumerable）。
+
+类的实例对象1234567实例的属性除非显式定义在其本身（即定义在this对象上），否则都是定义在原型上（即定义在class上）ES5 一样，类的所有实例共享一个原型对象var p1 = new Po ...</div></div></div><div class="recent-post-item"><div class="post_cover left_radius"><a href="/2018/02/05/%E5%89%8D%E7%AB%AF/JS%E8%AF%AD%E6%B3%95%E5%AD%A6%E4%B9%A0/ES6%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93%EF%BC%88%E4%BA%94%EF%BC%89/" title="ES6学习总结（五）">     <img class="post_bg" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.18565473765279106" src="/img/loading.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="ES6学习总结（五）"></a></div><div class="recent-post-info"><a class="article-title" href="/2018/02/05/%E5%89%8D%E7%AB%AF/JS%E8%AF%AD%E6%B3%95%E5%AD%A6%E4%B9%A0/ES6%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93%EF%BC%88%E4%BA%94%EF%BC%89/" title="ES6学习总结（五）">ES6学习总结（五）</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2018-02-05T03:10:00.000Z" title="发表于 2018-02-05 11:10:00">2018-02-05</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/ES6/">ES6</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fas fa-tag article-meta__icon"></i><a class="article-meta__tags" href="/tags/JavaScript/">JavaScript</a><span class="article-meta__link">•</span><a class="article-meta__tags" href="/tags/ES6/">ES6</a></span></div><div class="content">
+Generator 函数，Generator 函数的异步应用，async 函数  （参考书籍《ECMAScript 6 入门》）
+
+Generator 函数
+generator基本概念Generator 函数是一个普通函数，但是有两个特征。一是，function关键字与函数名之间有一个星号；二是，函数体内部使用yield表达式，定义不同的内部状态（yield在英语里的意思就是“产出”）function* helloWorldGenerator() &#123;  yield &#x27;hello&#x27;;  yield &#x27;world&#x27;;  return &#x27;ending&#x27;;&#125;var hw = helloWorldGenerator();Generator 函数是分段执行的，yield表达式是暂停执行的标记，而next方法可以恢复执行hw.next()// &#123; value: &#x27;hello&#x27;, done: false &#125;hw.next()// &#123; value: &#x27;world& ...</div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/2018/02/04/%E5%89%8D%E7%AB%AF/JS%E8%AF%AD%E6%B3%95%E5%AD%A6%E4%B9%A0/ES6%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93%EF%BC%88%E5%9B%9B%EF%BC%89/" title="ES6学习总结（四）">     <img class="post_bg" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.45157981205411546" src="/img/loading.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="ES6学习总结（四）"></a></div><div class="recent-post-info"><a class="article-title" href="/2018/02/04/%E5%89%8D%E7%AB%AF/JS%E8%AF%AD%E6%B3%95%E5%AD%A6%E4%B9%A0/ES6%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93%EF%BC%88%E5%9B%9B%EF%BC%89/" title="ES6学习总结（四）">ES6学习总结（四）</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2018-02-04T07:10:00.000Z" title="发表于 2018-02-04 15:10:00">2018-02-04</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/ES6/">ES6</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fas fa-tag article-meta__icon"></i><a class="article-meta__tags" href="/tags/JavaScript/">JavaScript</a><span class="article-meta__link">•</span><a class="article-meta__tags" href="/tags/ES6/">ES6</a></span></div><div class="content">
+WeakSet和Map和WeakMap，promise对象，Iterator 和 for…of 循环  （参考书籍《ECMAScript 6 入门》）
+
+WeakSet和Map和WeakMap
+weakset含义`WeakSet 结构与 Set 类似，也是不重复的值的集合。但是，它与 Set 有两个区别。首先，WeakSet 的成员只能是对象，而不能是其他类型的值。`const ws = new WeakSet();ws.add(1)// TypeError: Invalid value used in weak setws.add(Symbol())// TypeError: invalid value used in weak set`其次，WeakSet 中的对象都是弱引用，即垃圾回收机制不考虑 WeakSet 对该对象的引用，也就是说，如果其他对象都不再引用该对象，那么垃圾回收机制会自动回收该对象所占用的内存，不考虑该对象还存在于 WeakSet 之中`const ws = new WeakSet();WeakSet 可以接受一个数组或类似数组的对象作为参数const a = ...</div></div></div><div class="recent-post-item"><div class="post_cover left_radius"><a href="/2018/02/02/%E5%89%8D%E7%AB%AF/JS%E8%AF%AD%E6%B3%95%E5%AD%A6%E4%B9%A0/ES6%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93%EF%BC%88%E4%B8%89%EF%BC%89/" title="ES6学习总结（三）">     <img class="post_bg" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.9049043336666991" src="/img/loading.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="ES6学习总结（三）"></a></div><div class="recent-post-info"><a class="article-title" href="/2018/02/02/%E5%89%8D%E7%AB%AF/JS%E8%AF%AD%E6%B3%95%E5%AD%A6%E4%B9%A0/ES6%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93%EF%BC%88%E4%B8%89%EF%BC%89/" title="ES6学习总结（三）">ES6学习总结（三）</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2018-02-02T10:10:00.000Z" title="发表于 2018-02-02 18:10:00">2018-02-02</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/ES6/">ES6</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fas fa-tag article-meta__icon"></i><a class="article-meta__tags" href="/tags/JavaScript/">JavaScript</a><span class="article-meta__link">•</span><a class="article-meta__tags" href="/tags/ES6/">ES6</a></span></div><div class="content">
+对象的扩展，Symbol，Set数据结构  （参考书籍《ECMAScript 6 入门》）
+
+对象的扩展
+属性的简洁表示法`ES6 允许直接写入变量和函数，作为对象的属性和方法。这样的书写更加简洁。`const foo = &#x27;bar&#x27;;const baz = &#123;foo&#125;;baz // &#123;foo: &quot;bar&quot;&#125;// 等同于const baz = &#123;foo: foo&#125;;ES6 允许在对象之中，直接写变量。这时，属性名为变量名, 属性值为变量的值。`除了属性简写，方法也可以简写。`const o = &#123;  method() &#123;    return &quot;Hello!&quot;;  &#125;&#125;;// 等同于const o = &#123;  method: function() &#123;    return &quot;Hello!&quot;;  &#125;&#125;如果某个方法的值是一个 Generator 函数，前面需要加上星号const ...</div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/2018/02/01/%E5%89%8D%E7%AB%AF/JS%E8%AF%AD%E6%B3%95%E5%AD%A6%E4%B9%A0/ES6%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93%EF%BC%88%E4%BA%8C%EF%BC%89/" title="ES6学习总结（二）">     <img class="post_bg" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.6443741192164669" src="/img/loading.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="ES6学习总结（二）"></a></div><div class="recent-post-info"><a class="article-title" href="/2018/02/01/%E5%89%8D%E7%AB%AF/JS%E8%AF%AD%E6%B3%95%E5%AD%A6%E4%B9%A0/ES6%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93%EF%BC%88%E4%BA%8C%EF%BC%89/" title="ES6学习总结（二）">ES6学习总结（二）</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2018-02-01T02:00:00.000Z" title="发表于 2018-02-01 10:00:00">2018-02-01</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/ES6/">ES6</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fas fa-tag article-meta__icon"></i><a class="article-meta__tags" href="/tags/JavaScript/">JavaScript</a><span class="article-meta__link">•</span><a class="article-meta__tags" href="/tags/ES6/">ES6</a></span></div><div class="content">
+数值的扩展，函数的扩展，数组的扩展         （参考书籍《ECMAScript 6 入门》）
+
+数值的扩展
+二进制和八进制的新写法123ES6 提供了二进制和八进制数值的新的写法，分别用前缀`0b`（或0B）和`0o`（或0O）表示0b111110111 === 503 // true 二进制0o767 === 503 // true 八进制
+
+Number.isFinite(), Number.isNaN()`Number.isFinite()用来检查一个数值是否为有限的（finite），即不是Infinity`Number.isFinite(15); // trueNumber.isFinite(0.8); // trueNumber.isFinite(NaN); // falseNumber.isFinite(Infinity); // falseNumber.isFinite(-Infinity); // falseNumber.isFinite(&#x27;foo&#x27;); // falseNumber.isFinite(&#x27;15&#x27;); //  ...</div></div></div><div class="recent-post-item"><div class="post_cover left_radius"><a href="/2018/01/29/%E5%89%8D%E7%AB%AF/JS%E8%AF%AD%E6%B3%95%E5%AD%A6%E4%B9%A0/ES6%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93%EF%BC%88%E4%B8%80%EF%BC%89/" title="ES6学习总结（一）">     <img class="post_bg" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.653875985292157" src="/img/loading.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="ES6学习总结（一）"></a></div><div class="recent-post-info"><a class="article-title" href="/2018/01/29/%E5%89%8D%E7%AB%AF/JS%E8%AF%AD%E6%B3%95%E5%AD%A6%E4%B9%A0/ES6%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93%EF%BC%88%E4%B8%80%EF%BC%89/" title="ES6学习总结（一）">ES6学习总结（一）</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2018-01-29T15:10:13.000Z" title="发表于 2018-01-29 23:10:13">2018-01-29</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/ES6/">ES6</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fas fa-tag article-meta__icon"></i><a class="article-meta__tags" href="/tags/JavaScript/">JavaScript</a><span class="article-meta__link">•</span><a class="article-meta__tags" href="/tags/ES6/">ES6</a></span></div><div class="content">
+let和const，变量的解构赋值，字符串的扩展，正则的扩展  （参考书籍《ECMAScript 6 入门》）
+
+首先就是let和const
+第一个就是let增加了在大括号内增加了块级作用域&amp;&amp;for循环中的小括号也有块级作用域
+
+for循环中的小括号和大括号之间是不同的作用域
+
+var会变量提升，但是let没有变量提升，也就是说let声明的变量必须先声明后使用
+
+暂时性死区，这个需要用代码来表示
+123456789var tmp = 123;if (true) &#123;  tmp = &#x27;abc&#x27;; // 报错  let tmp;&#125;//这就是“暂时性死区”（temporal dead zone，简称 TDZ）//在代码块内，使用let命令声明变量之前，该变量都是不可用的.//typeof也会引起暂时性死区let x=x//相同的原因
+不允许在同一作用域重复声明同一个变量
+
+避免在块级作用域内声明函数，如果确实需要，也应该写成函数表达式，而不是函数声明语句
+
+const声明一个只读的常量。一旦声明，常量的值就不能改变。
+
+const实际 ...</div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/2018/01/29/%E5%89%8D%E7%AB%AF/%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98/%E5%8D%9A%E5%AE%A2%E4%B8%8A%E7%BA%BF%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/" title="博客上线中遇到的问题总结">     <img class="post_bg" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&amp;format=images0.5862708559045848" src="/img/loading.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="博客上线中遇到的问题总结"></a></div><div class="recent-post-info"><a class="article-title" href="/2018/01/29/%E5%89%8D%E7%AB%AF/%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98/%E5%8D%9A%E5%AE%A2%E4%B8%8A%E7%BA%BF%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/" title="博客上线中遇到的问题总结">博客上线中遇到的问题总结</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2018-01-29T12:00:00.000Z" title="发表于 2018-01-29 20:00:00">2018-01-29</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/HEXO/">HEXO</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fas fa-tag article-meta__icon"></i><a class="article-meta__tags" href="/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/">博客搭建</a><span class="article-meta__link">•</span><a class="article-meta__tags" href="/tags/HEXO/">HEXO</a></span></div><div class="content">首先是上线后css样式丢失的问题
+// 如果你的网址是根目录 &#39;http://zhoujunxiong.gitee.io&#39; 那么root就需要是 &#39;/&#39;
+url: http://zhoujunxiong.gitee.io
+root: /
+permalink: :year/:month/:day/:title/
+permalink_defaults:
+
+// 如果你的网址不是根目录 &#39;http://zhoujunxiong.gitee.io/child&#39; 那么root就需要是 &#39;/child/&#39;
+url: http://zhoujunxiong.gitee.io
+root: /child/
+permalink: :year/:month/:day/:title/
+permalink_defaults:
+
+
+
+需要注意的问题是，主题中目录几乎都要写成”/*”，因为”/“表示根目录，这样hexo编译后的文件才能找到路径
+
+
+
+然后是代码高亮的问题
+主题作者在编写样式时对 pre&gt;code&gt;span 使用了 !impo ...</div></div></div><nav id="pagination"><div class="pagination"><a class="extend prev" rel="prev" href="/page/31/"><i class="fas fa-chevron-left fa-fw"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/31/">31</a><span class="page-number current">32</span><a class="page-number" href="/page/33/">33</a><a class="extend next" rel="next" href="/page/33/"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-info-avatar is-center"><img class="avatar-img" data-lazy-src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">Sniper</div><div class="author-info__description"></div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">321</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">67</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">48</div></a></div></div><div class="card-info-social-icons is-center"><a class="social-icon" href="/atom.xml" target="_blank" title="rss-atom"><i class="fas fa-rss"></i></a><a class="social-icon" href="/rss2.xml" target="_blank" title="rss-rss2"><i class="fas fa-rss-square"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">这个博客还有点儿意思吧</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2025/04/05/%E5%89%8D%E7%AB%AF/%E6%A1%86%E6%9E%B6/Antd-Form%E6%BA%90%E7%A0%81/" title="Antd-Form源码"><img data-lazy-src="https://source.unsplash.com/random/?nature&amp;q=0.20981981285021" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Antd-Form源码"/></a><div class="content"><a class="title" href="/2025/04/05/%E5%89%8D%E7%AB%AF/%E6%A1%86%E6%9E%B6/Antd-Form%E6%BA%90%E7%A0%81/" title="Antd-Form源码">Antd-Form源码</a><time datetime="2025-04-05T12:00:30.000Z" title="发表于 2025-04-05 20:00:30">2025-04-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/01/09/%E5%89%8D%E7%AB%AF/%E6%B5%8F%E8%A7%88%E5%99%A8%E7%AB%AF/ViewTransitionAPI/" title="View Transition API"><img data-lazy-src="https://source.unsplash.com/random/?nature&amp;q=0.32288173655318264" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="View Transition API"/></a><div class="content"><a class="title" href="/2025/01/09/%E5%89%8D%E7%AB%AF/%E6%B5%8F%E8%A7%88%E5%99%A8%E7%AB%AF/ViewTransitionAPI/" title="View Transition API">View Transition API</a><time datetime="2025-01-09T01:37:42.000Z" title="发表于 2025-01-09 09:37:42">2025-01-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/07/17/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/vscode/vscode%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91/" title="vscode插件开发"><img data-lazy-src="https://source.unsplash.com/random/?nature&amp;q=0.9513483225090755" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="vscode插件开发"/></a><div class="content"><a class="title" href="/2024/07/17/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/vscode/vscode%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91/" title="vscode插件开发">vscode插件开发</a><time datetime="2024-07-17T10:00:00.000Z" title="发表于 2024-07-17 18:00:00">2024-07-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/06/13/%E5%89%8D%E7%AB%AF/%E6%A1%86%E6%9E%B6/Eectron/electron%E6%96%87%E6%A1%A3%E9%98%85%E8%AF%BB/" title="electron文档阅读"><img data-lazy-src="https://source.unsplash.com/random/?nature&amp;q=0.9340018758402575" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="electron文档阅读"/></a><div class="content"><a class="title" href="/2024/06/13/%E5%89%8D%E7%AB%AF/%E6%A1%86%E6%9E%B6/Eectron/electron%E6%96%87%E6%A1%A3%E9%98%85%E8%AF%BB/" title="electron文档阅读">electron文档阅读</a><time datetime="2024-06-13T03:02:25.000Z" title="发表于 2024-06-13 11:02:25">2024-06-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/03/12/%E5%89%8D%E7%AB%AF/Typescript/Typescript%E4%B9%8Bsatisfies/" title="Typescript之satisfies"><img data-lazy-src="https://source.unsplash.com/random/?nature&amp;q=0.6682432104969767" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Typescript之satisfies"/></a><div class="content"><a class="title" href="/2024/03/12/%E5%89%8D%E7%AB%AF/Typescript/Typescript%E4%B9%8Bsatisfies/" title="Typescript之satisfies">Typescript之satisfies</a><time datetime="2024-03-12T10:53:49.000Z" title="发表于 2024-03-12 18:53:49">2024-03-12</time></div></div></div></div><div class="card-widget" id="card-newest-comments"><div class="item-headline"><i class="fas fa-bolt"></i><span>最新评论</span></div><div class="aside-list"><span>正在加载中...</span></div></div><div class="card-widget card-categories"><div class="item-headline"><i class="fas fa-folder-open"></i><span>分类</span></div><ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/CSS/"><span class="card-category-list-name">CSS</span><span class="card-category-list-count">10</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Chrome%E6%8F%92%E4%BB%B6/"><span class="card-category-list-name">Chrome插件</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/ES6/"><span class="card-category-list-name">ES6</span><span class="card-category-list-count">6</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Eectron/"><span class="card-category-list-name">Eectron</span><span class="card-category-list-count">2</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Go/"><span class="card-category-list-name">Go</span><span class="card-category-list-count">21</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/HEXO/"><span class="card-category-list-name">HEXO</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/JAVA/"><span class="card-category-list-name">JAVA</span><span class="card-category-list-count">10</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/JS%E5%8E%9F%E7%90%86/"><span class="card-category-list-name">JS原理</span><span class="card-category-list-count">15</span></a></li>
+            <li class="card-category-list-item more is-center"><a class="card-category-list-link-more" href="/categories/">
+                <span>查看更多</span><i class="fas fa-angle-right"></i></a></li>
+            </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/Go/" style="font-size: 1.39em; color: rgb(151, 5, 81)">Go</a><a href="/tags/Linux/" style="font-size: 1.15em; color: rgb(50, 27, 177)">Linux</a><a href="/tags/JAVA/" style="font-size: 1.45em; color: rgb(42, 87, 128)">JAVA</a><a href="/tags/PHP/" style="font-size: 1.18em; color: rgb(90, 38, 58)">PHP</a><a href="/tags/Python/" style="font-size: 1.31em; color: rgb(54, 73, 14)">Python</a><a href="/tags/%E5%BE%AE%E4%BF%A1/" style="font-size: 1.1em; color: rgb(106, 76, 165)">微信</a><a href="/tags/flutter/" style="font-size: 1.37em; color: rgb(87, 132, 1)">flutter</a><a href="/tags/dart/" style="font-size: 1.37em; color: rgb(123, 92, 82)">dart</a><a href="/tags/GetX/" style="font-size: 1.1em; color: rgb(105, 9, 59)">GetX</a><a href="/tags/nodejs/" style="font-size: 1.42em; color: rgb(97, 179, 37)">nodejs</a><a href="/tags/JavaScript/" style="font-size: 1.47em; color: rgb(161, 182, 16)">JavaScript</a><a href="/tags/koa/" style="font-size: 1.1em; color: rgb(135, 97, 59)">koa</a><a href="/tags/Chrome/" style="font-size: 1.1em; color: rgb(11, 119, 19)">Chrome</a><a href="/tags/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/" style="font-size: 1.45em; color: rgb(5, 187, 31)">工具使用</a><a href="/tags/%E7%88%AC%E8%99%AB/" style="font-size: 1.1em; color: rgb(105, 198, 2)">爬虫</a><a href="/tags/Solidity/" style="font-size: 1.1em; color: rgb(18, 88, 193)">Solidity</a><a href="/tags/%E5%8C%BA%E5%9D%97%E9%93%BE/" style="font-size: 1.13em; color: rgb(27, 48, 146)">区块链</a><a href="/tags/%E5%8C%BA%E5%9D%97%E9%93%BE%E6%A6%82%E5%BF%B5/" style="font-size: 1.1em; color: rgb(86, 17, 74)">区块链概念</a><a href="/tags/MongoDB/" style="font-size: 1.1em; color: rgb(25, 84, 154)">MongoDB</a><a href="/tags/NoSql/" style="font-size: 1.1em; color: rgb(176, 141, 7)">NoSql</a><a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" style="font-size: 1.21em; color: rgb(37, 39, 137)">数据库</a><a href="/tags/web3js/" style="font-size: 1.1em; color: rgb(158, 160, 178)">web3js</a><a href="/tags/Mysql/" style="font-size: 1.1em; color: rgb(149, 77, 73)">Mysql</a><a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%BA%95%E5%B1%82%E5%AD%A6%E4%B9%A0/" style="font-size: 1.15em; color: rgb(97, 36, 29)">计算机底层学习</a><a href="/tags/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" style="font-size: 1.1em; color: rgb(171, 158, 132)">基础知识</a><a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" style="font-size: 1.1em; color: rgb(54, 124, 119)">操作系统</a><a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 1.1em; color: rgb(187, 74, 98)">数据结构</a><a href="/tags/Mybatis/" style="font-size: 1.1em; color: rgb(122, 10, 27)">Mybatis</a><a href="/tags/Spring/" style="font-size: 1.18em; color: rgb(100, 73, 84)">Spring</a><a href="/tags/Python-Go-JavaScript/" style="font-size: 1.1em; color: rgb(199, 75, 189)">Python - Go - JavaScript</a><a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 1.1em; color: rgb(29, 16, 190)">算法</a><a href="/tags/Spring-Boot/" style="font-size: 1.18em; color: rgb(93, 66, 17)">Spring Boot</a><a href="/tags/Spring-mvc/" style="font-size: 1.18em; color: rgb(117, 42, 34)">Spring mvc</a><a href="/tags/%E5%B8%B8%E7%94%A8API/" style="font-size: 1.15em; color: rgb(56, 114, 61)">常用API</a><a href="/tags/CSS/" style="font-size: 1.26em; color: rgb(103, 7, 59)">CSS</a><a href="/tags/%E5%89%8D%E7%AB%AF/" style="font-size: 1.5em; color: rgb(154, 187, 73)">前端</a><a href="/tags/JS%E5%8E%9F%E7%90%86/" style="font-size: 1.34em; color: rgb(148, 46, 177)">JS原理</a><a href="/tags/webpack/" style="font-size: 1.29em; color: rgb(109, 14, 65)">webpack</a><a href="/tags/JS%E8%AF%AD%E6%B3%95%E5%AD%A6%E4%B9%A0/" style="font-size: 1.23em; color: rgb(162, 5, 93)">JS语法学习</a><a href="/tags/ES6/" style="font-size: 1.18em; color: rgb(105, 40, 135)">ES6</a></div></div><div class="card-widget card-archives"><div class="item-headline"><i class="fas fa-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2025/04/"><span class="card-archive-list-date">四月 2025</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2025/01/"><span class="card-archive-list-date">一月 2025</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/07/"><span class="card-archive-list-date">七月 2024</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/06/"><span class="card-archive-list-date">六月 2024</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/03/"><span class="card-archive-list-date">三月 2024</span><span class="card-archive-list-count">3</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/02/"><span class="card-archive-list-date">二月 2024</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/11/"><span class="card-archive-list-date">十一月 2023</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/10/"><span class="card-archive-list-date">十月 2023</span><span class="card-archive-list-count">2</span></a></li><li class="card-archive-list-item more is-center"><a class="card-archive-list-link-more" href="/archives/">
+              <span>查看更多</span><i class="fas fa-angle-right"  ></i></a></li></ul></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站资讯</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">321</div></div><div class="webinfo-item"><div class="item-name">已运行时间 :</div><div class="item-count" id="runtimeshow" data-publishDate="2018-06-06T16:00:00.000Z"></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2025-04-05T14:19:12.682Z"></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2018 - 2025 By Sniper</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="/js/search/local-search.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> {preloader.endLoading()})</script><div class="js-pjax"><script>function subtitleType () {
+  fetch('https://api.btstu.cn/yan/api.php?charset=utf-8&encode=json')
+    .then(response => response.json())
+    .then(data => {
+      if (true) {
+        var sub = "穷且益坚，不坠青云之志".length == 0 ? new Array() : "穷且益坚，不坠青云之志".split(',')
+        var both = sub.unshift(data.text)
+        typed = new Typed('#subtitle', {
+          strings: sub,
+          startDelay: 300,
+          typeSpeed: 150,
+          loop: true,
+          backSpeed: 50,
+        })
+      } else {
+        document.getElementById('subtitle').innerHTML = data.text
+      }
+    })
+}
+
+if (true) {
+  if (typeof Typed === 'function') {
+    subtitleType()
+  } else {
+    getScript('https://cdn.jsdelivr.net/npm/typed.js/lib/typed.min.js').then(subtitleType)
+  }
+} else {
+  subtitleType()
+}
+</script></div><script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.17.0/js/md5.min.js"></script><script>window.addEventListener('load', () => {
+  const changeContent = (content) => {
+    if (content === '') return content
+
+    content = content.replace(/<[^>]+>/g,"") // remove html tag
+    content = content.replace(/(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|jpeg|gif|png|webp)/g, '') // remove image link
+    content = content.replace(/(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi, '') // remove url
+
+    if (content.length > 150) {
+      content = content.substring(0,150) + '...'
+    }
+    return content
+  }
+
+  const getIcon = (icon, mail) => {
+    if (icon) return icon
+    
+    let defaultIcon = '?d=monsterid'
+    let iconUrl = `https://gravatar.loli.net/avatar/${md5(mail.toLowerCase()) + defaultIcon}`
+    return iconUrl
+  }
+
+  const generateHtml = array => {
+    let result = ''
+
+    if (array.length) {
+      for (let i = 0; i < array.length; i++) {
+        result += '<div class=\'aside-list-item\'>'
+
+        if (true) {
+          let name = 'src'
+          if(true) {
+            name = 'data-lazy-src'
+          }
+          result += `<a href='${array[i].url}' class="thumbnail"><img ${name}='${getIcon(array[i].avatar, array[i].mail)}' alt='${array[i].nick}'></a>`
+        }
+
+        result += `<div class='content'>
+        <a class='comment' href='${array[i].url}'>${array[i].content}</a>
+        <div class='name'><span>${array[i].nick}</span><time> / ${btf.diffDate(array[i].date, true)}</time></div>
+        </div></div>`
+      }
+    } else {
+      result += '没有评论'
+    }
+
+    let $dom = document.querySelector('#card-newest-comments .aside-list')
+    $dom.innerHTML= result
+    window.lazyLoadInstance && window.lazyLoadInstance.update()
+    window.pjax && window.pjax.refresh($dom)
+  }
+
+  const getComment = () => {
+      let serverURL = ''
+      if (true) {
+        serverURL = 'https://cwrcuoma.lc-cn-n1-shared.com'
+      } else {
+        serverURL = 'https://cwRCUoMa.api.lncldglobal.com'
+      }
+
+    var settings = {
+      "method": "GET",
+      "headers": {
+        "X-LC-Id": 'cwRCUoMavhC2YwPVr7FS2gq0-gzGzoHsz',
+        "X-LC-Key": 'sqKV8HVVmhAbpKiqokLJUDLU',
+        "Content-Type": "application/json"
+      },
+    }
+
+    fetch(`${serverURL}/1.1/classes/Comment?limit=6&order=-createdAt`,settings)
+      .then(response => response.json())
+      .then(data => {
+        const valineArray = data.results.map(function (e) {
+          return {
+            'avatar': e.QQAvatar,
+            'content': changeContent(e.comment),
+            'mail': e.mail,
+            'nick': e.nick,
+            'url': e.url + '#' + e.objectId,
+            'date': e.createdAt,
+          }
+        })
+        saveToLocal.set('leancloud-newest-comments', JSON.stringify(valineArray), 10/(60*24))
+        generateHtml(valineArray)
+      }).catch(e => {
+        const $dom = document.querySelector('#card-newest-comments .aside-list')
+        $dom.innerHTML= "无法获取评论，请确认相关配置是否正确"
+      }) 
+  }
+
+  const newestCommentInit = () => {
+    if (document.querySelector('#card-newest-comments .aside-list')) {
+      const data = saveToLocal.get('leancloud-newest-comments')
+      if (data) {
+        generateHtml(JSON.parse(data))
+      } else {
+        getComment()
+      }
+    }
+  }
+
+  newestCommentInit()
+  document.addEventListener('pjax:complete', newestCommentInit)
+})</script><div class="aplayer no-destroy" data-id="6587475516" data-server="netease" data-type="playlist" data-fixed="true" data-mini="true" data-listFolded="false" data-order="random" data-preload="none" data-autoplay="false" data-lrctype="1" muted></div><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/gh/metowolf/MetingJS@1.2/dist/Meting.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = [
+  'title',
+  '#config_change',
+  '#body-wrap',
+  '#rightside-config-hide',
+  '#rightside-config-show',
+  '.js-pjax'
+]
+
+if (false) {
+  pjaxSelectors.unshift('meta[property="og:image"]', 'meta[property="og:title"]', 'meta[property="og:url"]')
+}
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  if (typeof gtag === 'function') {
+    gtag('config', '', {'page_path': window.location.pathname});
+  }
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // Analytics
+  if (false) {
+    MtaH5.pgv()
+  }
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+
+document.addEventListener('pjax:send', function () {
+  typeof preloader === 'object' && preloader.initLoading()
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+})</script></div></body></html>

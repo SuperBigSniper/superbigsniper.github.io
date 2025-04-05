@@ -1,0 +1,463 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Antd-Form源码 | Sniper</title><meta name="keywords" content="前端,框架"><meta name="author" content="Sniper"><meta name="copyright" content="Sniper"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="FormItem 与 shouldUpdate在周会上，我们讨论了关于表单的问题，同事问了一个问题，FormItem 中可以设置函数和shouldUpdate，如果是你去设计，你会怎么设计？ 我的想法是shouldUpdate可以控制子组件是否更新，如果没有更新，那么就会使用上一次的 fiber 节点，那么它一定是缓存了之前的 fiber 节点（我以为是和 vue 的 keepAlive 实现一样">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Antd-Form源码">
+<meta property="og:url" content="http://zhoujunxiong.gitee.com/2025/04/05/%E5%89%8D%E7%AB%AF/%E6%A1%86%E6%9E%B6/Antd-Form%E6%BA%90%E7%A0%81/index.html">
+<meta property="og:site_name" content="Sniper">
+<meta property="og:description" content="FormItem 与 shouldUpdate在周会上，我们讨论了关于表单的问题，同事问了一个问题，FormItem 中可以设置函数和shouldUpdate，如果是你去设计，你会怎么设计？ 我的想法是shouldUpdate可以控制子组件是否更新，如果没有更新，那么就会使用上一次的 fiber 节点，那么它一定是缓存了之前的 fiber 节点（我以为是和 vue 的 keepAlive 实现一样">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://source.unsplash.com/random/?nature&q=0.20981981285021">
+<meta property="article:published_time" content="2025-04-05T12:00:30.000Z">
+<meta property="article:modified_time" content="2025-04-05T14:12:57.939Z">
+<meta property="article:author" content="Sniper">
+<meta property="article:tag" content="前端">
+<meta property="article:tag" content="框架">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://source.unsplash.com/random/?nature&q=0.20981981285021"><link rel="shortcut icon" href="https://gitee.com/zhoujunxiong/zhoujunxiong.back/raw/master/favicon.ico"><link rel="canonical" href="http://zhoujunxiong.gitee.com/2025/04/05/%E5%89%8D%E7%AB%AF/%E6%A1%86%E6%9E%B6/Antd-Form%E6%BA%90%E7%A0%81/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}
+
+// https://stackoverflow.com/questions/16839698/jquery-getscript-alternative-in-native-javascript
+const getScript = url => new Promise((resolve, reject) => {
+  const script = document.createElement('script')
+  script.src = url
+  script.async = true
+  script.onerror = reject
+  script.onload = script.onreadystatechange = function() {
+    const loadState = this.readyState
+    if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+    script.onload = script.onreadystatechange = null
+    resolve()
+  }
+  document.head.appendChild(script)
+})</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-04-05 22:12:57'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><link rel="stylesheet" href="/css/custom.css"<meta name="generator" content="Hexo 5.4.1"><link rel="alternate" href="/atom.xml" title="Sniper" type="application/atom+xml">
+<link rel="alternate" href="/rss2.xml" title="Sniper" type="application/rss+xml">
+</head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div id="loader-wrapper"><div id="loader"></div></div><div class="loader"><div class="inner one"></div><div class="inner two"></div><div class="inner three"></div></div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" data-lazy-src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">321</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">67</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">48</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标籤</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://source.unsplash.com/random/?nature&amp;q=0.20981981285021)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Sniper</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标籤</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Antd-Form源码</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-04-05T12:00:30.000Z" title="发表于 2025-04-05 20:00:30">2025-04-05</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-04-05T14:12:57.939Z" title="更新于 2025-04-05 22:12:57">2025-04-05</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%A1%86%E6%9E%B6/">框架</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-commentcount"><i class="far fa-comments fa-fw post-meta-icon"></i><span class="post-meta-label">评论数:</span><a href="/2025/04/05/%E5%89%8D%E7%AB%AF/%E6%A1%86%E6%9E%B6/Antd-Form%E6%BA%90%E7%A0%81/#post-comment" itemprop="discussionUrl"><span class="valine-comment-count" data-xid="/2025/04/05/%E5%89%8D%E7%AB%AF/%E6%A1%86%E6%9E%B6/Antd-Form%E6%BA%90%E7%A0%81/" itemprop="commentCount"></span></a></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="FormItem-与-shouldUpdate"><a href="#FormItem-与-shouldUpdate" class="headerlink" title="FormItem 与 shouldUpdate"></a>FormItem 与 shouldUpdate</h1><p>在周会上，我们讨论了关于表单的问题，同事问了一个问题，FormItem 中可以设置函数和<code>shouldUpdate</code>，如果是你去设计，你会怎么设计？</p>
+<p>我的想法是<code>shouldUpdate</code>可以控制子组件是否更新，如果没有更新，那么就会使用上一次的 fiber 节点，那么它一定是缓存了之前的 fiber 节点（我以为是和 vue 的 keepAlive 实现一样）</p>
+<p>也就是说我的观点是<code>shouldUpdate</code>可以控制子组件是否更新，如果返回 false 或者函数返回 false，那么子组件函数就完全不会执行。</p>
+<p>这个时候有同事站出来说了，好像不是这样，我使用的时候这个函数是会执行的</p>
+<p>那么到底是怎么样的呢</p>
+<figure class="highlight tsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">Form</span>, <span class="title class_">Input</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;antd&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">Demo</span> = (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> [form] = <span class="title class_">Form</span>.<span class="title function_">useForm</span>()</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">Form</span> <span class="attr">form</span>=<span class="string">&#123;form&#125;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">Form.Item</span> <span class="attr">shouldUpdate</span>=<span class="string">&#123;()</span> =&gt;</span> false&#125;&gt;</span></span><br><span class="line"><span class="language-xml">        &#123;() =&gt; &#123;</span></span><br><span class="line"><span class="language-xml">          console.log(&#x27;是否更新了呢&#x27;)</span></span><br><span class="line"><span class="language-xml">          return <span class="tag">&lt;<span class="name">Input</span> <span class="attr">placeholder</span>=<span class="string">&quot;parent&quot;</span> /&gt;</span></span></span><br><span class="line"><span class="language-xml">        &#125;&#125;</span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;/<span class="name">Form.Item</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">Form</span>&gt;</span></span></span><br><span class="line">  )</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="title class_">Demo</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="源码实现"><a href="#源码实现" class="headerlink" title="源码实现"></a>源码实现</h2><p>先说结论，子组件函数一直都更新了</p>
+<p>首先，我们从<code>Form.Item</code> 开始看起</p>
+<p>我们发现其实antd其实使用了<code>rc-field-form</code>这个组件（其实也是他们维护的）</p>
+<p>大部分的<code>props</code>的都是被透传到了这个组件中，我们这里先跳过这个组件，接着往下看</p>
+<p><img src= "/img/loading.svg" data-lazy-src="https://raw.githubusercontent.com/SuperBigSniper/blogImg/master/20250405210347.png" alt="20250405210347"></p>
+<p>我们可以看到子组件其实是一个函数，这个函数会返回一个<code>ReactNode</code>，还会有一些数据校验然后后给到正确的提示（这个还是很值得学习的）</p>
+<p>当然最关键的还是这一行</p>
+<p><img src= "/img/loading.svg" data-lazy-src="assets/Antd-Form%E6%BA%90%E7%A0%81/image.png" alt="alt text"></p>
+<p>这里有个<code>shouldUpdate</code>，我们发现其实只要是传入了值, 而且<code>isRenderProps</code>为true并且没有<code>hasName</code>(hasName就是formItem传入name没有)</p>
+<p><code>isRenderProps</code>的逻辑如下</p>
+<figure class="highlight tsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> mergedChildren = <span class="title function_">useChildren</span>(children);</span><br><span class="line"><span class="keyword">const</span> isRenderProps = <span class="keyword">typeof</span> mergedChildren === <span class="string">&#x27;function&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>// useChildren实现</p>
+<figure class="highlight tsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> toArray <span class="keyword">from</span> <span class="string">&#x27;rc-util/lib/Children/toArray&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="keyword">type</span> &#123; <span class="title class_">FormItemProps</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;../FormItem&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">function</span> <span class="title function_">useChildren</span>(<span class="params"></span></span><br><span class="line"><span class="params">  children?: FormItemProps[<span class="string">&#x27;children&#x27;</span>],</span></span><br><span class="line"><span class="params"></span>): <span class="title class_">FormItemProps</span>[<span class="string">&#x27;children&#x27;</span>] &#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> children === <span class="string">&#x27;function&#x27;</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> children;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> childList = <span class="title function_">toArray</span>(children);</span><br><span class="line">  <span class="keyword">return</span> childList.<span class="property">length</span> &lt;= <span class="number">1</span> ? childList[<span class="number">0</span>] : childList;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>也就是说只要传入的是一个函数，且shouldUpdate有不为空的值，这个函数其实就会被执行</p>
+<p>如果是这样的话，shouldUpdate的作用到底是什么呢？</p>
+<p>秘密就藏着<code>rc-field-form</code>中</p>
+<h3 id="rc-field-form"><a href="#rc-field-form" class="headerlink" title="rc-field-form"></a>rc-field-form</h3><p>首先我们之间看<code>src/Field.tsx</code>这个组件，我们发现它其实是这个class组件</p>
+<p><img src= "/img/loading.svg" data-lazy-src="assets/Antd-Form%E6%BA%90%E7%A0%81/image-1.png" alt="alt text"></p>
+<p>官方还解释了一下为什么使用<code>class</code>组件</p>
+<p>大致意思用<code>hook</code>写代码太多了</p>
+<p>我们直接看<code>render</code>，看它到底做了啥</p>
+<p><img src= "/img/loading.svg" data-lazy-src="assets/Antd-Form%E6%BA%90%E7%A0%81/image-2.png" alt="alt text"></p>
+<p>代码非常简单哈，只有十多行，其实关键代码还是在<code>getOnlyChild</code>这个函数</p>
+<p><img src= "/img/loading.svg" data-lazy-src="assets/Antd-Form%E6%BA%90%E7%A0%81/image-3.png" alt="alt text"></p>
+<p>可以看到这个函数会递归运行，直到返回数据不为一个函数，也就是<code>rc-field-form</code>可以传入函数嵌套函数的结构</p>
+<p>也就是说这个<code>render</code>并没有执行或者判断<code>shouldUpdate</code>这个东西</p>
+<p>然后我们搜索一下会发现<code>componentDidMount</code>里有这个东西</p>
+<p><img src= "/img/loading.svg" data-lazy-src="assets/Antd-Form%E6%BA%90%E7%A0%81/image-4.png" alt="alt text"></p>
+<p>然后我们发现一个很奇怪的东西，就是<code>shouldUpdate</code>为true的时候会强制更新一次，哪岂不是说<code>shouldUpdate</code>为true的时候，子组件会强制运行两次？为什么要这样写呢？我们最后解答这个问题，我们继续寻找<code>shouldUpdate</code></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// One more render for component in case fields not ready</span></span><br><span class="line"><span class="keyword">if</span> (shouldUpdate === <span class="literal">true</span>) &#123;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="title function_">reRender</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>之后所有的<code>shouldUpdate</code>都存放在一个函数中<code>onStoreChange</code></p>
+<p><img src= "/img/loading.svg" data-lazy-src="assets/Antd-Form%E6%BA%90%E7%A0%81/image-5.png" alt="alt text"></p>
+<p>其实可以看到，整个<code>src/Field.tsx</code>组件没有调用<code>onStoreChange</code>的地方，从函数命名我们可以大概知道这个玩意儿其实是，<code>store</code>的变化，主动触发这个方法的</p>
+<p>接下来就要加速了，简单说一下整个<code>rc-form</code>的机制</p>
+<p>首先通过<code>registerField</code>将整个组件实例注册到<code>store</code>中<br><img src= "/img/loading.svg" data-lazy-src="assets/Antd-Form%E6%BA%90%E7%A0%81/image-6.png" alt="alt text"></p>
+<p>然后这个方法在<code>useForm</code>里，这个文件导出一个默认实现<code>FormStore</code>, 为什么说是默认实现呢，因为可以看到<code>useForm</code>可以传入<code>form</code>实例对默认实现进行覆盖</p>
+<p><img src= "/img/loading.svg" data-lazy-src="assets/Antd-Form%E6%BA%90%E7%A0%81/image-7.png" alt="alt text"></p>
+<p>然后在默写场景下就会触发实例的<code>onStoreChange</code>方法，去实现精准更新，比如<code>setFields</code></p>
+<p><img src= "/img/loading.svg" data-lazy-src="assets/Antd-Form%E6%BA%90%E7%A0%81/image-8.png" alt="alt text"></p>
+<p><img src= "/img/loading.svg" data-lazy-src="assets/Antd-Form%E6%BA%90%E7%A0%81/image-9.png" alt="alt text"></p>
+<p>ok ，我们回到<code>onStoreChange</code>里到底是怎么判断的</p>
+<p><img src= "/img/loading.svg" data-lazy-src="assets/Antd-Form%E6%BA%90%E7%A0%81/image-11.png" alt="alt text"></p>
+<p><img src= "/img/loading.svg" data-lazy-src="assets/Antd-Form%E6%BA%90%E7%A0%81/image-10.png" alt="alt text"></p>
+<p>这里逻辑就很简单了，其实就是判断<code>shouldUpdate</code>是否为true或者返回true，如果是true，那么就会强制更新一次，否则就不会执行更新</p>
+<p>而且这里也有一个强制更新两次的逻辑</p>
+<figure class="highlight tsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (shouldUpdate === <span class="literal">true</span>) &#123;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="title function_">reRender</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>解密一下, 比如这种情况</p>
+<figure class="highlight tsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">Form</span>, <span class="title class_">Input</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;antd&#x27;</span></span><br><span class="line"><span class="keyword">import</span> A <span class="keyword">from</span> <span class="string">&#x27;./A&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">Demo</span> = (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> [form] = <span class="title class_">Form</span>.<span class="title function_">useForm</span>()</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">Form</span> <span class="attr">form</span>=<span class="string">&#123;form&#125;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">Form.Item</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">        <span class="attr">name</span>=<span class="string">&quot;parent&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">        <span class="attr">initialValue</span>=<span class="string">&#123;1&#125;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">      &gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">Input</span> <span class="attr">placeholder</span>=<span class="string">&quot;parent&quot;</span> /&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;/<span class="name">Form.Item</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">A</span> /&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">Form</span>&gt;</span></span></span><br><span class="line">  )</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="title class_">Demo</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight tsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">Form</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;antd&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">function</span> <span class="title function_">A</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;A&#x27;</span>)</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">Form.Item</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">        // <span class="attr">shouldUpdate</span>=<span class="string">&#123;true&#125;</span>         // 写法 <span class="attr">1</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">        <span class="attr">shouldUpdate</span>=<span class="string">&#123;()</span> =&gt;</span> true&#125;  // 写法 2</span></span><br><span class="line"><span class="language-xml">      &gt;</span></span><br><span class="line"><span class="language-xml">        &#123;(&#123; getFieldsValue &#125;) =&gt; &#123;</span></span><br><span class="line"><span class="language-xml">          console.log(getFieldsValue())</span></span><br><span class="line"><span class="language-xml">          return JSON.stringify(getFieldsValue())</span></span><br><span class="line"><span class="language-xml">        &#125;&#125;</span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;/<span class="name">Form.Item</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">  )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个本质是因为react的运行机制问题哦</p>
+<p>​​子组件​​执行 componentDidMount 会优先于 ​​父组件​​执行 componentDidMount。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Sniper</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://zhoujunxiong.gitee.com/2025/04/05/%E5%89%8D%E7%AB%AF/%E6%A1%86%E6%9E%B6/Antd-Form%E6%BA%90%E7%A0%81/">http://zhoujunxiong.gitee.com/2025/04/05/%E5%89%8D%E7%AB%AF/%E6%A1%86%E6%9E%B6/Antd-Form%E6%BA%90%E7%A0%81/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://zhoujunxiong.gitee.com" target="_blank">Sniper</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%89%8D%E7%AB%AF/">前端</a><a class="post-meta__tags" href="/tags/%E6%A1%86%E6%9E%B6/">框架</a></div><div class="post_share"><div class="social-share" data-image="https://source.unsplash.com/random/?nature&amp;q=0.20981981285021" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2025/01/09/%E5%89%8D%E7%AB%AF/%E6%B5%8F%E8%A7%88%E5%99%A8%E7%AB%AF/ViewTransitionAPI/"><img class="next-cover" data-lazy-src="https://source.unsplash.com/random/?nature&amp;q=0.32288173655318264" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">View Transition API</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2022/02/06/前端/框架/Nuxt3/" title="Nuxt3"><img class="cover" data-lazy-src="https://source.unsplash.com/random/?nature&q=0.19227681484945647" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-02-06</div><div class="title">Nuxt3</div></div></a></div><div><a href="/2020/11/12/前端/框架/axios配置/" title="axios配置"><img class="cover" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&format=images0.169489325238374" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-11-12</div><div class="title">axios配置</div></div></a></div><div><a href="/2021/03/02/前端/框架/threejs/" title="THREE.JS"><img class="cover" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&format=images0.056510938163853996" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-02</div><div class="title">THREE.JS</div></div></a></div><div><a href="/2021/03/02/前端/框架/微前端/" title="微前端"><img class="cover" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&format=images0.1134118054922324" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-02</div><div class="title">微前端</div></div></a></div><div><a href="/2021/10/21/前端/框架/rxjs/" title="RX.JS"><img class="cover" data-lazy-src="https://api.btstu.cn/sjbz/api.php?lx=dongman&format=images0.44754557401278605" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-10-21</div><div class="title">RX.JS</div></div></a></div><div><a href="/2022/02/06/前端/框架/Next/" title="Next"><img class="cover" data-lazy-src="https://source.unsplash.com/random/?nature&q=0.3574602027470648" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-02-06</div><div class="title">Next</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-info-avatar is-center"><img class="avatar-img" data-lazy-src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">Sniper</div><div class="author-info__description"></div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">321</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">67</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">48</div></a></div></div><div class="card-info-social-icons is-center"><a class="social-icon" href="/atom.xml" target="_blank" title="rss-atom"><i class="fas fa-rss"></i></a><a class="social-icon" href="/rss2.xml" target="_blank" title="rss-rss2"><i class="fas fa-rss-square"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">这个博客还有点儿意思吧</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#FormItem-%E4%B8%8E-shouldUpdate"><span class="toc-number">1.</span> <span class="toc-text">FormItem 与 shouldUpdate</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BA%90%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.1.</span> <span class="toc-text">源码实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#rc-field-form"><span class="toc-number">1.1.1.</span> <span class="toc-text">rc-field-form</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2025/04/05/%E5%89%8D%E7%AB%AF/%E6%A1%86%E6%9E%B6/Antd-Form%E6%BA%90%E7%A0%81/" title="Antd-Form源码"><img data-lazy-src="https://source.unsplash.com/random/?nature&amp;q=0.20981981285021" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Antd-Form源码"/></a><div class="content"><a class="title" href="/2025/04/05/%E5%89%8D%E7%AB%AF/%E6%A1%86%E6%9E%B6/Antd-Form%E6%BA%90%E7%A0%81/" title="Antd-Form源码">Antd-Form源码</a><time datetime="2025-04-05T12:00:30.000Z" title="发表于 2025-04-05 20:00:30">2025-04-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/01/09/%E5%89%8D%E7%AB%AF/%E6%B5%8F%E8%A7%88%E5%99%A8%E7%AB%AF/ViewTransitionAPI/" title="View Transition API"><img data-lazy-src="https://source.unsplash.com/random/?nature&amp;q=0.32288173655318264" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="View Transition API"/></a><div class="content"><a class="title" href="/2025/01/09/%E5%89%8D%E7%AB%AF/%E6%B5%8F%E8%A7%88%E5%99%A8%E7%AB%AF/ViewTransitionAPI/" title="View Transition API">View Transition API</a><time datetime="2025-01-09T01:37:42.000Z" title="发表于 2025-01-09 09:37:42">2025-01-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/07/17/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/vscode/vscode%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91/" title="vscode插件开发"><img data-lazy-src="https://source.unsplash.com/random/?nature&amp;q=0.9513483225090755" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="vscode插件开发"/></a><div class="content"><a class="title" href="/2024/07/17/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/vscode/vscode%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91/" title="vscode插件开发">vscode插件开发</a><time datetime="2024-07-17T10:00:00.000Z" title="发表于 2024-07-17 18:00:00">2024-07-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/06/13/%E5%89%8D%E7%AB%AF/%E6%A1%86%E6%9E%B6/Eectron/electron%E6%96%87%E6%A1%A3%E9%98%85%E8%AF%BB/" title="electron文档阅读"><img data-lazy-src="https://source.unsplash.com/random/?nature&amp;q=0.9340018758402575" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="electron文档阅读"/></a><div class="content"><a class="title" href="/2024/06/13/%E5%89%8D%E7%AB%AF/%E6%A1%86%E6%9E%B6/Eectron/electron%E6%96%87%E6%A1%A3%E9%98%85%E8%AF%BB/" title="electron文档阅读">electron文档阅读</a><time datetime="2024-06-13T03:02:25.000Z" title="发表于 2024-06-13 11:02:25">2024-06-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/03/12/%E5%89%8D%E7%AB%AF/Typescript/Typescript%E4%B9%8Bsatisfies/" title="Typescript之satisfies"><img data-lazy-src="https://source.unsplash.com/random/?nature&amp;q=0.6682432104969767" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Typescript之satisfies"/></a><div class="content"><a class="title" href="/2024/03/12/%E5%89%8D%E7%AB%AF/Typescript/Typescript%E4%B9%8Bsatisfies/" title="Typescript之satisfies">Typescript之satisfies</a><time datetime="2024-03-12T10:53:49.000Z" title="发表于 2024-03-12 18:53:49">2024-03-12</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2018 - 2025 By Sniper</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="/js/search/local-search.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> {preloader.endLoading()})</script><div class="js-pjax"><script>function loadValine () {
+  function initValine () {
+    let initData = {
+      el: '#vcomment',
+      appId: 'cwRCUoMavhC2YwPVr7FS2gq0-gzGzoHsz',
+      appKey: 'sqKV8HVVmhAbpKiqokLJUDLU',
+      placeholder: '来，谈谈你的梦想',
+      avatar: 'monsterid',
+      meta: 'nick,mail,link'.split(','),
+      pageSize: '10',
+      lang: 'zh-CN',
+      recordIP: false,
+      serverURLs: 'https://cwrcuoma.lc-cn-n1-shared.com',
+      emojiCDN: '',
+      emojiMaps: "",
+      enableQQ: false,
+      path: window.location.pathname,
+    }
+
+    if (true) { 
+      initData.requiredFields= ('nick'.split(','))
+    }
+    
+    if (false) {
+      const otherData = false
+      initData = Object.assign(initData, otherData)
+    }
+    
+    const valine = new Valine(initData)
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !false) {
+  if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.17.0/js/md5.min.js"></script><script>window.addEventListener('load', () => {
+  const changeContent = (content) => {
+    if (content === '') return content
+
+    content = content.replace(/<[^>]+>/g,"") // remove html tag
+    content = content.replace(/(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|jpeg|gif|png|webp)/g, '') // remove image link
+    content = content.replace(/(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi, '') // remove url
+
+    if (content.length > 150) {
+      content = content.substring(0,150) + '...'
+    }
+    return content
+  }
+
+  const getIcon = (icon, mail) => {
+    if (icon) return icon
+    
+    let defaultIcon = '?d=monsterid'
+    let iconUrl = `https://gravatar.loli.net/avatar/${md5(mail.toLowerCase()) + defaultIcon}`
+    return iconUrl
+  }
+
+  const generateHtml = array => {
+    let result = ''
+
+    if (array.length) {
+      for (let i = 0; i < array.length; i++) {
+        result += '<div class=\'aside-list-item\'>'
+
+        if (true) {
+          let name = 'src'
+          if(true) {
+            name = 'data-lazy-src'
+          }
+          result += `<a href='${array[i].url}' class="thumbnail"><img ${name}='${getIcon(array[i].avatar, array[i].mail)}' alt='${array[i].nick}'></a>`
+        }
+
+        result += `<div class='content'>
+        <a class='comment' href='${array[i].url}'>${array[i].content}</a>
+        <div class='name'><span>${array[i].nick}</span><time> / ${btf.diffDate(array[i].date, true)}</time></div>
+        </div></div>`
+      }
+    } else {
+      result += '没有评论'
+    }
+
+    let $dom = document.querySelector('#card-newest-comments .aside-list')
+    $dom.innerHTML= result
+    window.lazyLoadInstance && window.lazyLoadInstance.update()
+    window.pjax && window.pjax.refresh($dom)
+  }
+
+  const getComment = () => {
+      let serverURL = ''
+      if (true) {
+        serverURL = 'https://cwrcuoma.lc-cn-n1-shared.com'
+      } else {
+        serverURL = 'https://cwRCUoMa.api.lncldglobal.com'
+      }
+
+    var settings = {
+      "method": "GET",
+      "headers": {
+        "X-LC-Id": 'cwRCUoMavhC2YwPVr7FS2gq0-gzGzoHsz',
+        "X-LC-Key": 'sqKV8HVVmhAbpKiqokLJUDLU',
+        "Content-Type": "application/json"
+      },
+    }
+
+    fetch(`${serverURL}/1.1/classes/Comment?limit=6&order=-createdAt`,settings)
+      .then(response => response.json())
+      .then(data => {
+        const valineArray = data.results.map(function (e) {
+          return {
+            'avatar': e.QQAvatar,
+            'content': changeContent(e.comment),
+            'mail': e.mail,
+            'nick': e.nick,
+            'url': e.url + '#' + e.objectId,
+            'date': e.createdAt,
+          }
+        })
+        saveToLocal.set('leancloud-newest-comments', JSON.stringify(valineArray), 10/(60*24))
+        generateHtml(valineArray)
+      }).catch(e => {
+        const $dom = document.querySelector('#card-newest-comments .aside-list')
+        $dom.innerHTML= "无法获取评论，请确认相关配置是否正确"
+      }) 
+  }
+
+  const newestCommentInit = () => {
+    if (document.querySelector('#card-newest-comments .aside-list')) {
+      const data = saveToLocal.get('leancloud-newest-comments')
+      if (data) {
+        generateHtml(JSON.parse(data))
+      } else {
+        getComment()
+      }
+    }
+  }
+
+  newestCommentInit()
+  document.addEventListener('pjax:complete', newestCommentInit)
+})</script><div class="aplayer no-destroy" data-id="6587475516" data-server="netease" data-type="playlist" data-fixed="true" data-mini="true" data-listFolded="false" data-order="random" data-preload="none" data-autoplay="false" data-lrctype="1" muted></div><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/gh/metowolf/MetingJS@1.2/dist/Meting.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = [
+  'title',
+  '#config_change',
+  '#body-wrap',
+  '#rightside-config-hide',
+  '#rightside-config-show',
+  '.js-pjax'
+]
+
+if (false) {
+  pjaxSelectors.unshift('meta[property="og:image"]', 'meta[property="og:title"]', 'meta[property="og:url"]')
+}
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  if (typeof gtag === 'function') {
+    gtag('config', '', {'page_path': window.location.pathname});
+  }
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // Analytics
+  if (false) {
+    MtaH5.pgv()
+  }
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+
+document.addEventListener('pjax:send', function () {
+  typeof preloader === 'object' && preloader.initLoading()
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+})</script></div></body></html>
